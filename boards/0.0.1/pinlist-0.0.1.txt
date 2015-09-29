@@ -1,0 +1,65 @@
+Pinlist
+
+Exported from usb-led.sch at 9/28/2015 10:42 PM
+
+EAGLE Version 7.4.0 Copyright (c) 1988-2015 CadSoft
+
+Part       Pad      Pin        Dir      Net
+
+C1         1        1          pas      VCC
+           2        2          pas      GND
+
+C2         1        1          pas      VCC
+           2        2          pas      GND
+
+D1         A        A          pas      GND
+           C        C          pas      USB_D_PLUS_RAW
+
+D2         A        A          pas      GND
+           C        C          pas      USB_D_MINUS_RAW
+
+D3         1        VDD        pwr      VCC
+           2        DOUT       out      DIN_2
+           3        VSS        pwr      GND
+           4        DIN        in       MOSI/DIN
+
+D4         1        VDD        pwr      VCC
+           2        DOUT       out               *** unconnected ***
+           3        VSS        pwr      GND
+           4        DIN        in       DIN_2
+
+JP-ISP     1        1          pas      MISO
+           2        2          pas      VCC
+           3        3          pas      SCK
+           4        4          pas      MOSI/DIN
+           5        5          pas      RESET
+           6        6          pas      GND
+
+JP-USB-BOT 5V       VBUS       io       VCC
+           GND      GND        io       GND
+           USB_M    D-         io       USB_D_MINUS_RAW
+           USB_P    D+         io       USB_D_PLUS_RAW
+
+JP-USB-TOP 5V       VBUS       io       VCC
+           GND      GND        io       GND
+           USB_M    D-         io       USB_D_MINUS_RAW
+           USB_P    D+         io       USB_D_PLUS_RAW
+
+R1         1        1          pas      USB_D_MINUS_RAW
+           2        2          pas      VCC
+
+R2         1        1          pas      USB_D_PLUS_RAW
+           2        2          pas      USB_D_PLUS
+
+R3         1        1          pas      USB_D_MINUS_RAW
+           2        2          pas      USB_D_MINUS
+
+U1         1        PB5(NRES)  io       RESET
+           2        PB3(ADC3)  io       USB_D_MINUS
+           3        PB4(ADC2)  io       USB_D_PLUS
+           4        GND        io       GND
+           5        PB0(MOSI)  io       MOSI/DIN
+           6        PB1(MISO)  io       MISO
+           7        PB2(SCK/ADC1) io       SCK
+           8        VCC        io       VCC
+
