@@ -1,0 +1,65 @@
+Pinlist
+
+Exported from usb-led.brd at 9/28/2015 11:19 PM
+
+EAGLE Version 7.4.0 Copyright (c) 1988-2015 CadSoft
+
+Part     Pad      Net
+
+C1       1        VCC
+         2        GND
+
+C2       1        VCC
+         2        GND
+
+D1       A        GND
+         C        USB_D_PLUS_RAW
+
+D2       A        GND
+         C        USB_D_MINUS_RAW
+
+D3       1        VCC
+         2        DIN_2
+         3        GND
+         4        MOSI/DIN
+
+D4       1        VCC
+         2                 *** unconnected ***
+         3        GND
+         4        DIN_2
+
+JP-ISP   1        MISO
+         2        VCC
+         3        SCK
+         4        MOSI/DIN
+         5        RESET
+         6        GND
+
+JP-USB-BOT 5V       VCC
+         GND      GND
+         USB_M    USB_D_MINUS_RAW
+         USB_P    USB_D_PLUS_RAW
+
+JP-USB-TOP 5V       VCC
+         GND      GND
+         USB_M    USB_D_MINUS_RAW
+         USB_P    USB_D_PLUS_RAW
+
+R1       1        USB_D_MINUS_RAW
+         2        VCC
+
+R2       1        USB_D_PLUS_RAW
+         2        USB_D_PLUS
+
+R3       1        USB_D_MINUS_RAW
+         2        USB_D_MINUS
+
+U1       1        RESET
+         2        USB_D_MINUS
+         3        USB_D_PLUS
+         4        GND
+         5        MOSI/DIN
+         6        MISO
+         7        SCK
+         8        VCC
+
