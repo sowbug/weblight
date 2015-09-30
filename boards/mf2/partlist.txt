@@ -1,0 +1,24 @@
+Partlist
+
+Exported from usb-led.sch at 9/29/2015 10:11 PM
+
+EAGLE Version 7.4.0 Copyright (c) 1988-2015 CadSoft
+
+Assembly variant: 
+
+Part         Value            Device                Package        Library             Sheet
+
+C1           10uF             C-USC0402             C0402          rcl                 1
+C2           0.1uF            C-USC0402             C0402          rcl                 1
+D1           3.6V             DIODESOD-523          SOD-523        microbuilder        1
+D2           3.6V             DIODESOD-523          SOD-523        microbuilder        1
+D3           WS2812B          WS2812B               WS2812B        SparkFun-LED        1
+D4           WS2812B          WS2812B               WS2812B        SparkFun-LED        1
+JP-ISP       AVR_MINI_PROGSMD AVR_MINI_PROGSMD      AVR_MINI_PROG  SparkFun-Connectors 1
+JP-USB-BOT   USBPCB           USBPCB                USB-A-PCB      SparkFun-Connectors 1
+JP-USB-MICRO                  USB_MICRO_RIGHT       MICROUSB-RIGHT MF_Connectors       1
+JP-USB-TOP   USBPCB           USBPCB                USB-A-PCB      SparkFun-Connectors 1
+R1           1.5K             R-US_R0402            R0402          rcl                 1
+R2           68               R-US_R0402            R0402          rcl                 1
+R3           68               R-US_R0402            R0402          rcl                 1
+U1           ATtiny85-20SU    ATTINY45TINY85-20-SMT SO08-EIAJ      SparkFun-DigitalIC  1
