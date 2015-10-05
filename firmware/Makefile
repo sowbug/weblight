@@ -50,6 +50,6 @@ main.hex: main.elf
 	avr-size main.hex
 
 clean:
-	rm \
-	main.hex main.lst main.obj main.cof main.list main.map main.eep.hex main.elf \
-	*.o usbdrv/*.o main.s usbdrv/oddebug.s usbdrv/usbdrv.s
+	rm -f main.hex main.lst main.obj main.cof main.list \
+  main.map main.eep.hex main.elf \
+  *.o usbdrv/*.o main.s usbdrv/oddebug.s usbdrv/usbdrv.s
