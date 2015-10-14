@@ -1,3 +1,7 @@
+// Copyright 2015 Mike Tsao
+//
+// weblight
+
 #ifndef __usbconfig_h_included__
 #define __usbconfig_h_included__
 
@@ -96,7 +100,7 @@
 /* Define this to 1 if the device has its own power supply. Set it to 0 if the
  * device is powered from the USB bus.
  */
-#define USB_CFG_MAX_BUS_POWER           60
+#define USB_CFG_MAX_BUS_POWER           100
 /* Set this variable to the maximum USB bus power consumption of your device.
  * The value is in milliamperes. [It will be divided by two since USB
  * communicates power requirements in units of 2 mA.]
@@ -358,5 +362,17 @@
 /* #define USB_INTR_PENDING        GIFR */
 /* #define USB_INTR_PENDING_BIT    INTF0 */
 /* #define USB_INTR_VECTOR         INT0_vect */
+
+// This section is taken from
+// https://github.com/adafruit/Adafruit-Trinket-USB.
+// It lets us use PORTB pins 3 and 4 for the USB data lines.
+#define USB_INTR_CFG            PCMSK
+#define USB_INTR_CFG_SET        (1 << USB_CFG_DPLUS_BIT)
+#define USB_INTR_CFG_CLR        0
+#define USB_INTR_ENABLE         GIMSK
+#define USB_INTR_ENABLE_BIT     PCIE
+#define USB_INTR_PENDING        GIFR
+#define USB_INTR_PENDING_BIT    PCIF
+#define USB_INTR_VECTOR         PCINT0_vect
 
 #endif /* __usbconfig_h_included__ */

@@ -1,24 +1,32 @@
 # Copyright 2015 Mike Tsao
 #
-# usb-led
-#
+# weblight
 
 DEVICE  = attiny85
 F_CPU   = 16500000	# in Hz
+AVRDUDE = avrdude -c usbtiny -p $(DEVICE) # edit this line for your programmer
+# for micronucleus use `sudo micronucleus --run main.hex`
 
-# PROGRAMMER contains AVRDUDE options to address your programmer
-PROGRAMMER ?= -c digispark
-
-# Tools (NOTE hardcoded for micronucleus at present)
-AVRDUDE = avrdude $(PROGRAMMER) -p $(DEVICE)
-
-SRC = /Users/mike/OneDrive/src
-CFLAGS  = -Iusbdrv -I. \
-          -I$(SRC)/libusb-win32-bin-1.2.6.0/include \
-          -DDEBUG_LEVEL=0
+CFLAGS  = -Iusbdrv -I. -DDEBUG_LEVEL=0
 OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o usbdrv/oddebug.o main.o
 
 COMPILE = avr-gcc -Wall -Os -DF_CPU=$(F_CPU) $(CFLAGS) -mmcu=$(DEVICE)
+
+# symbolic targets:
+help:
+	@echo "This Makefile has no default rule. Use one of the following:"
+	@echo "make hex ....... to build main.hex"
+	@echo "make flash ..... to flash the firmware (use this on metaboard)"
+	@echo "make clean ..... to delete objects and hex file"
+
+hex: main.hex
+
+flash: main.hex
+	$(AVRDUDE) -U flash:w:main.hex:i
+
+# rule for deleting dependent files (those which can be built by Make):
+clean:
+	rm -f main.hex main.lst main.obj main.cof main.list main.map main.eep.hex main.elf *.o usbdrv/*.o main.s usbdrv/oddebug.s usbdrv/usbdrv.s
 
 # Generic rule for compiling C files:
 .c.o:
@@ -36,10 +44,7 @@ COMPILE = avr-gcc -Wall -Os -DF_CPU=$(F_CPU) $(CFLAGS) -mmcu=$(DEVICE)
 .c.s:
 	$(COMPILE) -S $< -o $@
 
-all: main.hex
-
-flash: all
-	micronucleus main.hex
+# file targets:
 
 main.elf: $(OBJECTS)
 	$(COMPILE) -o main.elf $(OBJECTS)
@@ -49,7 +54,10 @@ main.hex: main.elf
 	avr-objcopy -j .text -j .data -O ihex main.elf main.hex
 	avr-size main.hex
 
-clean:
-	rm -f main.hex main.lst main.obj main.cof main.list \
-  main.map main.eep.hex main.elf \
-  *.o usbdrv/*.o main.s usbdrv/oddebug.s usbdrv/usbdrv.s
+# debugging targets:
+
+disasm:	main.elf
+	avr-objdump -d main.elf
+
+cpp:
+	$(COMPILE) -E main.c
