@@ -8,6 +8,7 @@
 #include <util/delay.h>     // for _delay_ms()
 
 #include <avr/pgmspace.h>   // required by usbdrv.h
+#include "usbconfig.h"
 #include "usbdrv.h"
 #include "requests.h"       // The custom request numbers we use
 
@@ -44,15 +45,13 @@ void LEDsOff() {
 usbMsgLen_t usbFunctionSetup(uchar data[8]) {
   usbRequest_t    *rq = (void *)data;
   static uchar    dataBuffer[4];  // buffer must stay valid when
-                                  // usbFunctionSetup returns
+  // usbFunctionSetup returns
 
   if (rq->bRequest == CUSTOM_RQ_ECHO){ // echo -- used for reliability tests
     dataBuffer[0] = rq->wValue.bytes[0];
     dataBuffer[1] = rq->wValue.bytes[1];
-    dataBuffer[2] = rq->wIndex.bytes[0];
-    dataBuffer[3] = rq->wIndex.bytes[1];
     usbMsgPtr = (int)dataBuffer;
-    return sizeof(dataBuffer);
+    return 2;
   } else if (rq->bRequest == CUSTOM_RQ_SET_STATUS) {
     if (rq->wValue.bytes[0] & 1) {  // set LED
       SetLEDs(255, 0, 0);
@@ -64,13 +63,54 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
     } else {  // clear LED
       SetLEDs(0, 0, 0);
     }
-  } else if (rq->bRequest == CUSTOM_RQ_GET_STATUS) {
-    dataBuffer[0] = 0x42;  // TMP
-    usbMsgPtr = (int)dataBuffer;
-    return 1;  // tell the driver to send 1 byte
+    return 0;
   }
   return 0;  // default for not implemented requests: return no data
-             // back to host
+  // back to host
+}
+
+// Calibrate the RC oscillator to 8.25 MHz. The core clock of 16.5 MHz is
+// derived from the 66 MHz peripheral clock by dividing. Our timing reference
+// is the Start Of Frame signal (a single SE0 bit) available immediately after
+// a USB RESET. We first do a binary search for the OSCCAL value and then
+// optimize this value with a neighboorhod search. This algorithm may also be
+// used to calibrate the RC oscillator directly to 12 MHz (no PLL involved, can
+// therefore be used on almost ALL AVRs), but this is wide outside the spec for
+// the OSCCAL value and the required precision for the 12 MHz clock! Use the RC
+// oscillator calibrated to 12 MHz for experimental purposes only!
+void calibrateOscillator(void) {
+  uchar       step = 128;
+  uchar       trialValue = 0, optimumValue;
+  int         x, optimumDev,
+      targetValue = (unsigned)(1499 * (double)F_CPU / 10.5e6 + 0.5);
+
+  // do a binary search
+  do {
+    OSCCAL = trialValue + step;
+    x = usbMeasureFrameLength();  // proportional to current real frequency
+    if (x < targetValue)  // frequency still too low
+      trialValue += step;
+    step >>= 1;
+  } while (step > 0);
+
+  // We have a precision of +/- 1 for optimum OSCCAL here. Now do a
+  // neighborhood search for optimum value
+  optimumValue = trialValue;
+  optimumDev = x; // this is certainly far away from optimum
+  for (OSCCAL = trialValue - 1; OSCCAL <= trialValue + 1; OSCCAL++) {
+    x = usbMeasureFrameLength() - targetValue;
+    if (x < 0)
+      x = -x;
+    if (x < optimumDev) {
+      optimumDev = x;
+      optimumValue = OSCCAL;
+    }
+  }
+  OSCCAL = optimumValue;
+
+  SetLEDs(255, 0, 0);
+  _delay_ms(5);
+  SetLEDs(0, 0, 255);
 }
 
 enum {
@@ -210,21 +250,21 @@ int __attribute__((noreturn)) main(void) {
 
   while (TRUE) {
     switch (state) {
-    case STATE_MCU_INIT:
-      doMCUInit();
-      break;
-    case STATE_DISCONNECT_USB:
-      doDisconnectUSB();
-      break;
-    case STATE_STARTUP_SEQUENCE:
-      doStartupSequence();
-      break;
-    case STATE_CONNECT_USB:
-      doConnectUSB();
-      break;
-    case STATE_READY:
-      doReady();
-      break;
+      case STATE_MCU_INIT:
+        doMCUInit();
+        break;
+      case STATE_DISCONNECT_USB:
+        doDisconnectUSB();
+        break;
+      case STATE_STARTUP_SEQUENCE:
+        doStartupSequence();
+        break;
+      case STATE_CONNECT_USB:
+        doConnectUSB();
+        break;
+      case STATE_READY:
+        doReady();
+        break;
     }
     wdt_reset();
   }
