@@ -71,7 +71,7 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
 }
 
 enum {
-  STATE_NEED_INIT = 0,
+  STATE_USB_INIT = 0,
   STATE_FAKE_DISCONNECT,
   STATE_STARTUP_SEQUENCE,
   STATE_READY
@@ -81,81 +81,118 @@ enum {
 #define BREATH_MAX (1 << 14)
 #define BREATH_SHIFT (8)
 
+// TODO: if memory gets tight, many of these can be collapsed into a
+// union.
+uint8_t state;
+uint16_t state_counter;
+uint8_t active_led;
+int8_t state_direction;
+uint8_t r, g, b;
+
+void initReady() {
+  state = STATE_READY;
+  state_counter = BREATH_MIN + 1;
+  state_direction = 1;
+}
+
+void doReady() {
+  usbPoll();
+  if (state_direction == 1) {
+    ++state_counter;
+  } else {
+    --state_counter;
+  }
+  if (state_counter <= BREATH_MIN || state_counter >= BREATH_MAX) {
+    state_direction *= -1;
+  }
+  SetLEDs(0, state_counter >> BREATH_SHIFT, 0);
+}
+
+void initStartupSequence() {
+  state = STATE_STARTUP_SEQUENCE;
+  r = 255; g = 0; b = 0; active_led = 0;
+}
+
+void doStartupSequence() {
+  // Thanks http://codepen.io/Codepixl/pen/ogWWaK/
+  if (r > 0 && b == 0) {
+    r--;
+    g++;
+  }
+  if (g > 0 && r == 0) {
+    g--;
+    b++;
+  }
+  if (b > 0 && g == 0) {
+    r++;
+    b--;
+  }
+  SetLED(active_led, r >> 3, g >> 3, b >> 3);
+  _delay_ms(1);
+  if (r == 255 && b == 0 && g == 0) {
+    if (active_led == 0) {
+      LEDsOff();
+      active_led = 1;
+    } else {
+      LEDsOff();
+      initReady();
+    }
+  }
+}
+
+void initFakeDisconnect() {
+  state = STATE_FAKE_DISCONNECT;
+  state_counter = 255;
+}
+
+void doFakeDisconnect() {
+  if (state_counter-- > 0) {
+    _delay_ms(1);
+  } else {
+    sei();
+    usbDeviceConnect();
+    initStartupSequence();
+  }
+}
+
+void initUSBInit() {
+  state = STATE_USB_INIT;
+}
+
+void doUSBInit() {
+  // RESET status: all port bits are inputs without pull-up. That's
+  // the way we need D+ and D-. Therefore we don't need any additional
+  // hardware initialization.
+  usbInit();
+  usbDeviceDisconnect();  // enforce re-enumeration, do this while
+                          // interrupts are disabled!
+  initFakeDisconnect();
+}
+
 int __attribute__((noreturn)) main(void) {
-  uint8_t state = STATE_NEED_INIT;
-  uint16_t state_counter;
-  uint8_t active_led;
-  int8_t state_direction;
-
-  uint8_t r, g, b;
-
   // Even if you don't use the watchdog, turn it off here. On newer devices,
   // the status of the watchdog (on/off, period) is PRESERVED OVER RESET!
   wdt_enable(WDTO_1S);
+
   LEDsOff();
 
+  initUSBInit();
+
   while (1 == 1) {
-    wdt_reset();
     switch (state) {
-    case STATE_NEED_INIT:
-      // RESET status: all port bits are inputs without
-      // pull-up. That's the way we need D+ and D-. Therefore we don't
-      // need any additional hardware initialization.
-      usbInit();
-      usbDeviceDisconnect();  // enforce re-enumeration, do this while
-                              // interrupts are disabled!
-      state = STATE_FAKE_DISCONNECT;
-      state_counter = 255;
+    case STATE_USB_INIT:
+      doUSBInit();
       break;
     case STATE_FAKE_DISCONNECT:
-      if (state_counter-- > 0) {
-        _delay_ms(1);
-      } else {
-        state = STATE_STARTUP_SEQUENCE;
-        r = 255; g = 0; b = 0; active_led = 0;
-        usbDeviceConnect();
-        sei();
-      }
+      doFakeDisconnect();
       break;
     case STATE_STARTUP_SEQUENCE:
-      if (r > 0 && b == 0) {
-        r--;
-        g++;
-      }
-      if (g > 0 && r == 0) {
-        g--;
-        b++;
-      }
-      if (b > 0 && g == 0) {
-        r++;
-        b--;
-      }
-      SetLED(active_led, r >> 3, g >> 3, b >> 3);
-      _delay_ms(1);
-      if (r == 255 && b == 0 && g == 0) {
-        if (active_led == 0) {
-          LEDsOff();
-          active_led = 1;
-        } else {
-          LEDsOff();
-          state = STATE_READY;
-          state_counter = BREATH_MIN + 1;
-          state_direction = 1;
-        }
-      }
+      doStartupSequence();
       break;
     case STATE_READY:
-      usbPoll();
-      if (state_direction == 1) {
-        ++state_counter;
-      } else {
-        --state_counter;
-      }
-      if (state_counter <= BREATH_MIN || state_counter >= BREATH_MAX) {
-        state_direction *= -1;
-      }
-      SetLEDs(0, state_counter >> BREATH_SHIFT, 0);
+      doReady();
       break;
     }
+    wdt_reset();
   }
 }
