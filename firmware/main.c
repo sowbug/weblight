@@ -13,6 +13,9 @@
 
 #include "light_ws2812.h"
 
+#define TRUE (1==1)
+#define FALSE (!TRUE)
+
 #define LED_COUNT (2)
 
 struct cRGB led[LED_COUNT];
@@ -51,7 +54,7 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
     usbMsgPtr = (int)dataBuffer;
     return sizeof(dataBuffer);
   } else if (rq->bRequest == CUSTOM_RQ_SET_STATUS) {
-    if (rq->wValue.bytes[0] & 1) { // set LED
+    if (rq->wValue.bytes[0] & 1) {  // set LED
       SetLEDs(255, 0, 0);
       _delay_ms(100);
       SetLEDs(0, 255, 0);
@@ -66,14 +69,25 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
     usbMsgPtr = (int)dataBuffer;
     return 1;  // tell the driver to send 1 byte
   }
-  return 0;  // default for not implemented requests:
-             // return no data back to host
+  return 0;  // default for not implemented requests: return no data
+             // back to host
 }
 
 enum {
-  STATE_USB_INIT = 0,
-  STATE_FAKE_DISCONNECT,
+  // Everything we need to start up the microcontroller.
+  STATE_MCU_INIT = 0,
+
+  // Disconnect USB to force device re-enumeration (see discussion below).
+  STATE_DISCONNECT_USB,
+
+  // Display lights to let the developer know that the hardware is
+  // probably working. Also serves as a 250ms+ delay for re-enumeration.
   STATE_STARTUP_SEQUENCE,
+
+  // Reconnect USB for device re-enumeration.
+  STATE_CONNECT_USB,
+
+  // Normal loop after all initialization is complete.
   STATE_READY
 };
 
@@ -108,6 +122,16 @@ void doReady() {
   SetLEDs(0, state_counter >> BREATH_SHIFT, 0);
 }
 
+void initConnectUSB() {
+  state = STATE_CONNECT_USB;
+}
+
+void doConnectUSB() {
+  sei();
+  usbDeviceConnect();
+  initReady();
+}
+
 void initStartupSequence() {
   state = STATE_STARTUP_SEQUENCE;
   r = 255; g = 0; b = 0; active_led = 0;
@@ -130,64 +154,73 @@ void doStartupSequence() {
   SetLED(active_led, r >> 3, g >> 3, b >> 3);
   _delay_ms(1);
   if (r == 255 && b == 0 && g == 0) {
-    if (active_led == 0) {
-      LEDsOff();
-      active_led = 1;
-    } else {
-      LEDsOff();
-      initReady();
+    LEDsOff();
+    if (active_led++ == LED_COUNT) {
+      initConnectUSB();
     }
   }
 }
 
-void initFakeDisconnect() {
-  state = STATE_FAKE_DISCONNECT;
-  state_counter = 255;
+void initDisconnectUSB() {
+  state = STATE_DISCONNECT_USB;
 }
 
-void doFakeDisconnect() {
-  if (state_counter-- > 0) {
-    _delay_ms(1);
-  } else {
-    sei();
-    usbDeviceConnect();
-    initStartupSequence();
-  }
+void doDisconnectUSB() {
+  // From http://vusb.wikidot.com/examples:
+  //
+  // Enumeration is performed only when the device is connected to the
+  // bus. If the device has a CPU reset, its memory is usually cleared
+  // and the assigned address is lost. Since the host does not know
+  // that the device had a reset, it still addresses the device under
+  // its old address, but the device won't answer.
+
+  // It is therefore useful to simulate a device disconnect in the
+  // device initialization code. This ensures that host and device
+  // agree on the same address. You should therefore insert
+  // [disconnect/reconnect] code in your initialization (best before
+  // usbInit() because the USB interrupt must be disabled during
+  // disconnect state):
+  usbDeviceDisconnect();
+
+  // Now let the startup sequence run, which also serves as a delay to
+  // ensure the host notices that the device was unplugged.
+  initStartupSequence();
+}
+void initMCUInit() {
+  state = STATE_MCU_INIT;
 }
 
-void initUSBInit() {
-  state = STATE_USB_INIT;
-}
-
-void doUSBInit() {
+void doMCUInit() {
   // RESET status: all port bits are inputs without pull-up. That's
   // the way we need D+ and D-. Therefore we don't need any additional
   // hardware initialization.
-  usbInit();
-  usbDeviceDisconnect();  // enforce re-enumeration, do this while
-                          // interrupts are disabled!
-  initFakeDisconnect();
-}
 
-int __attribute__((noreturn)) main(void) {
   // Even if you don't use the watchdog, turn it off here. On newer devices,
   // the status of the watchdog (on/off, period) is PRESERVED OVER RESET!
   wdt_enable(WDTO_1S);
 
   LEDsOff();
 
-  initUSBInit();
+  usbInit();
+  initDisconnectUSB();
+}
 
-  while (1 == 1) {
+int __attribute__((noreturn)) main(void) {
+  initMCUInit();
+
+  while (TRUE) {
     switch (state) {
-    case STATE_USB_INIT:
-      doUSBInit();
+    case STATE_MCU_INIT:
+      doMCUInit();
       break;
-    case STATE_FAKE_DISCONNECT:
-      doFakeDisconnect();
+    case STATE_DISCONNECT_USB:
+      doDisconnectUSB();
       break;
     case STATE_STARTUP_SEQUENCE:
       doStartupSequence();
+      break;
+    case STATE_CONNECT_USB:
+      doConnectUSB();
       break;
     case STATE_READY:
       doReady();
