@@ -17,5 +17,5 @@ Development
 
 1. In the `firmware` directory, `make clean && make hex && sudo ~/bin/micronucleus --run main.hex`.
 1. Plug in the board. After a few moments you should see `Micronucleus done. Thank you!`
-1. Now the first light on the board should turn green.
+1. Now the lights on the board should run a startup sequence.
 1. Using `lsusb` you should see something like `Bus 002 Device 019: ID 16c0:05dc Van Ooijen Technische Informatica shared ID for use with libusb`.
