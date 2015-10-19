@@ -1,6 +1,11 @@
 # Copyright 2015 Mike Tsao
 #
 # weblight
+#
+# Keep this in your bash history:
+#
+#   make clean && make hex && micronucleus --run main.hex
+#
 
 DEVICE  = attiny85
 F_CPU   = 16500000	# in Hz
@@ -8,7 +13,7 @@ AVRDUDE = avrdude -c usbtiny -p $(DEVICE) # edit this line for your programmer
 # for micronucleus use `sudo micronucleus --run main.hex`
 
 CFLAGS  = -Iusbdrv -I. -DDEBUG_LEVEL=0
-OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o usbdrv/oddebug.o \
+OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o \
           main.o light_ws2812.c
 
 COMPILE = avr-gcc -Wall -Os -DF_CPU=$(F_CPU) $(CFLAGS) -mmcu=$(DEVICE)
@@ -29,7 +34,7 @@ flash: main.hex
 clean:
 	rm -f *.hex *.lst *.obj *.o main.cof main.list \
               main.map main.eep.hex main.elf *.o usbdrv/*.o \
-              main.s usbdrv/oddebug.s usbdrv/usbdrv.s
+              main.s usbdrv/usbdrv.s
 
 # Generic rule for compiling C files:
 .c.o:
