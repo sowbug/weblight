@@ -44,10 +44,10 @@ void LEDsOff() {
 
 usbMsgLen_t usbFunctionSetup(uchar data[8]) {
   usbRequest_t    *rq = (void *)data;
-  static uchar    dataBuffer[4];  // buffer must stay valid when
-  // usbFunctionSetup returns
+  // buffer must stay valid when usbFunctionSetup returns
+  static uchar    dataBuffer[4];
 
-  if (rq->bRequest == CUSTOM_RQ_ECHO){ // echo -- used for reliability tests
+  if (rq->bRequest == CUSTOM_RQ_ECHO) { // echo -- used for reliability tests
     dataBuffer[0] = rq->wValue.bytes[0];
     dataBuffer[1] = rq->wValue.bytes[1];
     usbMsgPtr = (int)dataBuffer;
@@ -65,52 +65,46 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
     }
     return 0;
   }
-  return 0;  // default for not implemented requests: return no data
-  // back to host
+
+  // default for not implemented requests: return no data back to host
+  return 0;
 }
 
-// Calibrate the RC oscillator to 8.25 MHz. The core clock of 16.5 MHz is
-// derived from the 66 MHz peripheral clock by dividing. Our timing reference
-// is the Start Of Frame signal (a single SE0 bit) available immediately after
-// a USB RESET. We first do a binary search for the OSCCAL value and then
-// optimize this value with a neighboorhod search. This algorithm may also be
-// used to calibrate the RC oscillator directly to 12 MHz (no PLL involved, can
-// therefore be used on almost ALL AVRs), but this is wide outside the spec for
-// the OSCCAL value and the required precision for the 12 MHz clock! Use the RC
-// oscillator calibrated to 12 MHz for experimental purposes only!
+// Thanks http://codeandlife.com/2012/02/22/v-usb-with-attiny45-attiny85-without-a-crystal/
+#define abs(x) ((x) > 0 ? (x) : (-x))
 void calibrateOscillator(void) {
-  uchar       step = 128;
-  uchar       trialValue = 0, optimumValue;
-  int         x, optimumDev,
-      targetValue = (unsigned)(1499 * (double)F_CPU / 10.5e6 + 0.5);
+  int frameLength, targetLength =
+      (unsigned)(1499 * (double)F_CPU / 10.5e6 + 0.5);
+  int bestDeviation = 9999;
+  uchar trialCal, bestCal, step, region;
 
-  // do a binary search
-  do {
-    OSCCAL = trialValue + step;
-    x = usbMeasureFrameLength();  // proportional to current real frequency
-    if (x < targetValue)  // frequency still too low
-      trialValue += step;
-    step >>= 1;
-  } while (step > 0);
+  // do a binary search in regions 0-127 and 128-255 to get optimum OSCCAL
+  for (region = 0; region <= 1; region++) {
+    frameLength = 0;
+    trialCal = (region == 0) ? 0 : 128;
 
-  // We have a precision of +/- 1 for optimum OSCCAL here. Now do a
-  // neighborhood search for optimum value
-  optimumValue = trialValue;
-  optimumDev = x; // this is certainly far away from optimum
-  for (OSCCAL = trialValue - 1; OSCCAL <= trialValue + 1; OSCCAL++) {
-    x = usbMeasureFrameLength() - targetValue;
-    if (x < 0)
-      x = -x;
-    if (x < optimumDev) {
-      optimumDev = x;
-      optimumValue = OSCCAL;
+    for (step = 64; step > 0; step >>= 1) {
+      if (frameLength < targetLength) // true for initial iteration
+        trialCal += step; // frequency too low
+      else
+        trialCal -= step; // frequency too high
+
+      OSCCAL = trialCal;
+      frameLength = usbMeasureFrameLength();
+
+      if (abs(frameLength-targetLength) < bestDeviation) {
+        bestCal = trialCal; // new optimum found
+        bestDeviation = abs(frameLength -targetLength);
+      }
     }
   }
-  OSCCAL = optimumValue;
 
+  OSCCAL = bestCal;
+
+  // Flash LEDs to let everyone know the calibration happened
   SetLEDs(255, 0, 0);
-  _delay_ms(5);
-  SetLEDs(0, 0, 255);
+  _delay_ms(10);
+  SetLEDs(0, 0, 0);
 }
 
 enum {
@@ -231,6 +225,10 @@ void initMCUInit() {
 }
 
 void doMCUInit() {
+  // select clock: 16.5M/1k ->
+  // overflow rate = 16.5M/256k = 62.94 Hz
+  TCCR1 = 0x0b;
+
   // RESET status: all port bits are inputs without pull-up. That's
   // the way we need D+ and D-. Therefore we don't need any additional
   // hardware initialization.

@@ -144,7 +144,13 @@
  * proceed, do a return after doing your things. One possible application
  * (besides debugging) is to flash a status LED on each packet.
  */
-/* #define USB_RESET_HOOK(resetStarts)     if(!resetStarts){hadUsbReset();} */
+// https://github.com/adafruit/Adafruit-Trinket-USB/blob/master/TrinketFakeUsbSerial/usbconfig.h
+#ifndef __ASSEMBLER__
+#include <avr/interrupt.h>  // for cli/sei()
+extern void calibrateOscillator(void);
+#endif
+#define USB_RESET_HOOK(resetStarts)  \
+if(!resetStarts){cli();calibrateOscillator();sei();}
 /* This macro is a hook if you need to know when an USB RESET occurs. It has
  * one parameter which distinguishes between the start of RESET state and its
  * end.
@@ -189,15 +195,6 @@
 /* define this macro to 1 if you want the function usbMeasureFrameLength()
  * compiled in. This function can be used to calibrate the AVR's RC oscillator.
  */
-// https://github.com/adafruit/Adafruit-Trinket-USB/blob/master/TrinketFakeUsbSerial/usbconfig.h
-#if defined(__AVR_ATtiny85__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny25__)
-#ifndef __ASSEMBLER__
-#include <avr/interrupt.h>  // for cli/sei()
-extern void calibrateOscillator(void);
-#endif
-#define USB_RESET_HOOK(resetStarts)  if(!resetStarts){cli(); calibrateOscillator(); sei();}
-#endif
-
 #define USB_USE_FAST_CRC                0
 /* The assembler module has two implementations for the CRC algorithm. One is
  * faster, the other is smaller. This CRC routine is only used for transmitted
