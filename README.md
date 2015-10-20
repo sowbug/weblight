@@ -29,3 +29,19 @@ Development
 1. Plug in the board. After a few moments you should see `Micronucleus done. Thank you!`
 1. Now the lights on the board should run a startup sequence.
 1. Using `lsusb` you should see something like `Bus 002 Device 019: ID 16c0:05dc Van Ooijen Technische Informatica shared ID for use with libusb`.
+
+Usage
+=====
+
+1. Install [PyUSB](http://walac.github.io/pyusb/). `sudo pip install
+pyusb==1.0.0.b2`
+2. `cd commandline`
+3. `./weblight 800000` for a medium-brightness red light (it uses
+CSS-style RGB color format).
+
+Bugs
+====
+
+* I haven't figured out how to stop the WS2812 code from interfering
+  with V-USB's picky interrupt requirements. So every once in a while
+  the weblight command-line tool will throw an exception.
