@@ -19,8 +19,8 @@
 /* Request that the device sends back wValue and wIndex. This is used with
  * random data to test the reliability of the communication.
  */
-#define CUSTOM_RQ_SET_STATUS    1
-/* Set the LED status. Control-OUT.
+#define CUSTOM_RQ_SET_RGB       1
+/* Set the RGB LED color. Control-OUT.
  * The requested status is passed in the "wValue" field of the control
  * transfer. No OUT data is sent. Bit 0 of the low byte of wValue controls
  * the LED.

@@ -17,7 +17,7 @@
 #define TRUE (1==1)
 #define FALSE (!TRUE)
 
-#define LED_COUNT (2)
+#define LED_COUNT (1)  // TODO: 2 takes too long and screws up the USB
 
 struct cRGB led[LED_COUNT];
 
@@ -42,32 +42,46 @@ void LEDsOff() {
   }
 }
 
+static uchar buffer[8];
+static uchar currentPosition, bytesRemaining;
 usbMsgLen_t usbFunctionSetup(uchar data[8]) {
   usbRequest_t    *rq = (void *)data;
-  // buffer must stay valid when usbFunctionSetup returns
   static uchar    dataBuffer[4];
 
-  if (rq->bRequest == CUSTOM_RQ_ECHO) { // echo -- used for reliability tests
+  usbMsgPtr = (int)dataBuffer;
+  if (rq->bRequest == CUSTOM_RQ_ECHO) {
     dataBuffer[0] = rq->wValue.bytes[0];
     dataBuffer[1] = rq->wValue.bytes[1];
-    usbMsgPtr = (int)dataBuffer;
     return 2;
-  } else if (rq->bRequest == CUSTOM_RQ_SET_STATUS) {
-    if (rq->wValue.bytes[0] & 1) {  // set LED
-      SetLEDs(255, 0, 0);
-      _delay_ms(100);
-      SetLEDs(0, 255, 0);
-      _delay_ms(100);
-      SetLEDs(0, 0, 255);
-      _delay_ms(100);
-    } else {  // clear LED
-      SetLEDs(0, 0, 0);
+  } else if (rq->bRequest == CUSTOM_RQ_SET_RGB) {
+    currentPosition = 0;
+    bytesRemaining = rq->wLength.word;
+    if (bytesRemaining > sizeof(buffer)) {
+      bytesRemaining = sizeof(buffer);
     }
-    return 0;
+    return USB_NO_MSG;
   }
 
-  // default for not implemented requests: return no data back to host
   return 0;
+}
+
+uchar usbFunctionWrite(uchar *data, uchar len) {
+  uchar i;
+
+  if (len > bytesRemaining) {
+    len = bytesRemaining;
+  }
+  bytesRemaining -= len;
+  for (i = 0; i < len; i++) {
+    SetLEDs(128, 128, 128);
+    buffer[currentPosition++] = data[i];
+  }
+
+  if (bytesRemaining == 0) {
+    SetLEDs(buffer[0], buffer[1], buffer[2]);
+  }
+
+  return bytesRemaining == 0;             // return 1 if we have all data
 }
 
 // Thanks http://codeandlife.com/2012/02/22/v-usb-with-attiny45-attiny85-without-a-crystal/
@@ -76,7 +90,7 @@ void calibrateOscillator(void) {
   int frameLength, targetLength =
       (unsigned)(1499 * (double)F_CPU / 10.5e6 + 0.5);
   int bestDeviation = 9999;
-  uchar trialCal, bestCal, step, region;
+  uchar trialCal, bestCal = 127, step, region;
 
   // do a binary search in regions 0-127 and 128-255 to get optimum OSCCAL
   for (region = 0; region <= 1; region++) {
@@ -144,6 +158,7 @@ void initReady() {
 }
 
 void doReady() {
+  static uint16_t last_state_counter = -1;
   usbPoll();
   if (state_direction == 1) {
     ++state_counter;
@@ -153,7 +168,10 @@ void doReady() {
   if (state_counter <= BREATH_MIN || state_counter >= BREATH_MAX) {
     state_direction *= -1;
   }
-  SetLEDs(0, state_counter >> BREATH_SHIFT, 0);
+  if (last_state_counter != state_counter) {
+    // SetLEDs(0, state_counter >> BREATH_SHIFT, 0);
+    last_state_counter = state_counter;
+  }
 }
 
 void initConnectUSB() {
@@ -228,6 +246,8 @@ void doMCUInit() {
   // select clock: 16.5M/1k ->
   // overflow rate = 16.5M/256k = 62.94 Hz
   TCCR1 = 0x0b;
+
+  //  DDRB |= _BV(PB0);
 
   // RESET status: all port bits are inputs without pull-up. That's
   // the way we need D+ and D-. Therefore we don't need any additional
