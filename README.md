@@ -10,12 +10,22 @@ Toolchain setup
 http://andybrown.me.uk/2015/03/08/avr-gcc-492/. Also make sure you've installed
 a base MinGW and MSYS system or equivalent, and have them in your system path.
 * On Linux, try something like `sudo apt-get install gcc-avr binutils-avr gdb-avr avr-libc avrdude`.
-* Build and install the [micronucleus command-line tool](https://github.com/micronucleus/micronucleus/tree/master/commandline) to be able to upload to the board (which is assumed to have been flashed with that bootloader, running at 16.5MHz, etc.)
+* Build and install the [micronucleus command-line tool](https://github.com/micronucleus/micronucleus/tree/master/commandline) (which will need `sudo apt-get install libusb-dev` on Linux) to be able to upload to the board (which is assumed to have been flashed with that bootloader, running at 16.5MHz, etc.)
+* Copy the files in `udev` to `/etc/udev/rules.d/` and then `sudo udevadm control --reload-rules`.
+
+Bringing the board to life
+==========================
+
+* Once you've built the board, connect an AVR programmer.
+* `cd bootloader`
+* Configure the makefile to talk to your type of programmer (default usbtiny).
+* `make fuse`
+* `make flash`
 
 Development
 ===========
 
-1. In the `firmware` directory, `make clean && make hex && sudo ~/bin/micronucleus --run main.hex`.
+1. In the `firmware` directory, `make clean && make hex && micronucleus --run main.hex`.
 1. Plug in the board. After a few moments you should see `Micronucleus done. Thank you!`
 1. Now the lights on the board should run a startup sequence.
 1. Using `lsusb` you should see something like `Bus 002 Device 019: ID 16c0:05dc Van Ooijen Technische Informatica shared ID for use with libusb`.
