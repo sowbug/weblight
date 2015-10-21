@@ -74,7 +74,10 @@ function start() {
   webusb.getDevices().then(devices => {
     'use strict';
 
+    var status = document.getElementById('color');
+
     if (devices.length == 0) {
+      status.innerText = 'no device';
       console.log("no device found");
     } else {
       let device = devices[0];
@@ -116,7 +119,7 @@ function start() {
           if (++cycle > 2) {
             cycle = 0;
           }
-          document.getElementById('color').innerText = name;
+          status.innerText = name;
           device.controlTransferOut({
             'requestType': 'vendor',
             'recipient': 'device',
