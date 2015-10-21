@@ -9,7 +9,6 @@ function ab2str(buf) {
 
   webusb.getDevices = function() {
     return navigator.usb.getDevices().then(devices => {
-      console.log(devices);
       return devices.map(device => new webusb.Device(device));
     });
   };
@@ -71,6 +70,10 @@ function ab2str(buf) {
 })();
 
 function start() {
+  navigator.usb.addEventListener('connect', function() {
+    console.log('connect event', this);
+  });
+
   webusb.getDevices().then(devices => {
     'use strict';
 
