@@ -1,2 +1,2 @@
 # /etc/udev/rules.d/50-micronucleus.rules
-SUBSYSTEMS=="usb", ATTR{idVendor}=="16c0", ATTR{idProduct}=="0753", MODE="0666"
+SUBSYSTEMS=="usb", ATTR{idVendor}=="16d0", ATTR{idProduct}=="0753", MODE="0666"
