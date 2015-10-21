@@ -5,7 +5,7 @@
 
 #define USB_BOS_DESCRIPTOR_TYPE (15)
 
-PROGMEM const char BOS_DESCRIPTOR[28] = {
+PROGMEM const uchar BOS_DESCRIPTOR[] = {
   // BOS descriptor header
   0x05, 0x0F, 0x1C, 0x00, 0x01,
 
@@ -16,14 +16,14 @@ PROGMEM const char BOS_DESCRIPTOR[28] = {
 };
 
 #define WEBUSB_REQUEST_GET_LANDING_PAGE (0x02)
-PROGMEM const char WEBUSB_LANDING_PAGE[38] = {
+static const uchar WEBUSB_LANDING_PAGE[] = {
   0x26, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/', 's', 'o', 'w', 'b', 'u',
   'g', '.', 'g', 'i', 't', 'h', 'u', 'b', '.', 'i', 'o', '/',
   'w', 'e', 'b', 'u', 's', 'b', '/', 'd', 'e', 'm', 'o'
 };
 
 #define WEBUSB_REQUEST_GET_ALLOWED_ORIGINS (0x01)
-PROGMEM const char WEBUSB_ALLOWED_ORIGINS[30] = {
+static const uchar WEBUSB_ALLOWED_ORIGINS[] = {
   0x04, 0x00, 0x1e, 0x00, 0x1A, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/',
   's', 'o', 'w', 'b', 'u', 'g', '.', 'g', 'i', 't', 'h', 'u', 'b',
   '.', 'i', 'o'
@@ -43,8 +43,8 @@ PROGMEM const char usbDescriptorDevice[] = {  // USB device descriptor
   (char)USB_CFG_VENDOR_ID,/* 2 bytes */
   (char)USB_CFG_DEVICE_ID,/* 2 bytes */
   USB_CFG_DEVICE_VERSION, /* 2 bytes */
-  USB_CFG_DESCR_PROPS_STRING_VENDOR != 0 ? 1 : 0,         /* manufacturer string index */
-  USB_CFG_DESCR_PROPS_STRING_PRODUCT != 0 ? 2 : 0,        /* product string index */
+  1,         /* manufacturer string index */
+  2,        /* product string index */
   USB_CFG_DESCR_PROPS_STRING_SERIAL_NUMBER != 0 ? 3 : 0,  /* serial number string index */
   1,          /* number of configurations */
 };
