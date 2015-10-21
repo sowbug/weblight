@@ -12,35 +12,10 @@
 #include "usbdrv.h"
 #include "requests.h"       // The custom request numbers we use
 
-#include "light_ws2812.h"
+#include "led_control.h"
 
 #define TRUE (1==1)
 #define FALSE (!TRUE)
-
-#define LED_COUNT (1)  // TODO: 2 takes too long and screws up the USB
-
-struct cRGB led[LED_COUNT];
-
-void SetLED(uint8_t i, uint8_t r, uint8_t g, uint8_t b) {
-  led[i].r = r;
-  led[i].g = g;
-  led[i].b = b;
-  ws2812_setleds(led, LED_COUNT);
-}
-
-void SetLEDs(uint8_t r, uint8_t g, uint8_t b) {
-  uint8_t i;
-  for (i = 0; i < LED_COUNT; ++i) {
-    SetLED(i, r, g, b);
-  }
-}
-
-void LEDsOff() {
-  uint8_t i;
-  for (i = 0; i < LED_COUNT; ++i) {
-    SetLED(i, 0, 0, 0);
-  }
-}
 
 static uchar buffer[8];
 static uchar currentPosition, bytesRemaining;
@@ -88,7 +63,7 @@ uchar usbFunctionWrite(uchar *data, uchar len) {
 #define abs(x) ((x) > 0 ? (x) : (-x))
 void calibrateOscillator(void) {
   int frameLength, targetLength =
-      (unsigned)(1499 * (double)F_CPU / 10.5e6 + 0.5);
+    (unsigned)(1499 * (double)F_CPU / 10.5e6 + 0.5);
   int bestDeviation = 9999;
   uchar trialCal, bestCal = 127, step, region;
 
@@ -268,21 +243,21 @@ int __attribute__((noreturn)) main(void) {
 
   while (TRUE) {
     switch (state) {
-      case STATE_MCU_INIT:
-        doMCUInit();
-        break;
-      case STATE_DISCONNECT_USB:
-        doDisconnectUSB();
-        break;
-      case STATE_STARTUP_SEQUENCE:
-        doStartupSequence();
-        break;
-      case STATE_CONNECT_USB:
-        doConnectUSB();
-        break;
-      case STATE_READY:
-        doReady();
-        break;
+    case STATE_MCU_INIT:
+      doMCUInit();
+      break;
+    case STATE_DISCONNECT_USB:
+      doDisconnectUSB();
+      break;
+    case STATE_STARTUP_SEQUENCE:
+      doStartupSequence();
+      break;
+    case STATE_CONNECT_USB:
+      doConnectUSB();
+      break;
+    case STATE_READY:
+      doReady();
+      break;
     }
     wdt_reset();
   }

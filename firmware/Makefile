@@ -14,7 +14,7 @@ AVRDUDE = avrdude -c usbtiny -p $(DEVICE) # edit this line for your programmer
 
 CFLAGS  = -Iusbdrv -I. -DDEBUG_LEVEL=0
 OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o \
-          main.o light_ws2812.c
+          main.o led_control.c webusb.c light_ws2812.c
 
 COMPILE = avr-gcc -Wall -Os -DF_CPU=$(F_CPU) $(CFLAGS) -mmcu=$(DEVICE)
 
