@@ -27,6 +27,8 @@ dev = usb.core.find(idVendor=VENDOR, idProduct=PRODUCT)
 if dev is None:
     raise ValueError('Our device is not connected')
 
+print dev
+
 # bmRequestType
 # USBRQ_DIR_HOST_TO_DEVICE | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE = 0x40
 # USBRQ_DIR_DEVICE_TO_HOST | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE = 0xC0
@@ -38,9 +40,21 @@ if dev is None:
 # (optional) data
 
 if getDescriptors:
+    # Device
+    result = dev.ctrl_transfer(0x80, 6, 0x0100, 0, 64)
+    print "Device", len(result), binascii.hexlify(result)
+
+    # Vendor
+    result = dev.ctrl_transfer(0x80, 6, 0x0301, 1, 64)
+    print "Vendor", len(result), binascii.hexlify(result)
+
+    # Product
+    result = dev.ctrl_transfer(0x80, 6, 0x0302, 2, 64)
+    print "Product", len(result), binascii.hexlify(result)
+
     # BOS
     result = dev.ctrl_transfer(0x80, 6, 0x0f00, 0, 64)
-    print len(result), binascii.hexlify(result)
+    print "BOS", len(result), binascii.hexlify(result)
 
     WEBUSB_REQUEST_GET_ALLOWED_ORIGINS = 1
     WEBUSB_REQUEST_GET_LANDING_PAGE = 2
