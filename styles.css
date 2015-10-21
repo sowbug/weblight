@@ -1,0 +1,24 @@
+body {
+    font-family: "helvetica neue", helvetica, arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 640px;
+}
+
+div {
+    text-align: center;
+}
+
+#color {
+    font-size: 96px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    max-width: 10em;
+    border: 1px solid #ccc;
+    padding: 1em;
+}
