@@ -27,7 +27,8 @@ dev = usb.core.find(idVendor=VENDOR, idProduct=PRODUCT)
 if dev is None:
     raise ValueError('Our device is not connected')
 
-print dev
+if getDescriptors:
+    print dev
 
 # bmRequestType
 # USBRQ_DIR_HOST_TO_DEVICE | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE = 0x40
