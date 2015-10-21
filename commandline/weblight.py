@@ -8,16 +8,50 @@ import sys
 import usb.core
 import usb.util
 
-dev = usb.core.find(idVendor=0x16c0, idProduct=0x05dc)
-if dev is None:
-    raise ValueError('Our device is not connected')
-
 if len(argv) < 2:
     print 'usage: %s <6-digit hex rgb color>' % argv[0]
     sys.exit(1)
 
-bytes = binascii.unhexlify(('000000' + argv[1])[-6:])
+VENDOR = 0x16c0
+PRODUCT = 0x05dc
+if argv[1] == 'weblight':
+    REQUEST_ID = 3
+    getDescriptors = True
+if argv[1] == 'leonardo':
+    VENDOR = 0x2341
+    PRODUCT = 0x8036
+    REQUEST_ID = 1
+    getDescriptors = True
 
-result = dev.ctrl_transfer(0x40, 1, 0, 0, bytes)
-if result != len(bytes):
-    raise IOError('Error', result)
+dev = usb.core.find(idVendor=VENDOR, idProduct=PRODUCT)
+if dev is None:
+    raise ValueError('Our device is not connected')
+
+# bmRequestType
+# USBRQ_DIR_HOST_TO_DEVICE | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE = 0x40
+# USBRQ_DIR_DEVICE_TO_HOST | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE = 0xC0
+# USBRQ_DIR_DEVICE_TO_HOST | USBRQ_TYPE_STANDARD | USBRQ_RCPT_DEVICE = 0x80
+
+# bRequest = whatever you specified for your custom request
+# wValue
+# wIndex
+# (optional) data
+
+if getDescriptors:
+    # BOS
+    result = dev.ctrl_transfer(0x80, 6, 0x0f00, 0, 64)
+    print len(result), binascii.hexlify(result)
+
+    WEBUSB_REQUEST_GET_ALLOWED_ORIGINS = 1
+    WEBUSB_REQUEST_GET_LANDING_PAGE = 2
+    result = dev.ctrl_transfer(0xC0, REQUEST_ID, 0,
+                            WEBUSB_REQUEST_GET_ALLOWED_ORIGINS, 64)
+    print len(result), binascii.hexlify(result)
+    result = dev.ctrl_transfer(0xC0, REQUEST_ID, 0,
+                            WEBUSB_REQUEST_GET_LANDING_PAGE, 64)
+    print len(result), binascii.hexlify(result)
+else:
+    bytes = binascii.unhexlify(('000000' + argv[1])[-6:])
+    result = dev.ctrl_transfer(0x40, 1, 0, 0, bytes)
+    if result != len(bytes):
+        raise IOError('Error', result)
