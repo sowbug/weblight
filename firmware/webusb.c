@@ -17,9 +17,9 @@ PROGMEM const uchar BOS_DESCRIPTOR[] = {
 
 #define WEBUSB_REQUEST_GET_LANDING_PAGE (0x02)
 static const uchar WEBUSB_LANDING_PAGE[] = {
-  0x26, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/', 's', 'o', 'w', 'b', 'u',
+  0x23, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/', 's', 'o', 'w', 'b', 'u',
   'g', '.', 'g', 'i', 't', 'h', 'u', 'b', '.', 'i', 'o', '/',
-  'w', 'e', 'b', 'u', 's', 'b', '/', 'd', 'e', 'm', 'o'
+  'w', 'e', 'b', 'l', 'i', 'g', 'h', 't'
 };
 
 #define WEBUSB_REQUEST_GET_ALLOWED_ORIGINS (0x01)
