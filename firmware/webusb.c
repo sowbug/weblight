@@ -5,7 +5,7 @@
 
 #define USB_BOS_DESCRIPTOR_TYPE (15)
 
-PROGMEM const char BOS_DESCRIPTOR[29] = {
+PROGMEM const char BOS_DESCRIPTOR[28] = {
   // BOS descriptor header
   0x05, 0x0F, 0x1C, 0x00, 0x01,
 
