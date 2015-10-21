@@ -70,10 +70,6 @@ function ab2str(buf) {
 })();
 
 function start() {
-  navigator.usb.addEventListener('connect', function() {
-    console.log('connect event', this);
-  });
-
   webusb.getDevices().then(devices => {
     'use strict';
 
@@ -82,6 +78,11 @@ function start() {
     if (devices.length == 0) {
       status.innerText = 'no device';
       console.log("no device found");
+      navigator.usb.addEventListener('connect', function() {
+        console.log('connect event', this);
+        start();  // TODO(miket): this is horrible. I need to study up
+                  // on promises.
+      });
     } else {
       let device = devices[0];
       device.connect().then(() => {
