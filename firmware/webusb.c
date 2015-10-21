@@ -26,7 +26,7 @@ static const uchar WEBUSB_LANDING_PAGE[] = {
 static const uchar WEBUSB_ALLOWED_ORIGINS[] = {
   0x04, 0x00, 0x30, 0x00, 0x1A, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/',
   's', 'o', 'w', 'b', 'u', 'g', '.', 'g', 'i', 't', 'h', 'u', 'b',
-  '.', 'i', 'o', 0x10, 0x03, 'h', 't', 't', 'p', ':', '/', '/',
+  '.', 'i', 'o', 0x12, 0x03, 'h', 't', 't', 'p', ':', '/', '/',
   'l', 'o', 'c', 'a', 'l', 'h', 'o', 's', 't'
 };
 
