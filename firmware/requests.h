@@ -32,4 +32,6 @@
  * the current status to the host. The status is in bit 0 of the byte.
  */
 
+#define CUSTOM_RQ_WEBUSB    (3)
+
 #endif /* __REQUESTS_H_INCLUDED__ */

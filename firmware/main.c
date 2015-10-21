@@ -13,6 +13,7 @@
 #include "requests.h"       // The custom request numbers we use
 
 #include "led_control.h"
+#include "webusb.h"
 
 #define TRUE (1==1)
 #define FALSE (!TRUE)
@@ -22,6 +23,11 @@ static uchar currentPosition, bytesRemaining;
 usbMsgLen_t usbFunctionSetup(uchar data[8]) {
   usbRequest_t    *rq = (void *)data;
   static uchar    dataBuffer[4];
+
+  usbMsgLen_t msg_len = 0;
+  if (maybeHandleSetup(rq, &msg_len)) {
+    return msg_len;
+  }
 
   usbMsgPtr = (int)dataBuffer;
   if (rq->bRequest == CUSTOM_RQ_ECHO) {

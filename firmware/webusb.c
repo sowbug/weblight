@@ -1,6 +1,7 @@
-#include <avr/pgmspace.h>
+#include "webusb.h"
+#include "requests.h"
 
-#include "usbdrv.h"
+#include <avr/pgmspace.h>
 
 #define USB_BOS_DESCRIPTOR_TYPE (15)
 
@@ -10,19 +11,20 @@ PROGMEM const char BOS_DESCRIPTOR[29] = {
 
   // WebUSB Platform Capability descriptor (bVendorCode == 0x01).
   0x17, 0x10, 0x05, 0x00, 0x38, 0xB6, 0x08, 0x34, 0xA9, 0x09, 0xA0, 0x47,
-  0x8B, 0xFD, 0xA0, 0x76, 0x88, 0x15, 0xB6, 0x65, 0x00, 0x01, 0x01,
+  0x8B, 0xFD, 0xA0, 0x76, 0x88, 0x15, 0xB6, 0x65, 0x00, 0x01,
+  CUSTOM_RQ_WEBUSB,
 };
 
-PROGMEM const char WEBUSB_LANDING_PAGE[41] = {
-  0x29, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/', 'r', 'e', 'i', 'l', 'l',
-  'y', 'e', 'o', 'n', '.', 'g', 'i', 't', 'h', 'u', 'b', '.', 'i', 'o', '/',
+PROGMEM const char WEBUSB_LANDING_PAGE[38] = {
+  0x26, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/', 's', 'o', 'w', 'b', 'u',
+  'g', '.', 'g', 'i', 't', 'h', 'u', 'b', '.', 'i', 'o', '/',
   'w', 'e', 'b', 'u', 's', 'b', '/', 'd', 'e', 'm', 'o'
 };
 
-PROGMEM const char WEBUSB_ALLOWED_ORIGINS[33] = {
-  0x04, 0x00, 0x21, 0x00, 0x1D, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/',
-  'r', 'e', 'i', 'l', 'l', 'y', 'e', 'o', 'n', '.', 'g', 'i', 't', 'h', 'u',
-  'b', '.', 'i', 'o'
+PROGMEM const char WEBUSB_ALLOWED_ORIGINS[30] = {
+  0x04, 0x00, 0x1e, 0x00, 0x1A, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/',
+  's', 'o', 'w', 'b', 'u', 'g', '.', 'g', 'i', 't', 'h', 'u', 'b',
+  '.', 'i', 'o'
 };
 
 PROGMEM const char usbDescriptorDevice[] = {  // USB device descriptor
@@ -45,15 +47,33 @@ PROGMEM const char usbDescriptorDevice[] = {  // USB device descriptor
   1,          /* number of configurations */
 };
 
-#define WEBUSB_REQUEST_GET_ALLOWED_ORIGINS			0x01
-#define WEBUSB_REQUEST_GET_LANDING_PAGE					0x02
+#define WEBUSB_REQUEST_GET_ALLOWED_ORIGINS (0x01)
+#define WEBUSB_REQUEST_GET_LANDING_PAGE (0x02)
 USB_PUBLIC usbMsgLen_t usbFunctionDescriptor(usbRequest_t *rq) {
   switch (rq->wValue.bytes[1]) {
   case USB_BOS_DESCRIPTOR_TYPE:
-    usbMsgPtr = (usbMsgPtr_t)(BOS_DESCRIPTOR);
+    usbMsgPtr = (usbMsgPtr_t)(&BOS_DESCRIPTOR);
     return sizeof(BOS_DESCRIPTOR);
   default:
     break;
+  }
+  return 0;
+}
+
+uint8_t maybeHandleSetup(usbRequest_t* rq, usbMsgLen_t* msg_len) {
+  if (rq->bmRequestType ==
+      (USBRQ_DIR_DEVICE_TO_HOST | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE) &&
+      rq->bRequest == CUSTOM_RQ_WEBUSB) {
+    if (rq->wIndex.word == WEBUSB_REQUEST_GET_ALLOWED_ORIGINS) {
+      usbMsgPtr = (usbMsgPtr_t)(&WEBUSB_ALLOWED_ORIGINS);
+      *msg_len = sizeof(WEBUSB_ALLOWED_ORIGINS);
+      return 1;
+    }
+    if (rq->wIndex.word == WEBUSB_REQUEST_GET_LANDING_PAGE) {
+      usbMsgPtr = (usbMsgPtr_t)(&WEBUSB_LANDING_PAGE);
+      *msg_len = sizeof(WEBUSB_LANDING_PAGE);
+      return 1;
+    }
   }
   return 0;
 }
