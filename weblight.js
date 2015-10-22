@@ -70,10 +70,28 @@ function ab2str(buf) {
 })();
 
 function start() {
-  webusb.getDevices().then(devices => {
-    'use strict';
+  'use strict';
 
-    var status = document.getElementById('color');
+  var device = null;
+  var intervalId = 0;
+  var status = document.getElementById('color');
+
+  navigator.usb.addEventListener('disconnect', function(event) {
+    console.log('disconnect event', event.device, device);
+    if (!device) {
+      return;
+    }
+    if (device.device_.guid == event.device.guid && intervalId > 0) {
+      console.log('stopping');
+      clearInterval(intervalId);
+      intervalId = 0;
+
+      status.innerText = 'no device';
+      device.disconnect();
+    }
+  });
+
+  webusb.getDevices().then(devices => {
 
     if (devices.length == 0) {
       status.innerText = 'no device';
@@ -84,7 +102,7 @@ function start() {
                   // on promises.
       });
     } else {
-      let device = devices[0];
+      device = devices[0];
       device.connect().then(() => {
         device.controlTransferIn({
           'requestType': 'standard',
@@ -136,7 +154,7 @@ function start() {
         };
         doLight();
 
-        window.setInterval(doLight, 1000);
+        intervalId = window.setInterval(doLight, 1000);
       });
     }
   });
