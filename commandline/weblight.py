@@ -14,6 +14,7 @@ if len(argv) < 2:
 
 VENDOR = 0x16c0
 PRODUCT = 0x05dc
+getDescriptors = False
 if argv[1] == 'weblight':
     REQUEST_ID = 3
     getDescriptors = True
