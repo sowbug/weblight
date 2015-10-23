@@ -1,10 +1,12 @@
 # WebLight
 
+![WebLight](https://sowbug.github.io/weblight/img/IMG_20151021_141538.jpg =400x400)
+
 A USB-controlled LED designed for the WebUSB API. Hardware, software, and
 firmware.
 
-Toolchain setup
-===============
+Toolchain/environment setup
+===
 
 * On Windows, download avr-gcc from
 http://andybrown.me.uk/2015/03/08/avr-gcc-492/. Also make sure you've installed
@@ -14,7 +16,7 @@ a base MinGW and MSYS system or equivalent, and have them in your system path.
 * Copy the files in `udev` to `/etc/udev/rules.d/` and then `sudo udevadm control --reload-rules`.
 
 Bringing the board to life
-==========================
+===
 
 * Once you've built the board, connect an AVR programmer.
 * `cd bootloader`
@@ -23,7 +25,7 @@ Bringing the board to life
 * `make flash`
 
 Development
-===========
+===
 
 1. In the `firmware` directory, `make clean && make hex && micronucleus --run main.hex`.
 1. Plug in the board. After a few moments you should see `Micronucleus done. Thank you!`
@@ -31,7 +33,7 @@ Development
 1. Using `lsusb` you should see something like `Bus 002 Device 019: ID 16c0:05dc Van Ooijen Technische Informatica shared ID for use with libusb`.
 
 Usage
-=====
+===
 
 1. Install [PyUSB](http://walac.github.io/pyusb/). `sudo pip install
 pyusb==1.0.0.b2`
@@ -39,8 +41,8 @@ pyusb==1.0.0.b2`
 3. `./weblight 800000` for a medium-brightness red light (it uses
 CSS-style RGB color format).
 
-Bugs
-====
+Notable Bugs
+===
 
 * I haven't figured out how to stop the WS2812 code from interfering
   with V-USB's picky interrupt requirements. So every once in a while
