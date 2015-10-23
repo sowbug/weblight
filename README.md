@@ -2,7 +2,8 @@
 
 ![WebLight](https://sowbug.github.io/weblight/img/IMG_20151021_141538.jpg)
 
-A USB-controlled LED designed for the WebUSB API. Hardware, software, and
+A USB-controlled LED designed for the
+[WebUSB API](https://reillyeon.github.io/webusb/). Hardware, software, and
 firmware.
 
 Toolchain/environment setup
