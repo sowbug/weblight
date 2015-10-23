@@ -1,6 +1,6 @@
 # WebLight
 
-![WebLight](https://sowbug.github.io/weblight/img/IMG_20151021_141538.jpg =400x400)
+![WebLight](https://sowbug.github.io/weblight/img/IMG_20151021_141538.jpg)
 
 A USB-controlled LED designed for the WebUSB API. Hardware, software, and
 firmware.
