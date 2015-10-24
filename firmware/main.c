@@ -84,39 +84,18 @@ enum {
   STATE_READY
 };
 
-#define BREATH_MIN (1 << 9)
-#define BREATH_MAX (1 << 14)
-#define BREATH_SHIFT (8)
-
 // TODO: if memory gets tight, many of these can be collapsed into a
 // union.
 uint8_t state;
-uint16_t state_counter;
 uint8_t active_led;
-int8_t state_direction;
 uint8_t r, g, b;
 
 void initReady() {
   state = STATE_READY;
-  state_counter = BREATH_MIN + 1;
-  state_direction = 1;
 }
 
 void doReady() {
-  static uint16_t last_state_counter = -1;
   usbPoll();
-  if (state_direction == 1) {
-    ++state_counter;
-  } else {
-    --state_counter;
-  }
-  if (state_counter <= BREATH_MIN || state_counter >= BREATH_MAX) {
-    state_direction *= -1;
-  }
-  if (last_state_counter != state_counter) {
-    // SetLEDs(0, state_counter >> BREATH_SHIFT, 0);
-    last_state_counter = state_counter;
-  }
 }
 
 void initConnectUSB() {
@@ -149,6 +128,7 @@ void doStartupSequence() {
     b--;
   }
   SetLED(active_led, r >> 3, g >> 3, b >> 3);
+  UpdateLEDs();
   _delay_ms(1);
   if (r == 255 && b == 0 && g == 0) {
     LEDsOff();

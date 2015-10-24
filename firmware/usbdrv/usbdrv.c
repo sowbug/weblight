@@ -589,6 +589,8 @@ uchar   i;
     if(usbTxLen & 0x10){    /* transmit system idle */
         if(usbMsgLen != USB_NO_MSG){    /* transmit data pending? */
             usbBuildTxBlock();
+        } else {
+          USB_POST_TX_HOOK();
         }
     }
     for(i = 20; i > 0; i--){

@@ -5,6 +5,10 @@
 #ifndef __usbconfig_h_included__
 #define __usbconfig_h_included__
 
+#ifndef __ASSEMBLER__
+#include "led_control.h"
+#endif
+
 /* ---------------------------- Hardware Config ---------------------------- */
 
 #define USB_CFG_IOPORTNAME      B
@@ -138,6 +142,7 @@
  * for long transfers increases the driver size.
  */
 /* #define USB_RX_USER_HOOK(data, len)     if(usbRxToken == (uchar)USBPID_SETUP) blinkLED(); */
+#define USB_POST_TX_HOOK() {UpdateLEDs();}
 /* This macro is a hook if you want to do unconventional things. If it is
  * defined, it's inserted at the beginning of received message processing.
  * If you eat the received message and don't want default processing to
