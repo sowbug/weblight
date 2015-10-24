@@ -22,8 +22,7 @@ Bringing the board to life
 * Once you've built the board, connect an AVR programmer.
 * `cd bootloader`
 * Configure the makefile to talk to your type of programmer (default usbtiny).
-* `make fuse`
-* `make flash`
+* `make fuse eeprom flash`
 
 Development
 ===
