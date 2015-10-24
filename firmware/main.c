@@ -8,11 +8,12 @@
 #include <util/delay.h>     // for _delay_ms()
 
 #include <avr/pgmspace.h>   // required by usbdrv.h
+
+#include "eeprom.h"
+#include "led_control.h"
+#include "requests.h"       // The custom request numbers we use
 #include "usbconfig.h"
 #include "usbdrv.h"
-#include "requests.h"       // The custom request numbers we use
-
-#include "led_control.h"
 #include "webusb.h"
 
 #define TRUE (1==1)
@@ -30,11 +31,12 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
   }
 
   usbMsgPtr = (int)dataBuffer;
-  if (rq->bRequest == CUSTOM_RQ_ECHO) {
+  switch (rq->bRequest) {
+  case CUSTOM_RQ_ECHO:
     dataBuffer[0] = rq->wValue.bytes[0];
     dataBuffer[1] = rq->wValue.bytes[1];
     return 2;
-  } else if (rq->bRequest == CUSTOM_RQ_SET_RGB) {
+  case CUSTOM_RQ_SET_RGB:
     currentPosition = 0;
     bytesRemaining = rq->wLength.word;
     if (bytesRemaining > sizeof(buffer)) {
@@ -202,6 +204,8 @@ void doMCUInit() {
   wdt_enable(WDTO_1S);
 
   LEDsOff();
+
+  readEEPROM();
 
   usbInit();
   initDisconnectUSB();

@@ -11,3 +11,7 @@ flash: t85_default.hex
 
 fuse:
 	$(AVRDUDE) $(FUSEOPT) -B 20
+
+eeprom:
+	./gen_eeprom
+	$(AVRDUDE) -U eeprom:w:eeprom.tmp:r

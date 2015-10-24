@@ -42,17 +42,21 @@ if getDescriptors:
 # (optional) data
 
 if getDescriptors:
-    # Device
+    # Device descriptor
     result = dev.ctrl_transfer(0x80, 6, 0x0100, 0, 64)
     print "Device", len(result), binascii.hexlify(result)
 
-    # Vendor
-    result = dev.ctrl_transfer(0x80, 6, 0x0301, 1, 64)
-    print "Vendor", len(result), binascii.hexlify(result)
+    # Manufacturer String Descriptor
+    result = dev.ctrl_transfer(0x80, 6, 0x0301, 0, 64)
+    print "Manufacturer", len(result), binascii.hexlify(result)
 
-    # Product
-    result = dev.ctrl_transfer(0x80, 6, 0x0302, 2, 64)
+    # Product String Descriptor
+    result = dev.ctrl_transfer(0x80, 6, 0x0302, 0, 64)
     print "Product", len(result), binascii.hexlify(result)
+
+    # Serial String Descriptor
+    result = dev.ctrl_transfer(0x80, 6, 0x0303, 0, 64)
+    print "Serial", len(result), binascii.hexlify(result)
 
     # BOS
     result = dev.ctrl_transfer(0x80, 6, 0x0f00, 0, 64)

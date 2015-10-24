@@ -1,5 +1,6 @@
-#include "webusb.h"
+#include "eeprom.h"
 #include "requests.h"
+#include "webusb.h"
 
 #include <avr/pgmspace.h>
 
@@ -16,14 +17,14 @@ PROGMEM const uchar BOS_DESCRIPTOR[] = {
 };
 
 #define WEBUSB_REQUEST_GET_LANDING_PAGE (0x02)
-static const uchar WEBUSB_LANDING_PAGE[] = {
+const uchar WEBUSB_LANDING_PAGE[] = {
   0x23, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/', 's', 'o', 'w', 'b', 'u',
   'g', '.', 'g', 'i', 't', 'h', 'u', 'b', '.', 'i', 'o', '/',
   'w', 'e', 'b', 'l', 'i', 'g', 'h', 't'
 };
 
 #define WEBUSB_REQUEST_GET_ALLOWED_ORIGINS (0x01)
-static const uchar WEBUSB_ALLOWED_ORIGINS[] = {
+const uchar WEBUSB_ALLOWED_ORIGINS[] = {
   0x04, 0x00, 0x30, 0x00, 0x1A, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/',
   's', 'o', 'w', 'b', 'u', 'g', '.', 'g', 'i', 't', 'h', 'u', 'b',
   '.', 'i', 'o', 0x12, 0x03, 'h', 't', 't', 'p', ':', '/', '/',
@@ -44,14 +45,26 @@ PROGMEM const char usbDescriptorDevice[] = {  // USB device descriptor
   (char)USB_CFG_VENDOR_ID,/* 2 bytes */
   (char)USB_CFG_DEVICE_ID,/* 2 bytes */
   USB_CFG_DEVICE_VERSION, /* 2 bytes */
-  1,         /* manufacturer string index */
-  2,        /* product string index */
-  USB_CFG_DESCR_PROPS_STRING_SERIAL_NUMBER != 0 ? 3 : 0,  /* serial number string index */
-  1,          /* number of configurations */
+  1,  // manufacturer string index
+  2,  // product string index
+  3,  // serial number string index
+  1,  // number of configurations
+};
+
+#define SERIAL_NUMBER_BYTE_COUNT (EEPROM_SERIAL_LENGTH * sizeof(int))
+int webUsbDescriptorStringSerialNumber[EEPROM_SERIAL_LENGTH + 1] = {
+  USB_STRING_DESCRIPTOR_HEADER(EEPROM_SERIAL_LENGTH)
 };
 
 USB_PUBLIC usbMsgLen_t usbFunctionDescriptor(usbRequest_t *rq) {
   switch (rq->wValue.bytes[1]) {
+  case USBDESCR_STRING:
+    switch (rq->wValue.bytes[0]) {
+    case 3:
+      usbMsgPtr = (usbMsgPtr_t)(webUsbDescriptorStringSerialNumber);
+      return sizeof(webUsbDescriptorStringSerialNumber);
+    }
+    break;
   case USB_BOS_DESCRIPTOR_TYPE:
     usbMsgPtr = (usbMsgPtr_t)(BOS_DESCRIPTOR);
     return sizeof(BOS_DESCRIPTOR);
