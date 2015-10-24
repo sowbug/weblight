@@ -56,7 +56,6 @@ uchar usbFunctionWrite(uchar *data, uchar len) {
   }
   bytesRemaining -= len;
   for (i = 0; i < len; i++) {
-    SetLEDs(128, 128, 128);
     buffer[currentPosition++] = data[i];
   }
 
