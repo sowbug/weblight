@@ -1,0 +1,94 @@
+#!/usr/bin/python
+
+# sudo pip install pyusb==1.0.0b2
+
+from sys import argv
+import binascii
+import struct
+import sys
+import usb.core
+import usb.util
+
+VIDPIDPAIRS = {
+    "Objective Development Shared": (0x16c0, 0x05dc),
+    "Reilly's Hacked Arduino": (0x2341, 0x8036)
+}
+
+if len(argv) < 3:
+    print 'usage: %s <vid in hex> <pid in hex>' % argv[0]
+    print '\nCommon VID/PID pairs:\n'
+
+    for k, v in VIDPIDPAIRS.iteritems():
+        print "%40s: %x %04x" % (k, v[0], v[1])
+
+    sys.exit(1)
+
+VENDOR = int(argv[1], 16)
+PRODUCT = int(argv[2], 16)
+
+dev = usb.core.find(idVendor=VENDOR, idProduct=PRODUCT)
+if dev is None:
+    raise ValueError("Did not find device with VID/PID 0x%x/0x%04x" % (
+        VENDOR, PRODUCT))
+
+print dev
+
+# bmRequestType
+# USBRQ_DIR_HOST_TO_DEVICE | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE = 0x40
+# USBRQ_DIR_DEVICE_TO_HOST | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE = 0xC0
+# USBRQ_DIR_DEVICE_TO_HOST | USBRQ_TYPE_STANDARD | USBRQ_RCPT_DEVICE = 0x80
+
+# bRequest = whatever you specified for your custom request
+# wValue
+# wIndex
+# (optional) data
+
+if False:
+    # Device descriptor
+    result = dev.ctrl_transfer(0x80, 6, 0x0100, 0, 64)
+    print "Device", len(result), binascii.hexlify(result)
+
+    # Manufacturer String Descriptor
+    result = dev.ctrl_transfer(0x80, 6, 0x0301, 0, 64)
+    print "Manufacturer", len(result), binascii.hexlify(result)
+
+    # Product String Descriptor
+    result = dev.ctrl_transfer(0x80, 6, 0x0302, 0, 64)
+    print "Product", len(result), binascii.hexlify(result)
+
+    # Serial String Descriptor
+    result = dev.ctrl_transfer(0x80, 6, 0x0303, 0, 64)
+    print "Serial", len(result), binascii.hexlify(result)
+
+# BOS
+result = dev.ctrl_transfer(0x80, 6, 0x0f00, 0, 64)
+print "BOS", len(result), binascii.hexlify(result)
+
+bosParts = \
+  struct.unpack('BBHB', result[0:5])
+bosLabels = ["Descriptor length", "Descriptor type", "Total length", "Device caps count"]
+tIndex = 0
+for i in bosLabels:
+    print "%40s: %d" % (i, bosParts[tIndex])
+    tIndex += 1
+
+# https://reillyeon.github.io/webusb/#webusb-platform-capability-descriptor
+# Must be set to 23
+if result[5] != 23:
+    print "Whoops, no WebUSB descriptor in BOS"
+    sys.exit(1)
+
+bosParts = struct.unpack('BBBB16BHB', result[5:])
+
+# last byte is bVendorCode
+bVendorCode = bosParts[-1]
+print "WebUSB bVendorCode: %d" % bVendorCode
+
+WEBUSB_REQUEST_GET_ALLOWED_ORIGINS = 1
+WEBUSB_REQUEST_GET_LANDING_PAGE = 2
+result = dev.ctrl_transfer(0xC0, bVendorCode, 0,
+WEBUSB_REQUEST_GET_ALLOWED_ORIGINS, 64)
+print len(result), binascii.hexlify(result)
+result = dev.ctrl_transfer(0xC0, bVendorCode, 0,
+WEBUSB_REQUEST_GET_LANDING_PAGE, 64)
+print len(result), binascii.hexlify(result)

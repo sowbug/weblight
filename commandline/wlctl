@@ -1,0 +1,62 @@
+#!/usr/bin/python
+
+# sudo pip install pyusb==1.0.0b2
+
+from sys import argv
+import binascii
+import os.path
+import sys
+import usb.core
+import usb.util
+
+exe_name = os.path.basename(argv[0])
+if len(argv) < 2:
+    print 'usage: %s <6-digit hex rgb color> [device serial number]' % exe_name
+    print '       %s list: list attached devices' % exe_name
+    sys.exit(1)
+
+VENDOR = 0x16c0
+PRODUCT = 0x05dc
+SERIAL = None
+if len(argv) > 2:
+    SERIAL = argv[2]
+REQUEST_ID = 3
+
+if argv[1] == 'list':
+    devices = usb.core.find(idVendor=VENDOR, idProduct=PRODUCT, find_all=True)
+    for dev in devices:
+        print "%30s %16s" % (
+            usb.util.get_string(dev, dev.iManufacturer) +
+            usb.util.get_string(dev, dev.iProduct),
+            usb.util.get_string(dev, dev.iSerialNumber))
+    sys.exit(0)
+
+dev = None
+if SERIAL:
+    devices = usb.core.find(idVendor=VENDOR, idProduct=PRODUCT, find_all=True)
+    for d in devices:
+        if usb.util.get_string(d, d.iSerialNumber) == SERIAL:
+            dev = d
+            break
+    if dev is None:
+        print "Couldn't find that device"
+        sys.exit(1)
+else:
+    dev = usb.core.find(idVendor=VENDOR, idProduct=PRODUCT)
+if dev is None:
+    raise ValueError('Our device is not connected')
+
+# bmRequestType
+# USBRQ_DIR_HOST_TO_DEVICE | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE = 0x40
+# USBRQ_DIR_DEVICE_TO_HOST | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE = 0xC0
+# USBRQ_DIR_DEVICE_TO_HOST | USBRQ_TYPE_STANDARD | USBRQ_RCPT_DEVICE = 0x80
+
+# bRequest = whatever you specified for your custom request
+# wValue
+# wIndex
+# (optional) data
+
+bytes = binascii.unhexlify(('000000' + argv[1])[-6:])
+result = dev.ctrl_transfer(0x40, 1, 0, 0, bytes)
+if result != len(bytes):
+    raise IOError('Error', result)
