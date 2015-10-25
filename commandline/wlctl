@@ -26,7 +26,7 @@ if argv[1] == 'list':
     devices = usb.core.find(idVendor=VENDOR, idProduct=PRODUCT, find_all=True)
     for dev in devices:
         print "%30s %16s" % (
-            usb.util.get_string(dev, dev.iManufacturer) +
+            usb.util.get_string(dev, dev.iManufacturer) + " " +
             usb.util.get_string(dev, dev.iProduct),
             usb.util.get_string(dev, dev.iSerialNumber))
     sys.exit(0)
