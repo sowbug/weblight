@@ -38,8 +38,15 @@ Usage
 1. Install [PyUSB](http://walac.github.io/pyusb/). `sudo pip install
 pyusb==1.0.0.b2`
 2. `cd commandline`
-3. `./weblight 800000` for a medium-brightness red light (it uses
+3. `./wlctl 800000` for a medium-brightness red light (it uses
 CSS-style RGB color format).
+
+Tips
+===
+
+* In addition to `wlctl` in the `commandline` directory, there is
+`lswusb`, which attempts to parse WebUSB descriptors. This utility
+will help you when you're developing your own WebUSB-compatible device.
 
 Notable Bugs
 ===
