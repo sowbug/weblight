@@ -5,9 +5,10 @@
 DEVICE  = attiny85
 AVRDUDE = avrdude -c usbtiny -p $(DEVICE) # edit this line for your programmer
 FUSEOPT = -U lfuse:w:0xe1:m -U hfuse:w:0xdd:m -U efuse:w:0xfe:m
+HEXFILE = t85_watchdog_reset.hex
 
-flash: t85_default.hex
-	$(AVRDUDE) -U flash:w:t85_default.hex:i
+flash: $(HEXFILE)
+	$(AVRDUDE) -U flash:w:$(HEXFILE):i
 
 fuse:
 	$(AVRDUDE) $(FUSEOPT) -B 20
