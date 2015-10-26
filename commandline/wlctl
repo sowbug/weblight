@@ -19,7 +19,7 @@ parser.add_option("-t", "--test", action="store_true", default=False,
 parser.add_option("-r", "--reset", action="store_true", default=False,
                   help="reset device")
 parser.add_option("-c", "--count", dest="count",
-                  help="set the number of active LEDs (writes to device EEPROM)")
+                  help="configure number of active LEDs (writes to EEPROM)")
 parser.add_option("-s", "--serial", dest="serial",
                   help="specify the serial number of the device to address")
 
@@ -95,7 +95,6 @@ if len(args) == 0:
     sys.exit(1)
 
 color_arg = args[0]
-
 bytes = binascii.unhexlify(('000000' + color_arg)[-6:])
 result = dev.ctrl_transfer(0x40, 1, 0, 0, bytes)
 if result != len(bytes):
