@@ -7447,7 +7447,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="D1" library="microbuilder" deviceset="DIODE" device="SOD-523" value="3.6V"/>
 <part name="D2" library="microbuilder" deviceset="DIODE" device="SOD-523" value="3.6V"/>
 <part name="D4" library="SparkFun-LED" deviceset="WS2812B" device="" value="WS2812B"/>
-<part name="JP-USB-BOT" library="SparkFun-Connectors" deviceset="USB" device="PCB"/>
 <part name="U1" library="SparkFun-DigitalIC" deviceset="ATTINY45" device="TINY85-20-SMT" value="ATtiny85-20SU"/>
 <part name="JP-USB-MICRO" library="MF_Connectors" deviceset="USB" device="_MICRO_RIGHT"/>
 <part name="JP-ISP" library="SparkFun-Connectors" deviceset="AVR_MINI_PROG" device="SMD"/>
@@ -7477,7 +7476,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <instance part="D1" gate="G$1" x="-33.02" y="27.94" rot="R90"/>
 <instance part="D2" gate="G$1" x="-27.94" y="22.86" rot="R90"/>
 <instance part="D4" gate="G$1" x="73.66" y="45.72"/>
-<instance part="JP-USB-BOT" gate="G$1" x="-48.26" y="60.96" rot="R180"/>
 <instance part="U1" gate="G$1" x="12.7" y="73.66"/>
 <instance part="JP-USB-MICRO" gate="G$1" x="-53.34" y="81.28"/>
 <instance part="JP-ISP" gate="G$1" x="53.34" y="53.34"/>
@@ -7515,18 +7513,13 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pinref part="JP-USB-TOP" gate="G$1" pin="VBUS"/>
 <wire x1="-45.72" y1="40.64" x2="-22.86" y2="40.64" width="0.1524" layer="91"/>
 <pinref part="R1" gate="G$1" pin="2"/>
-<pinref part="JP-USB-BOT" gate="G$1" pin="VBUS"/>
-<wire x1="-45.72" y1="58.42" x2="-25.4" y2="58.42" width="0.1524" layer="91"/>
 <pinref part="JP-USB-MICRO" gate="G$1" pin="5V"/>
 <wire x1="-17.78" y1="86.36" x2="-22.86" y2="86.36" width="0.1524" layer="91"/>
 <junction x="-17.78" y="86.36"/>
 <pinref part="P+2" gate="VCC" pin="VCC"/>
-<wire x1="-22.86" y1="86.36" x2="-25.4" y2="86.36" width="0.1524" layer="91"/>
-<wire x1="-25.4" y1="86.36" x2="-45.72" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="-22.86" y1="86.36" x2="-45.72" y2="86.36" width="0.1524" layer="91"/>
 <wire x1="-17.78" y1="86.36" x2="-17.78" y2="91.44" width="0.1524" layer="91"/>
 <wire x1="-17.78" y1="71.12" x2="-17.78" y2="86.36" width="0.1524" layer="91"/>
-<wire x1="-25.4" y1="58.42" x2="-25.4" y2="86.36" width="0.1524" layer="91"/>
-<junction x="-25.4" y="86.36"/>
 <wire x1="-22.86" y1="40.64" x2="-22.86" y2="86.36" width="0.1524" layer="91"/>
 <junction x="-22.86" y="86.36"/>
 </segment>
@@ -7572,17 +7565,13 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <junction x="-33.02" y="17.78"/>
 <pinref part="JP-USB-TOP" gate="G$1" pin="GND"/>
 <wire x1="-45.72" y1="43.18" x2="-38.1" y2="43.18" width="0.1524" layer="91"/>
-<pinref part="JP-USB-BOT" gate="G$1" pin="GND"/>
-<wire x1="-45.72" y1="60.96" x2="-38.1" y2="60.96" width="0.1524" layer="91"/>
 <pinref part="JP-USB-MICRO" gate="G$1" pin="SLD"/>
 <junction x="-38.1" y="73.66"/>
 <wire x1="-38.1" y1="73.66" x2="-45.72" y2="73.66" width="0.1524" layer="91"/>
 <pinref part="JP-USB-MICRO" gate="G$1" pin="GND"/>
 <wire x1="-45.72" y1="76.2" x2="-38.1" y2="76.2" width="0.1524" layer="91"/>
 <wire x1="-38.1" y1="76.2" x2="-38.1" y2="73.66" width="0.1524" layer="91"/>
-<wire x1="-38.1" y1="73.66" x2="-38.1" y2="60.96" width="0.1524" layer="91"/>
-<junction x="-38.1" y="60.96"/>
-<wire x1="-38.1" y1="60.96" x2="-38.1" y2="43.18" width="0.1524" layer="91"/>
+<wire x1="-38.1" y1="73.66" x2="-38.1" y2="43.18" width="0.1524" layer="91"/>
 <junction x="-38.1" y="43.18"/>
 <junction x="-38.1" y="43.18"/>
 <wire x1="-38.1" y1="43.18" x2="-38.1" y2="17.78" width="0.1524" layer="91"/>
@@ -7671,12 +7660,8 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pinref part="D2" gate="G$1" pin="C"/>
 <wire x1="-27.94" y1="25.4" x2="-27.94" y2="38.1" width="0.1524" layer="91"/>
 <junction x="-27.94" y="38.1"/>
-<pinref part="JP-USB-BOT" gate="G$1" pin="D-"/>
-<wire x1="-45.72" y1="55.88" x2="-27.94" y2="55.88" width="0.1524" layer="91"/>
 <junction x="-27.94" y="38.1"/>
-<wire x1="-27.94" y1="55.88" x2="-27.94" y2="38.1" width="0.1524" layer="91"/>
-<junction x="-27.94" y="55.88"/>
-<wire x1="-27.94" y1="55.88" x2="-27.94" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="-27.94" y1="38.1" x2="-27.94" y2="83.82" width="0.1524" layer="91"/>
 <pinref part="JP-USB-MICRO" gate="G$1" pin="D-"/>
 <wire x1="-27.94" y1="83.82" x2="-45.72" y2="83.82" width="0.1524" layer="91"/>
 </segment>
@@ -7691,13 +7676,9 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pinref part="D1" gate="G$1" pin="C"/>
 <wire x1="-33.02" y1="30.48" x2="-33.02" y2="35.56" width="0.1524" layer="91"/>
 <junction x="-33.02" y="35.56"/>
-<pinref part="JP-USB-BOT" gate="G$1" pin="D+"/>
-<wire x1="-45.72" y1="53.34" x2="-33.02" y2="53.34" width="0.1524" layer="91"/>
 <junction x="-33.02" y="35.56"/>
-<wire x1="-33.02" y1="53.34" x2="-33.02" y2="35.56" width="0.1524" layer="91"/>
-<junction x="-33.02" y="53.34"/>
 <pinref part="JP-USB-MICRO" gate="G$1" pin="D+"/>
-<wire x1="-33.02" y1="53.34" x2="-33.02" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="-33.02" y1="35.56" x2="-33.02" y2="81.28" width="0.1524" layer="91"/>
 <wire x1="-33.02" y1="81.28" x2="-45.72" y2="81.28" width="0.1524" layer="91"/>
 </segment>
 </net>
