@@ -7403,55 +7403,57 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="P+4" library="supply1" deviceset="VCC" device=""/>
 <part name="GND4" library="supply1" deviceset="GND" device=""/>
 <part name="P+5" library="supply1" deviceset="VCC" device=""/>
-<part name="R4" library="rcl" deviceset="R-US_" device="R0402" value="470"/>
+<part name="R5" library="rcl" deviceset="R-US_" device="R0402" value="470"/>
 <part name="D5" library="SparkFun-LED" deviceset="WS2812B" device="" value="WS2812B"/>
 <part name="D6" library="SparkFun-LED" deviceset="WS2812B" device="" value="WS2812B"/>
+<part name="R4" library="rcl" deviceset="R-US_" device="R0402" value="4.7K"/>
 </parts>
 <sheets>
 <sheet>
 <plain>
 </plain>
 <instances>
-<instance part="D3" gate="G$1" x="48.26" y="78.74"/>
-<instance part="JP-USB-TOP" gate="G$1" x="-48.26" y="43.18" rot="R180"/>
-<instance part="C1" gate="G$1" x="7.62" y="53.34"/>
-<instance part="C2" gate="G$1" x="17.78" y="53.34"/>
-<instance part="R3" gate="G$1" x="-2.54" y="38.1"/>
-<instance part="R2" gate="G$1" x="-5.08" y="27.94"/>
+<instance part="D3" gate="G$1" x="55.88" y="78.74"/>
+<instance part="JP-USB-TOP" gate="G$1" x="-48.26" y="58.42" rot="R180"/>
+<instance part="C1" gate="G$1" x="-78.74" y="86.36"/>
+<instance part="C2" gate="G$1" x="-68.58" y="86.36"/>
+<instance part="R3" gate="G$1" x="2.54" y="53.34"/>
+<instance part="R2" gate="G$1" x="-5.08" y="48.26"/>
 <instance part="R1" gate="G$1" x="-17.78" y="66.04" rot="R90"/>
-<instance part="D1" gate="G$1" x="-33.02" y="27.94" rot="R90"/>
-<instance part="D2" gate="G$1" x="-27.94" y="22.86" rot="R90"/>
-<instance part="D4" gate="G$1" x="48.26" y="55.88"/>
-<instance part="U1" gate="G$1" x="12.7" y="73.66"/>
+<instance part="D1" gate="G$1" x="-33.02" y="45.72" rot="R90"/>
+<instance part="D2" gate="G$1" x="-27.94" y="40.64" rot="R90"/>
+<instance part="D4" gate="G$1" x="45.72" y="58.42"/>
+<instance part="U1" gate="G$1" x="5.08" y="73.66"/>
 <instance part="JP-USB-MICRO" gate="G$1" x="-53.34" y="81.28"/>
 <instance part="P+2" gate="VCC" x="-17.78" y="96.52"/>
-<instance part="GND2" gate="1" x="-5.08" y="60.96"/>
-<instance part="GND3" gate="1" x="-33.02" y="12.7"/>
-<instance part="P+3" gate="VCC" x="12.7" y="60.96"/>
-<instance part="GND5" gate="1" x="12.7" y="43.18"/>
-<instance part="P+4" gate="VCC" x="-5.08" y="88.9"/>
-<instance part="GND4" gate="1" x="73.66" y="5.08"/>
+<instance part="GND2" gate="1" x="-10.16" y="60.96"/>
+<instance part="GND3" gate="1" x="-33.02" y="30.48"/>
+<instance part="P+3" gate="VCC" x="-73.66" y="93.98"/>
+<instance part="GND5" gate="1" x="-73.66" y="76.2"/>
+<instance part="P+4" gate="VCC" x="-10.16" y="91.44"/>
+<instance part="GND4" gate="1" x="76.2" y="22.86"/>
 <instance part="P+5" gate="VCC" x="35.56" y="96.52"/>
-<instance part="R4" gate="G$1" x="58.42" y="91.44" rot="R180"/>
-<instance part="D5" gate="G$1" x="48.26" y="33.02"/>
-<instance part="D6" gate="G$1" x="48.26" y="12.7"/>
+<instance part="R5" gate="G$1" x="60.96" y="91.44" rot="R180"/>
+<instance part="D5" gate="G$1" x="33.02" y="38.1"/>
+<instance part="D6" gate="G$1" x="5.08" y="33.02"/>
+<instance part="R4" gate="G$1" x="22.86" y="63.5" rot="R90"/>
 </instances>
 <busses>
 </busses>
 <nets>
 <net name="VCC" class="0">
 <segment>
-<pinref part="C1" gate="G$1" pin="1"/>
-<pinref part="C2" gate="G$1" pin="1"/>
-<wire x1="17.78" y1="55.88" x2="12.7" y2="55.88" width="0.1524" layer="91"/>
 <pinref part="P+3" gate="VCC" pin="VCC"/>
-<wire x1="12.7" y1="55.88" x2="7.62" y2="55.88" width="0.1524" layer="91"/>
-<wire x1="12.7" y1="58.42" x2="12.7" y2="55.88" width="0.1524" layer="91"/>
-<junction x="12.7" y="55.88"/>
+<wire x1="-73.66" y1="91.44" x2="-73.66" y2="88.9" width="0.1524" layer="91"/>
+<pinref part="C1" gate="G$1" pin="1"/>
+<wire x1="-73.66" y1="88.9" x2="-78.74" y2="88.9" width="0.1524" layer="91"/>
+<pinref part="C2" gate="G$1" pin="1"/>
+<wire x1="-73.66" y1="88.9" x2="-68.58" y2="88.9" width="0.1524" layer="91"/>
+<junction x="-73.66" y="88.9"/>
 </segment>
 <segment>
 <pinref part="JP-USB-TOP" gate="G$1" pin="VBUS"/>
-<wire x1="-45.72" y1="40.64" x2="-22.86" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="-45.72" y1="55.88" x2="-22.86" y2="55.88" width="0.1524" layer="91"/>
 <pinref part="R1" gate="G$1" pin="2"/>
 <pinref part="JP-USB-MICRO" gate="G$1" pin="5V"/>
 <wire x1="-17.78" y1="86.36" x2="-22.86" y2="86.36" width="0.1524" layer="91"/>
@@ -7460,123 +7462,137 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="-22.86" y1="86.36" x2="-45.72" y2="86.36" width="0.1524" layer="91"/>
 <wire x1="-17.78" y1="86.36" x2="-17.78" y2="93.98" width="0.1524" layer="91"/>
 <wire x1="-17.78" y1="71.12" x2="-17.78" y2="86.36" width="0.1524" layer="91"/>
-<wire x1="-22.86" y1="40.64" x2="-22.86" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="-22.86" y1="55.88" x2="-22.86" y2="86.36" width="0.1524" layer="91"/>
 <junction x="-22.86" y="86.36"/>
 </segment>
 <segment>
 <pinref part="P+4" gate="VCC" pin="VCC"/>
-<wire x1="-5.08" y1="86.36" x2="-5.08" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="-10.16" y1="88.9" x2="-10.16" y2="81.28" width="0.1524" layer="91"/>
 <pinref part="U1" gate="G$1" pin="VCC"/>
-<wire x1="-5.08" y1="81.28" x2="-2.54" y2="81.28" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="D3" gate="G$1" pin="VDD"/>
-<wire x1="35.56" y1="83.82" x2="43.18" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="83.82" x2="50.8" y2="83.82" width="0.1524" layer="91"/>
 <pinref part="D4" gate="G$1" pin="VDD"/>
-<wire x1="43.18" y1="60.96" x2="35.56" y2="60.96" width="0.1524" layer="91"/>
-<wire x1="35.56" y1="60.96" x2="35.56" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="40.64" y1="63.5" x2="35.56" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="63.5" x2="35.56" y2="83.82" width="0.1524" layer="91"/>
 <pinref part="P+5" gate="VCC" pin="VCC"/>
-<wire x1="35.56" y1="93.98" x2="35.56" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="93.98" x2="35.56" y2="88.9" width="0.1524" layer="91"/>
 <junction x="35.56" y="83.82"/>
-<junction x="35.56" y="60.96"/>
-<wire x1="35.56" y1="60.96" x2="35.56" y2="38.1" width="0.1524" layer="91"/>
-<pinref part="D5" gate="G$1" pin="VDD"/>
-<wire x1="35.56" y1="38.1" x2="43.18" y2="38.1" width="0.1524" layer="91"/>
-<wire x1="35.56" y1="38.1" x2="35.56" y2="17.78" width="0.1524" layer="91"/>
-<junction x="35.56" y="38.1"/>
+<junction x="35.56" y="63.5"/>
+<wire x1="35.56" y1="88.9" x2="35.56" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="63.5" x2="35.56" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="50.8" x2="25.4" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="50.8" x2="22.86" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="50.8" x2="22.86" y2="43.18" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="43.18" x2="17.78" y2="43.18" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="43.18" x2="17.78" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="45.72" x2="-2.54" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="-2.54" y1="45.72" x2="-2.54" y2="38.1" width="0.1524" layer="91"/>
 <pinref part="D6" gate="G$1" pin="VDD"/>
-<wire x1="35.56" y1="17.78" x2="43.18" y2="17.78" width="0.1524" layer="91"/>
+<wire x1="-2.54" y1="38.1" x2="0" y2="38.1" width="0.1524" layer="91"/>
+<pinref part="R4" gate="G$1" pin="1"/>
+<wire x1="22.86" y1="58.42" x2="22.86" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="55.88" x2="27.94" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="55.88" x2="27.94" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="88.9" x2="35.56" y2="88.9" width="0.1524" layer="91"/>
+<junction x="35.56" y="88.9"/>
+<pinref part="D5" gate="G$1" pin="VDD"/>
+<wire x1="27.94" y1="43.18" x2="22.86" y2="43.18" width="0.1524" layer="91"/>
+<junction x="22.86" y="43.18"/>
 </segment>
 </net>
 <net name="GND" class="0">
 <segment>
-<pinref part="C1" gate="G$1" pin="2"/>
-<pinref part="C2" gate="G$1" pin="2"/>
 <pinref part="GND5" gate="1" pin="GND"/>
-<wire x1="17.78" y1="48.26" x2="12.7" y2="48.26" width="0.1524" layer="91"/>
-<wire x1="12.7" y1="48.26" x2="7.62" y2="48.26" width="0.1524" layer="91"/>
-<wire x1="12.7" y1="48.26" x2="12.7" y2="45.72" width="0.1524" layer="91"/>
-<junction x="12.7" y="48.26"/>
+<wire x1="-73.66" y1="81.28" x2="-73.66" y2="78.74" width="0.1524" layer="91"/>
+<pinref part="C2" gate="G$1" pin="2"/>
+<wire x1="-68.58" y1="81.28" x2="-73.66" y2="81.28" width="0.1524" layer="91"/>
+<pinref part="C1" gate="G$1" pin="2"/>
+<wire x1="-73.66" y1="81.28" x2="-78.74" y2="81.28" width="0.1524" layer="91"/>
+<junction x="-73.66" y="81.28"/>
 </segment>
 <segment>
 <pinref part="D2" gate="G$1" pin="A"/>
 <pinref part="GND3" gate="1" pin="GND"/>
 <pinref part="D1" gate="G$1" pin="A"/>
-<wire x1="-33.02" y1="17.78" x2="-33.02" y2="25.4" width="0.1524" layer="91"/>
-<wire x1="-33.02" y1="17.78" x2="-33.02" y2="15.24" width="0.1524" layer="91"/>
-<junction x="-33.02" y="17.78"/>
+<wire x1="-33.02" y1="35.56" x2="-33.02" y2="43.18" width="0.1524" layer="91"/>
+<wire x1="-33.02" y1="35.56" x2="-33.02" y2="33.02" width="0.1524" layer="91"/>
+<junction x="-33.02" y="35.56"/>
 <pinref part="JP-USB-TOP" gate="G$1" pin="GND"/>
-<wire x1="-45.72" y1="43.18" x2="-38.1" y2="43.18" width="0.1524" layer="91"/>
+<wire x1="-45.72" y1="58.42" x2="-38.1" y2="58.42" width="0.1524" layer="91"/>
 <pinref part="JP-USB-MICRO" gate="G$1" pin="GND"/>
 <wire x1="-45.72" y1="76.2" x2="-38.1" y2="76.2" width="0.1524" layer="91"/>
-<wire x1="-38.1" y1="76.2" x2="-38.1" y2="43.18" width="0.1524" layer="91"/>
-<junction x="-38.1" y="43.18"/>
-<junction x="-38.1" y="43.18"/>
-<wire x1="-38.1" y1="43.18" x2="-38.1" y2="17.78" width="0.1524" layer="91"/>
-<wire x1="-38.1" y1="17.78" x2="-33.02" y2="17.78" width="0.1524" layer="91"/>
-<wire x1="-27.94" y1="17.78" x2="-33.02" y2="17.78" width="0.1524" layer="91"/>
-<junction x="-27.94" y="17.78"/>
-<wire x1="-27.94" y1="17.78" x2="-27.94" y2="20.32" width="0.1524" layer="91"/>
-</segment>
-<segment>
-<pinref part="GND4" gate="1" pin="GND"/>
-<pinref part="D4" gate="G$1" pin="VSS"/>
-<pinref part="D3" gate="G$1" pin="VSS"/>
-<wire x1="66.04" y1="76.2" x2="73.66" y2="76.2" width="0.1524" layer="91"/>
-<wire x1="73.66" y1="76.2" x2="73.66" y2="53.34" width="0.1524" layer="91"/>
-<wire x1="73.66" y1="53.34" x2="66.04" y2="53.34" width="0.1524" layer="91"/>
-<junction x="73.66" y="53.34"/>
-<wire x1="73.66" y1="53.34" x2="73.66" y2="30.48" width="0.1524" layer="91"/>
-<wire x1="73.66" y1="30.48" x2="73.66" y2="10.16" width="0.1524" layer="91"/>
-<wire x1="73.66" y1="10.16" x2="73.66" y2="7.62" width="0.1524" layer="91"/>
-<junction x="73.66" y="7.62"/>
-<pinref part="D6" gate="G$1" pin="VSS"/>
-<wire x1="66.04" y1="10.16" x2="73.66" y2="10.16" width="0.1524" layer="91"/>
-<junction x="73.66" y="10.16"/>
-<pinref part="D5" gate="G$1" pin="VSS"/>
-<wire x1="66.04" y1="30.48" x2="73.66" y2="30.48" width="0.1524" layer="91"/>
-<junction x="73.66" y="30.48"/>
+<wire x1="-38.1" y1="76.2" x2="-38.1" y2="58.42" width="0.1524" layer="91"/>
+<junction x="-38.1" y="58.42"/>
+<junction x="-38.1" y="58.42"/>
+<wire x1="-38.1" y1="58.42" x2="-38.1" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="-38.1" y1="35.56" x2="-33.02" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="-27.94" y1="35.56" x2="-33.02" y2="35.56" width="0.1524" layer="91"/>
+<junction x="-27.94" y="35.56"/>
+<wire x1="-27.94" y1="35.56" x2="-27.94" y2="38.1" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="GND"/>
-<wire x1="-5.08" y1="68.58" x2="-2.54" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="-5.08" y1="68.58" x2="-5.08" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="-10.16" y1="68.58" x2="-10.16" y2="63.5" width="0.1524" layer="91"/>
 <pinref part="GND2" gate="1" pin="GND"/>
+</segment>
+<segment>
+<pinref part="D4" gate="G$1" pin="VSS"/>
+<pinref part="D3" gate="G$1" pin="VSS"/>
+<wire x1="73.66" y1="76.2" x2="76.2" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="76.2" y1="76.2" x2="76.2" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="76.2" y1="73.66" x2="76.2" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="76.2" y1="55.88" x2="63.5" y2="55.88" width="0.1524" layer="91"/>
+<junction x="76.2" y="55.88"/>
+<wire x1="76.2" y1="55.88" x2="76.2" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="76.2" y1="35.56" x2="76.2" y2="27.94" width="0.1524" layer="91"/>
+<pinref part="D6" gate="G$1" pin="VSS"/>
+<wire x1="22.86" y1="30.48" x2="25.4" y2="30.48" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="30.48" x2="25.4" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="27.94" x2="76.2" y2="27.94" width="0.1524" layer="91"/>
+<pinref part="D5" gate="G$1" pin="VSS"/>
+<wire x1="50.8" y1="35.56" x2="76.2" y2="35.56" width="0.1524" layer="91"/>
+<junction x="76.2" y="35.56"/>
+<pinref part="GND4" gate="1" pin="GND"/>
+<wire x1="76.2" y1="25.4" x2="76.2" y2="27.94" width="0.1524" layer="91"/>
+<junction x="76.2" y="27.94"/>
 </segment>
 </net>
 <net name="DIN_RAW" class="0">
 <segment>
-<wire x1="25.4" y1="81.28" x2="30.48" y2="81.28" width="0.1524" layer="91"/>
-<wire x1="30.48" y1="81.28" x2="30.48" y2="91.44" width="0.1524" layer="91"/>
-<wire x1="30.48" y1="91.44" x2="53.34" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="81.28" x2="20.32" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="81.28" x2="20.32" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="86.36" x2="20.32" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="91.44" x2="55.88" y2="91.44" width="0.1524" layer="91"/>
 <pinref part="U1" gate="G$1" pin="PB0(MOSI)"/>
-<pinref part="R4" gate="G$1" pin="2"/>
+<pinref part="R5" gate="G$1" pin="2"/>
 </segment>
 </net>
 <net name="USB_D_MINUS" class="0">
 <segment>
-<wire x1="33.02" y1="73.66" x2="33.02" y2="38.1" width="0.1524" layer="91"/>
-<pinref part="R3" gate="G$1" pin="1"/>
-<wire x1="33.02" y1="38.1" x2="-7.62" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="73.66" x2="33.02" y2="53.34" width="0.1524" layer="91"/>
+<pinref part="R3" gate="G$1" pin="2"/>
+<wire x1="33.02" y1="53.34" x2="7.62" y2="53.34" width="0.1524" layer="91"/>
 <pinref part="U1" gate="G$1" pin="PB3(ADC3)"/>
-<wire x1="33.02" y1="73.66" x2="25.4" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="73.66" x2="17.78" y2="73.66" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="USB_D_MINUS_RAW" class="0">
 <segment>
-<pinref part="R3" gate="G$1" pin="2"/>
-<wire x1="2.54" y1="38.1" x2="-17.78" y2="38.1" width="0.1524" layer="91"/>
+<pinref part="R3" gate="G$1" pin="1"/>
+<wire x1="-2.54" y1="53.34" x2="-17.78" y2="53.34" width="0.1524" layer="91"/>
 <pinref part="JP-USB-TOP" gate="G$1" pin="D-"/>
 <pinref part="R1" gate="G$1" pin="1"/>
-<wire x1="-17.78" y1="38.1" x2="-27.94" y2="38.1" width="0.1524" layer="91"/>
-<wire x1="-27.94" y1="38.1" x2="-45.72" y2="38.1" width="0.1524" layer="91"/>
-<wire x1="-17.78" y1="60.96" x2="-17.78" y2="38.1" width="0.1524" layer="91"/>
-<junction x="-17.78" y="38.1"/>
+<wire x1="-17.78" y1="53.34" x2="-27.94" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="-27.94" y1="53.34" x2="-45.72" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="-17.78" y1="60.96" x2="-17.78" y2="53.34" width="0.1524" layer="91"/>
+<junction x="-17.78" y="53.34"/>
 <pinref part="D2" gate="G$1" pin="C"/>
-<wire x1="-27.94" y1="25.4" x2="-27.94" y2="38.1" width="0.1524" layer="91"/>
-<junction x="-27.94" y="38.1"/>
-<junction x="-27.94" y="38.1"/>
-<wire x1="-27.94" y1="38.1" x2="-27.94" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="-27.94" y1="43.18" x2="-27.94" y2="53.34" width="0.1524" layer="91"/>
+<junction x="-27.94" y="53.34"/>
+<junction x="-27.94" y="53.34"/>
+<wire x1="-27.94" y1="53.34" x2="-27.94" y2="83.82" width="0.1524" layer="91"/>
 <pinref part="JP-USB-MICRO" gate="G$1" pin="D-"/>
 <wire x1="-27.94" y1="83.82" x2="-45.72" y2="83.82" width="0.1524" layer="91"/>
 </segment>
@@ -7584,83 +7600,89 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <net name="USB_D_PLUS_RAW" class="0">
 <segment>
 <pinref part="JP-USB-TOP" gate="G$1" pin="D+"/>
-<wire x1="-45.72" y1="35.56" x2="-33.02" y2="35.56" width="0.1524" layer="91"/>
-<wire x1="-33.02" y1="35.56" x2="-10.16" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="-45.72" y1="50.8" x2="-33.02" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="-33.02" y1="50.8" x2="-10.16" y2="50.8" width="0.1524" layer="91"/>
 <pinref part="R2" gate="G$1" pin="1"/>
-<wire x1="-10.16" y1="35.56" x2="-10.16" y2="27.94" width="0.1524" layer="91"/>
+<wire x1="-10.16" y1="50.8" x2="-10.16" y2="48.26" width="0.1524" layer="91"/>
 <pinref part="D1" gate="G$1" pin="C"/>
-<wire x1="-33.02" y1="30.48" x2="-33.02" y2="35.56" width="0.1524" layer="91"/>
-<junction x="-33.02" y="35.56"/>
-<junction x="-33.02" y="35.56"/>
+<wire x1="-33.02" y1="48.26" x2="-33.02" y2="50.8" width="0.1524" layer="91"/>
+<junction x="-33.02" y="50.8"/>
+<junction x="-33.02" y="50.8"/>
 <pinref part="JP-USB-MICRO" gate="G$1" pin="D+"/>
-<wire x1="-33.02" y1="35.56" x2="-33.02" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="-33.02" y1="50.8" x2="-33.02" y2="81.28" width="0.1524" layer="91"/>
 <wire x1="-33.02" y1="81.28" x2="-45.72" y2="81.28" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="USB_D_PLUS" class="0">
 <segment>
 <pinref part="R2" gate="G$1" pin="2"/>
-<wire x1="0" y1="27.94" x2="30.48" y2="27.94" width="0.1524" layer="91"/>
-<wire x1="30.48" y1="27.94" x2="30.48" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="0" y1="48.26" x2="30.48" y2="48.26" width="0.1524" layer="91"/>
+<wire x1="30.48" y1="48.26" x2="30.48" y2="71.12" width="0.1524" layer="91"/>
 <pinref part="U1" gate="G$1" pin="PB4(ADC2)"/>
-<wire x1="25.4" y1="71.12" x2="30.48" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="71.12" x2="30.48" y2="71.12" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="DIN_2" class="0">
 <segment>
 <pinref part="D3" gate="G$1" pin="DOUT"/>
-<wire x1="43.18" y1="76.2" x2="40.64" y2="76.2" width="0.1524" layer="91"/>
-<wire x1="40.64" y1="76.2" x2="40.64" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="40.64" y1="68.58" x2="71.12" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="71.12" y1="68.58" x2="71.12" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="50.8" y1="76.2" x2="48.26" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="76.2" x2="48.26" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="48.26" y1="68.58" x2="66.04" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="68.58" x2="66.04" y2="63.5" width="0.1524" layer="91"/>
 <pinref part="D4" gate="G$1" pin="DIN"/>
-<wire x1="71.12" y1="60.96" x2="66.04" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="63.5" x2="63.5" y2="63.5" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="DIN_1" class="0">
 <segment>
 <pinref part="D3" gate="G$1" pin="DIN"/>
-<wire x1="68.58" y1="83.82" x2="66.04" y2="83.82" width="0.1524" layer="91"/>
-<wire x1="68.58" y1="83.82" x2="68.58" y2="91.44" width="0.1524" layer="91"/>
-<pinref part="R4" gate="G$1" pin="1"/>
-<wire x1="68.58" y1="91.44" x2="63.5" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="76.2" y1="83.82" x2="73.66" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="76.2" y1="83.82" x2="76.2" y2="91.44" width="0.1524" layer="91"/>
+<pinref part="R5" gate="G$1" pin="1"/>
+<wire x1="76.2" y1="91.44" x2="66.04" y2="91.44" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="DIN_3" class="0">
 <segment>
 <pinref part="D4" gate="G$1" pin="DOUT"/>
-<wire x1="43.18" y1="53.34" x2="38.1" y2="53.34" width="0.1524" layer="91"/>
-<wire x1="38.1" y1="53.34" x2="38.1" y2="45.72" width="0.1524" layer="91"/>
-<wire x1="38.1" y1="45.72" x2="66.04" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="40.64" y1="55.88" x2="38.1" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="38.1" y1="55.88" x2="38.1" y2="48.26" width="0.1524" layer="91"/>
+<wire x1="38.1" y1="48.26" x2="53.34" y2="48.26" width="0.1524" layer="91"/>
 <pinref part="D5" gate="G$1" pin="DIN"/>
-<wire x1="66.04" y1="45.72" x2="66.04" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="53.34" y1="48.26" x2="53.34" y2="43.18" width="0.1524" layer="91"/>
+<wire x1="53.34" y1="43.18" x2="50.8" y2="43.18" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="DIN_4" class="0">
 <segment>
 <pinref part="D5" gate="G$1" pin="DOUT"/>
-<wire x1="43.18" y1="30.48" x2="38.1" y2="30.48" width="0.1524" layer="91"/>
-<wire x1="38.1" y1="30.48" x2="38.1" y2="22.86" width="0.1524" layer="91"/>
-<wire x1="38.1" y1="22.86" x2="71.12" y2="22.86" width="0.1524" layer="91"/>
-<wire x1="71.12" y1="22.86" x2="71.12" y2="17.78" width="0.1524" layer="91"/>
 <pinref part="D6" gate="G$1" pin="DIN"/>
-<wire x1="71.12" y1="17.78" x2="66.04" y2="17.78" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="35.56" x2="25.4" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="35.56" x2="25.4" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="38.1" x2="22.86" y2="38.1" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N_RESET" class="0">
+<segment>
+<pinref part="U1" gate="G$1" pin="PB5(NRES)"/>
+<pinref part="R4" gate="G$1" pin="2"/>
+<wire x1="17.78" y1="68.58" x2="22.86" y2="68.58" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
 </sheet>
 </sheets>
 <errors>
-<approved hash="104,1,43.18,83.82,D3,VDD,VCC,,,"/>
-<approved hash="104,1,66.04,76.2,D3,VSS,GND,,,"/>
-<approved hash="104,1,43.18,60.96,D4,VDD,VCC,,,"/>
-<approved hash="104,1,66.04,53.34,D4,VSS,GND,,,"/>
+<approved hash="104,1,50.8,83.82,D3,VDD,VCC,,,"/>
+<approved hash="104,1,73.66,76.2,D3,VSS,GND,,,"/>
+<approved hash="104,1,40.64,63.5,D4,VDD,VCC,,,"/>
+<approved hash="104,1,63.5,55.88,D4,VSS,GND,,,"/>
 <approved hash="104,1,-45.72,86.36,JP-USB-MICRO,5V,VCC,,,"/>
 <approved hash="204,1,-45.72,73.66,JP-USB-MICRO,SLD,,,,"/>
-<approved hash="104,1,43.18,38.1,D5,VDD,VCC,,,"/>
-<approved hash="104,1,66.04,30.48,D5,VSS,GND,,,"/>
-<approved hash="104,1,43.18,17.78,D6,VDD,VCC,,,"/>
-<approved hash="104,1,66.04,10.16,D6,VSS,GND,,,"/>
+<approved hash="104,1,27.94,43.18,D5,VDD,VCC,,,"/>
+<approved hash="104,1,50.8,35.56,D5,VSS,GND,,,"/>
+<approved hash="104,1,0,38.1,D6,VDD,VCC,,,"/>
+<approved hash="104,1,22.86,30.48,D6,VSS,GND,,,"/>
 <approved hash="113,1,-50.165,82.7722,JP-USB-MICRO,,,,,"/>
 </errors>
 </schematic>

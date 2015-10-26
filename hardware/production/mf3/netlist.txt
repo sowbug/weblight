@@ -1,0 +1,74 @@
+Netlist
+
+Exported from weblight.sch at 10/25/15 10:14 PM
+
+EAGLE Version 7.4.0 Copyright (c) 1988-2015 CadSoft
+
+Net             Part         Pad      Pin        Sheet
+
+DIN_1           D3           4        DIN        1
+                R5           1        1          1
+
+DIN_2           D3           2        DOUT       1
+                D4           4        DIN        1
+
+DIN_3           D4           2        DOUT       1
+                D5           4        DIN        1
+
+DIN_4           D5           2        DOUT       1
+                D6           4        DIN        1
+
+DIN_RAW         R5           2        2          1
+                U1           5        PB0(MOSI)  1
+
+GND             C1           2        2          1
+                C2           2        2          1
+                D1           A        A          1
+                D2           A        A          1
+                D3           3        VSS        1
+                D4           3        VSS        1
+                D5           3        VSS        1
+                D6           3        VSS        1
+                JP-USB-MICRO 5        GND        1
+                JP-USB-TOP   GND      GND        1
+                U1           4        GND        1
+
+N_RESET         R4           2        2          1
+                U1           1        PB5(NRES)  1
+
+SLD             JP-USB-MICRO S1       SLD        1
+                JP-USB-MICRO S2       SLD        1
+                JP-USB-MICRO S3       SLD        1
+                JP-USB-MICRO S4       SLD        1
+                JP-USB-MICRO S5       SLD        1
+                JP-USB-MICRO S6       SLD        1
+
+USB_D_MINUS     R3           2        2          1
+                U1           2        PB3(ADC3)  1
+
+USB_D_MINUS_RAW D2           K        C          1
+                JP-USB-MICRO 2        D-         1
+                JP-USB-TOP   USB_M    D-         1
+                R1           1        1          1
+                R3           1        1          1
+
+USB_D_PLUS      R2           2        2          1
+                U1           3        PB4(ADC2)  1
+
+USB_D_PLUS_RAW  D1           K        C          1
+                JP-USB-MICRO 3        D+         1
+                JP-USB-TOP   USB_P    D+         1
+                R2           1        1          1
+
+VCC             C1           1        1          1
+                C2           1        1          1
+                D3           1        VDD        1
+                D4           1        VDD        1
+                D5           1        VDD        1
+                D6           1        VDD        1
+                JP-USB-MICRO 1        5V         1
+                JP-USB-TOP   5V       VBUS       1
+                R1           2        2          1
+                R4           1        1          1
+                U1           8        VCC        1
+
