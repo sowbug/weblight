@@ -2,6 +2,7 @@
 
 # sudo pip install pyusb==1.0.0b2
 
+from optparse import OptionParser
 from sys import argv
 import binascii
 import os.path
@@ -9,20 +10,26 @@ import sys
 import usb.core
 import usb.util
 
-exe_name = os.path.basename(argv[0])
-if len(argv) < 2:
-    print 'usage: %s <6-digit hex rgb color> [device serial number]' % exe_name
-    print '       %s list: list attached devices' % exe_name
-    sys.exit(1)
+usage = "usage: %prog [options] rgbcolor"
+parser = OptionParser(usage)
+parser.add_option("-l", "--list", action="store_true", default=False,
+                  help="list attach devices")
+parser.add_option("-t", "--test", action="store_true", default=False,
+                  help="test device")
+parser.add_option("-r", "--reset", action="store_true", default=False,
+                  help="reset device")
+parser.add_option("-c", "--count", dest="count",
+                  help="set the number of active LEDs (writes to device EEPROM)")
+parser.add_option("-s", "--serial", dest="serial",
+                  help="specify the serial number of the device to address")
+
+(options, args) = parser.parse_args()
 
 VENDOR = 0x16c0
 PRODUCT = 0x05dc
-SERIAL = None
-if len(argv) > 2:
-    SERIAL = argv[2]
 REQUEST_ID = 3
 
-if argv[1] == 'list':
+if options.list:
     devices = usb.core.find(idVendor=VENDOR, idProduct=PRODUCT, find_all=True)
     for dev in devices:
         print "%30s %16s" % (
@@ -32,10 +39,10 @@ if argv[1] == 'list':
     sys.exit(0)
 
 dev = None
-if SERIAL:
+if options.serial:
     devices = usb.core.find(idVendor=VENDOR, idProduct=PRODUCT, find_all=True)
     for d in devices:
-        if usb.util.get_string(d, d.iSerialNumber) == SERIAL:
+        if usb.util.get_string(d, d.iSerialNumber) == options.serial:
             dev = d
             break
     if dev is None:
@@ -43,6 +50,9 @@ if SERIAL:
         sys.exit(1)
 else:
     dev = usb.core.find(idVendor=VENDOR, idProduct=PRODUCT)
+if options.reset:
+    if dev is None:
+        sys.exit(0)
 if dev is None:
     raise ValueError('Our device is not connected')
 
@@ -50,13 +60,43 @@ if dev is None:
 # USBRQ_DIR_HOST_TO_DEVICE | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE = 0x40
 # USBRQ_DIR_DEVICE_TO_HOST | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE = 0xC0
 # USBRQ_DIR_DEVICE_TO_HOST | USBRQ_TYPE_STANDARD | USBRQ_RCPT_DEVICE = 0x80
-
+#
 # bRequest = whatever you specified for your custom request
 # wValue
 # wIndex
 # (optional) data
 
-bytes = binascii.unhexlify(('000000' + argv[1])[-6:])
+if options.reset:
+    try:
+        dev.ctrl_transfer(0x40, 254, 0, 0)
+    except:
+        pass
+    sys.exit(0)
+
+if options.test:
+    result = dev.ctrl_transfer(0xC0, 0, 0x55aa, 0x9944, 4)
+    if (result[0] == 0xaa and
+        result[1] == 0x55 and
+        result[2] == 0x44 and
+        result[3] == 0x99):
+        print "Test succeeded"
+        sys.exit(0)
+    else:
+        print "Test failed:", result
+        sys.exit(1)
+
+if options.count:
+    result = dev.ctrl_transfer(0x40, 2, int(options.count), 0)
+    print 'Count:', result
+    sys.exit(0)
+
+if len(args) == 0:
+    parser.print_usage()
+    sys.exit(1)
+
+color_arg = args[0]
+
+bytes = binascii.unhexlify(('000000' + color_arg)[-6:])
 result = dev.ctrl_transfer(0x40, 1, 0, 0, bytes)
 if result != len(bytes):
     raise IOError('Error', result)

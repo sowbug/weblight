@@ -1,5 +1,6 @@
 #! /usr/bin/python
 
+import binascii
 import uuid
 
 f = open("eeprom.tmp", "wb")
@@ -11,5 +12,8 @@ f.write('WebL')
 uuid_str = str(uuid.uuid4())
 serial_str = uuid_str[-16:]
 f.write(serial_str)
+
+# 20: LED count; default = 2 lights
+f.write(binascii.unhexlify('02'))
 
 f.close()

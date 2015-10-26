@@ -35,7 +35,9 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
   case CUSTOM_RQ_ECHO:
     dataBuffer[0] = rq->wValue.bytes[0];
     dataBuffer[1] = rq->wValue.bytes[1];
-    return 2;
+    dataBuffer[2] = rq->wIndex.bytes[0];
+    dataBuffer[3] = rq->wIndex.bytes[1];
+    return 4;
   case CUSTOM_RQ_SET_RGB:
     currentPosition = 0;
     bytesRemaining = rq->wLength.word;
@@ -43,6 +45,16 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
       bytesRemaining = sizeof(buffer);
     }
     return USB_NO_MSG;
+  case CUSTOM_RQ_SET_LED_COUNT: {
+    uint8_t count = rq->wValue.bytes[0];
+    SetLEDCount(count);
+    WriteLEDCount();
+    return count;
+  }
+  case CUSTOM_RQ_RESET_DEVICE:
+    wdt_enable(WDTO_15MS);
+    for(;;)
+      ;
   }
 
   return 0;
@@ -132,7 +144,7 @@ void doStartupSequence() {
   _delay_ms(1);
   if (r == 255 && b == 0 && g == 0) {
     LEDsOff();
-    if (active_led++ == LED_COUNT) {
+    if (active_led++ == GetLEDCount()) {
       initConnectUSB();
     }
   }
@@ -168,23 +180,16 @@ void initMCUInit() {
 }
 
 void doMCUInit() {
-  // select clock: 16.5M/1k ->
-  // overflow rate = 16.5M/256k = 62.94 Hz
+  // select clock: 16.5M/1k -> overflow rate = 16.5M/256k = 62.94 Hz
   TCCR1 = 0x0b;
 
-  //  DDRB |= _BV(PB0);
-
-  // RESET status: all port bits are inputs without pull-up. That's
-  // the way we need D+ and D-. Therefore we don't need any additional
-  // hardware initialization.
-
-  // Even if you don't use the watchdog, turn it off here. On newer devices,
-  // the status of the watchdog (on/off, period) is PRESERVED OVER RESET!
+  // Even if you don't use the watchdog, turn it off here. On newer
+  // devices, the status of the watchdog (on/off, period) is PRESERVED
+  // OVER RESET!
   wdt_enable(WDTO_1S);
 
-  LEDsOff();
-
-  readEEPROM();
+  // Side effect: turns off LEDs
+  ReadEEPROM();
 
   usbInit();
   initDisconnectUSB();
