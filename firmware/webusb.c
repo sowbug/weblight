@@ -16,6 +16,12 @@ PROGMEM const uchar BOS_DESCRIPTOR[] = {
   CUSTOM_RQ_WEBUSB,
 };
 
+// The WebUSB descriptors can't be PROGMEM because usbFunctionSetup()
+// doesn't know how to read from flash, and for some weird reason when
+// I tried to implement flash-reading capabilities there, it stalled
+// out the USB pipeline.
+//
+// Solving this will be important if we ever run low on SRAM.
 #define WEBUSB_REQUEST_GET_LANDING_PAGE (0x02)
 const uchar WEBUSB_LANDING_PAGE[] = {
   0x23, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/', 's', 'o', 'w', 'b', 'u',
