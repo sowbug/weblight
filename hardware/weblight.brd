@@ -1797,7 +1797,7 @@ design rules under a new name.</description>
 <vertex x="0" y="0"/>
 </polygon>
 </signal>
-<signal name="MOSI/DIN">
+<signal name="DIN_RAW">
 <contactref element="U1" pad="5"/>
 <contactref element="R4" pad="2"/>
 <wire x1="29.718" y1="6.7056" x2="30.48" y2="6.7056" width="0.1524" layer="1"/>
@@ -1908,7 +1908,7 @@ design rules under a new name.</description>
 <wire x1="23.4696" y1="1.6764" x2="23.458" y2="1.575" width="0.1524" layer="1"/>
 <wire x1="28.4988" y1="10.3632" x2="28.612" y2="10.49" width="0.1524" layer="1"/>
 </signal>
-<signal name="N$1">
+<signal name="DIN_1">
 <contactref element="D3" pad="4"/>
 <contactref element="R4" pad="1"/>
 <wire x1="29.1084" y1="5.334" x2="30.48" y2="5.334" width="0.1524" layer="1"/>
@@ -1937,7 +1937,7 @@ design rules under a new name.</description>
 <wire x1="30.3276" y1="5.0292" x2="30.361" y2="4.896" width="0.1524" layer="16"/>
 <wire x1="30.3276" y1="7.1628" x2="30.361" y2="7.296" width="0.1524" layer="16"/>
 </signal>
-<signal name="N$3">
+<signal name="DIN_3">
 <contactref element="D4" pad="2"/>
 <contactref element="D5" pad="4"/>
 <wire x1="21.0312" y1="4.8768" x2="20.4216" y2="4.8768" width="0.1524" layer="16"/>
@@ -1951,7 +1951,7 @@ design rules under a new name.</description>
 <wire x1="23.3172" y1="7.1628" x2="23.458" y2="7.29" width="0.1524" layer="1"/>
 <via x="21.6408" y="5.4864" extent="1-16" drill="0.3048"/>
 </signal>
-<signal name="N$2">
+<signal name="DIN_4">
 <contactref element="D5" pad="2"/>
 <contactref element="D6" pad="4"/>
 <wire x1="20.4216" y1="8.9916" x2="20.4216" y2="10.3632" width="0.1524" layer="16"/>

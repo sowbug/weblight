@@ -7544,7 +7544,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pinref part="GND2" gate="1" pin="GND"/>
 </segment>
 </net>
-<net name="MOSI/DIN" class="0">
+<net name="DIN_RAW" class="0">
 <segment>
 <wire x1="25.4" y1="81.28" x2="30.48" y2="81.28" width="0.1524" layer="91"/>
 <wire x1="30.48" y1="81.28" x2="30.48" y2="91.44" width="0.1524" layer="91"/>
@@ -7617,7 +7617,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="71.12" y1="60.96" x2="66.04" y2="60.96" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$1" class="0">
+<net name="DIN_1" class="0">
 <segment>
 <pinref part="D3" gate="G$1" pin="DIN"/>
 <wire x1="68.58" y1="83.82" x2="66.04" y2="83.82" width="0.1524" layer="91"/>
@@ -7626,7 +7626,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="68.58" y1="91.44" x2="63.5" y2="91.44" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$3" class="0">
+<net name="DIN_3" class="0">
 <segment>
 <pinref part="D4" gate="G$1" pin="DOUT"/>
 <wire x1="43.18" y1="53.34" x2="38.1" y2="53.34" width="0.1524" layer="91"/>
@@ -7636,7 +7636,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="66.04" y1="45.72" x2="66.04" y2="38.1" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="N$2" class="0">
+<net name="DIN_4" class="0">
 <segment>
 <pinref part="D5" gate="G$1" pin="DOUT"/>
 <wire x1="43.18" y1="30.48" x2="38.1" y2="30.48" width="0.1524" layer="91"/>
