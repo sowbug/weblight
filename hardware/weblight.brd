@@ -150,7 +150,7 @@
 <vertex x="9.525" y="0"/>
 <vertex x="0" y="0"/>
 </polygon>
-<text x="1.27" y="2.54" size="1.016" layer="22" font="vector" rot="MR0" align="bottom-right">mike@sowbug.com</text>
+<text x="1.27" y="2.54" size="1.016" layer="22" font="vector" rot="MR0" align="bottom-right">sowbug.github.io/weblight</text>
 <text x="0.635" y="11.43" size="0.8128" layer="21" font="vector" align="top-left">WebLight</text>
 </plain>
 <libraries>
