@@ -1,0 +1,63 @@
+Netlist
+
+Exported from weblight_developer.brd at 10/25/2015 7:47 PM
+
+EAGLE Version 7.4.0 Copyright (c) 1988-2015 CadSoft
+
+Net             Part       Pad
+
+DIN_1           D3         4
+                R4         1
+
+DIN_2           D3         2
+                D4         4
+
+GND             C1         2
+                C2         2
+                D1         A
+                D2         A
+                D3         3
+                D4         3
+                JP-USB-TOP GND
+                JP1        6
+                SW_RESET   PAD2
+                U1         4
+
+MISO            JP1        1
+                U1         6
+
+MOSI/DIN_RAW    JP1        4
+                R4         2
+                U1         5
+
+RESET           JP1        5
+                SW_RESET   PAD1
+                U1         1
+
+SCK             JP1        3
+                U1         7
+
+USB_D_MINUS     R3         1
+                U1         2
+
+USB_D_MINUS_RAW D2         C
+                JP-USB-TOP USB_M
+                R1         1
+                R3         2
+
+USB_D_PLUS      R2         1
+                U1         3
+
+USB_D_PLUS_RAW  D1         C
+                JP-USB-TOP USB_P
+                R2         2
+
+VCC             C1         1
+                C2         1
+                D3         1
+                D4         1
+                JP-USB-TOP 5V
+                JP1        2
+                R1         2
+                U1         8
+

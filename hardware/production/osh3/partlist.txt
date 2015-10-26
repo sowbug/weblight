@@ -1,0 +1,24 @@
+Partlist
+
+Exported from weblight_developer.brd at 10/25/2015 7:47 PM
+
+EAGLE Version 7.4.0 Copyright (c) 1988-2015 CadSoft
+
+Assembly variant: 
+
+Part       Value                 Package        Library             Position (inch)       Orientation
+
+C1         10uF                  C0805          rcl                 (1 0.15)              R270
+C2         0.1uF                 C0805          rcl                 (1 0.325)             R270
+D1         3.6V                  SOD-323        microbuilder        (0.91 0.15)           R270
+D2         3.6V                  SOD-323        microbuilder        (0.91 0.325)          R270
+D3         WS2812B               WS2812B        SparkFun-LED        (1.2 0.125)           R0
+D4         WS2812B               WS2812B        SparkFun-LED        (1.2 0.35)            R0
+JP-USB-TOP USBPCB                USB-A-PCB      SparkFun-Connectors (0.2 0.235)           R0
+JP1        AVR_SPI_PRG_62X3_LOCK 2X3_LOCK       SparkFun-Connectors (1.425 0.4)           R270
+R1         1.5K                  R0805          rcl                 (0.45 0.15)           R270
+R2         68                    R0805          rcl                 (0.45 0.375)          R270
+R3         68                    R0805          rcl                 (0.8 0.125)           R90
+R4         470                   R0805          rcl                 (1.475 0.075)         R0
+SW_RESET   BUTTON_TD-85XU        BUTTON_TD-85XU weblight            (0.8 0.35)            R90
+U1         ATtiny85-20SU         SO08-EIAJ      SparkFun-DigitalIC  (0.6125 0.24)         R0

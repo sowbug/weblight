@@ -1,0 +1,66 @@
+Pinlist
+
+Exported from weblight_developer.brd at 10/25/2015 7:47 PM
+
+EAGLE Version 7.4.0 Copyright (c) 1988-2015 CadSoft
+
+Part     Pad      Net
+
+C1       1        VCC
+         2        GND
+
+C2       1        VCC
+         2        GND
+
+D1       A        GND
+         C        USB_D_PLUS_RAW
+
+D2       A        GND
+         C        USB_D_MINUS_RAW
+
+D3       1        VCC
+         2        DIN_2
+         3        GND
+         4        DIN_1
+
+D4       1        VCC
+         2                 *** unconnected ***
+         3        GND
+         4        DIN_2
+
+JP-USB-TOP 5V       VCC
+         GND      GND
+         USB_M    USB_D_MINUS_RAW
+         USB_P    USB_D_PLUS_RAW
+
+JP1      1        MISO
+         2        VCC
+         3        SCK
+         4        MOSI/DIN_RAW
+         5        RESET
+         6        GND
+
+R1       1        USB_D_MINUS_RAW
+         2        VCC
+
+R2       1        USB_D_PLUS
+         2        USB_D_PLUS_RAW
+
+R3       1        USB_D_MINUS
+         2        USB_D_MINUS_RAW
+
+R4       1        DIN_1
+         2        MOSI/DIN_RAW
+
+SW_RESET PAD1     RESET
+         PAD2     GND
+
+U1       1        RESET
+         2        USB_D_MINUS
+         3        USB_D_PLUS
+         4        GND
+         5        MOSI/DIN_RAW
+         6        MISO
+         7        SCK
+         8        VCC
+
