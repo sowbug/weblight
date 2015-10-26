@@ -16,6 +16,13 @@ void SetLEDCount(uint8_t c) {
   if (c > MAX_LED_COUNT) {
     c = MAX_LED_COUNT;
   }
+
+  // If the count changed, turn off *all* the LEDs.
+  if (led_count != c) {
+    led_count = MAX_LED_COUNT;
+    LEDsOff();
+  }
+
   led_count = c;
 }
 
