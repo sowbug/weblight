@@ -34,8 +34,7 @@ Programming a newly built board
 Development
 ===
 
-1. In the `firmware` directory, `make clean && make hex &&
-   ../commandline/wlctl --reset && micronucleus --run main.hex`.
+1. In the `firmware` directory, `make clean upload`.
 1. Plug in the board. After a few moments you should see `Micronucleus
    done. Thank you!`
 1. Now the lights on the board should run a startup sequence.
@@ -48,9 +47,10 @@ Usage
 
 1. Install [PyUSB](http://walac.github.io/pyusb/). `sudo pip install
 pyusb==1.0.0.b2`
-3. From the base directory of the weblight project,
+1. From the base directory of the weblight project,
 `./commandline/wlctl 800000` will give you a medium-brightness red
-light (it uses CSS-style RGB color format). `--help` for more options.
+light (it uses CSS-style RGB color format).
+1. `--help` for more options.
 
 Tips
 ===

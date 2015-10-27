@@ -3,6 +3,7 @@
 #include "webusb.h"
 
 #include <avr/pgmspace.h>
+#include <avr/wdt.h>
 
 #define USB_BOS_DESCRIPTOR_TYPE (15)
 
@@ -13,7 +14,7 @@ PROGMEM const uchar BOS_DESCRIPTOR[] = {
   // WebUSB Platform Capability descriptor
   0x17, 0x10, 0x05, 0x00, 0x38, 0xB6, 0x08, 0x34, 0xA9, 0x09, 0xA0, 0x47,
   0x8B, 0xFD, 0xA0, 0x76, 0x88, 0x15, 0xB6, 0x65, 0x00, 0x01,
-  CUSTOM_RQ_WEBUSB,
+  WL_REQUEST_WEBUSB,
 };
 
 // The WebUSB descriptors can't be PROGMEM because usbFunctionSetup()
@@ -83,7 +84,7 @@ USB_PUBLIC usbMsgLen_t usbFunctionDescriptor(usbRequest_t *rq) {
 uint8_t maybeHandleSetup(usbRequest_t* rq, usbMsgLen_t* msg_len) {
   if (rq->bmRequestType ==
       (USBRQ_DIR_DEVICE_TO_HOST | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE) &&
-      rq->bRequest == CUSTOM_RQ_WEBUSB) {
+      rq->bRequest == WL_REQUEST_WEBUSB) {
     if (rq->wIndex.word == WEBUSB_REQUEST_GET_ALLOWED_ORIGINS) {
       usbMsgPtr = (usbMsgPtr_t)(WEBUSB_ALLOWED_ORIGINS);
       *msg_len = sizeof(WEBUSB_ALLOWED_ORIGINS);
@@ -96,4 +97,69 @@ uint8_t maybeHandleSetup(usbRequest_t* rq, usbMsgLen_t* msg_len) {
     }
   }
   return 0;
+}
+
+void forceReset() {
+  StatusBlink(3);
+  wdt_enable(WDTO_15MS);
+  for(;;)
+    ;
+}
+
+static uchar buffer[8];
+static uchar currentPosition, bytesRemaining;
+usbMsgLen_t usbFunctionSetup(uchar data[8]) {
+  usbRequest_t    *rq = (void *)data;
+  static uchar    dataBuffer[4];
+
+  usbMsgLen_t msg_len = 0;
+  if (maybeHandleSetup(rq, &msg_len)) {
+    return msg_len;
+  }
+
+  usbMsgPtr = (int)dataBuffer;
+  switch (rq->bRequest) {
+  case WL_REQUEST_ECHO:
+    dataBuffer[0] = rq->wValue.bytes[0];
+    dataBuffer[1] = rq->wValue.bytes[1];
+    dataBuffer[2] = rq->wIndex.bytes[0];
+    dataBuffer[3] = rq->wIndex.bytes[1];
+    return 4;
+  case WL_REQUEST_SET_RGB:
+    currentPosition = 0;
+    bytesRemaining = rq->wLength.word;
+    if (bytesRemaining > sizeof(buffer)) {
+      bytesRemaining = sizeof(buffer);
+    }
+    return USB_NO_MSG;
+  case WL_REQUEST_SET_LED_COUNT: {
+    uint8_t count = rq->wValue.bytes[0];
+    SetLEDCount(count);
+    WriteLEDCount();
+    return count;
+  }
+  case WL_REQUEST_RESET_DEVICE:
+    forceReset();
+    break;
+  }
+
+  return 0;
+}
+
+uchar usbFunctionWrite(uchar *data, uchar len) {
+  uchar i;
+
+  if (len > bytesRemaining) {
+    len = bytesRemaining;
+  }
+  bytesRemaining -= len;
+  for (i = 0; i < len; i++) {
+    buffer[currentPosition++] = data[i];
+  }
+
+  if (bytesRemaining == 0) {
+    SetLEDs(buffer[0], buffer[1], buffer[2]);
+  }
+
+  return bytesRemaining == 0;             // return 1 if we have all data
 }

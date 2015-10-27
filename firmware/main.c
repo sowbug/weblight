@@ -2,12 +2,11 @@
 //
 // weblight
 
-#include <avr/io.h>
-#include <avr/wdt.h>
 #include <avr/interrupt.h>  // for sei()
-#include <util/delay.h>     // for _delay_ms()
-
+#include <avr/io.h>
 #include <avr/pgmspace.h>   // required by usbdrv.h
+#include <avr/wdt.h>
+#include <util/delay.h>     // for _delay_ms()
 
 #include "eeprom.h"
 #include "led_control.h"
@@ -18,71 +17,6 @@
 
 #define TRUE (1==1)
 #define FALSE (!TRUE)
-
-void forceReset() {
-  StatusBlink(3);
-  wdt_enable(WDTO_15MS);
-  for(;;)
-    ;
-}
-
-static uchar buffer[8];
-static uchar currentPosition, bytesRemaining;
-usbMsgLen_t usbFunctionSetup(uchar data[8]) {
-  usbRequest_t    *rq = (void *)data;
-  static uchar    dataBuffer[4];
-
-  usbMsgLen_t msg_len = 0;
-  if (maybeHandleSetup(rq, &msg_len)) {
-    return msg_len;
-  }
-
-  usbMsgPtr = (int)dataBuffer;
-  switch (rq->bRequest) {
-  case CUSTOM_RQ_ECHO:
-    dataBuffer[0] = rq->wValue.bytes[0];
-    dataBuffer[1] = rq->wValue.bytes[1];
-    dataBuffer[2] = rq->wIndex.bytes[0];
-    dataBuffer[3] = rq->wIndex.bytes[1];
-    return 4;
-  case CUSTOM_RQ_SET_RGB:
-    currentPosition = 0;
-    bytesRemaining = rq->wLength.word;
-    if (bytesRemaining > sizeof(buffer)) {
-      bytesRemaining = sizeof(buffer);
-    }
-    return USB_NO_MSG;
-  case CUSTOM_RQ_SET_LED_COUNT: {
-    uint8_t count = rq->wValue.bytes[0];
-    SetLEDCount(count);
-    WriteLEDCount();
-    return count;
-  }
-  case CUSTOM_RQ_RESET_DEVICE:
-    forceReset();
-    break;
-  }
-
-  return 0;
-}
-
-uchar usbFunctionWrite(uchar *data, uchar len) {
-  uchar i;
-
-  if (len > bytesRemaining) {
-    len = bytesRemaining;
-  }
-  bytesRemaining -= len;
-  for (i = 0; i < len; i++) {
-    buffer[currentPosition++] = data[i];
-  }
-
-  if (bytesRemaining == 0) {
-    SetLEDs(buffer[0], buffer[1], buffer[2]);
-  }
-
-  return bytesRemaining == 0;             // return 1 if we have all data
-}
 
 enum {
   // Everything we need to start up the microcontroller.

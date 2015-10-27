@@ -2,6 +2,12 @@
 
 # sudo pip install pyusb==1.0.0b2
 
+WL_REQUEST_ECHO = 0
+WL_REQUEST_SET_RGB = 1
+WL_REQUEST_SET_LED_COUNT = 2
+WL_REQUEST_RESET_DEVICE = 253
+WL_REQUEST_WEBUSB = 254
+
 from optparse import OptionParser
 from sys import argv
 import binascii
@@ -71,13 +77,13 @@ if dev is None:
 
 if options.reset:
     try:
-        dev.ctrl_transfer(0x40, 254, 0, 0)
+        dev.ctrl_transfer(0x40, WL_REQUEST_RESET_DEVICE, 0, 0)
     except:
         pass
     sys.exit(0)
 
 if options.test:
-    result = dev.ctrl_transfer(0xC0, 0, 0x55aa, 0x9944, 4)
+    result = dev.ctrl_transfer(0xC0, WL_REQUEST_ECHO, 0x55aa, 0x9944, 4)
     if (result[0] == 0xaa and
         result[1] == 0x55 and
         result[2] == 0x44 and
@@ -89,7 +95,8 @@ if options.test:
         sys.exit(1)
 
 if options.count:
-    result = dev.ctrl_transfer(0x40, 2, int(options.count), 0)
+    result = dev.ctrl_transfer(0x40, WL_REQUEST_SET_LED_COUNT,
+                               int(options.count), 0)
     print 'Count:', result
     sys.exit(0)
 
@@ -99,6 +106,6 @@ if len(args) == 0:
 
 color_arg = args[0]
 bytes = binascii.unhexlify(('000000' + color_arg)[-6:])
-result = dev.ctrl_transfer(0x40, 1, 0, 0, bytes)
+result = dev.ctrl_transfer(0x40, WL_REQUEST_SET_RGB, 0, 0, bytes)
 if result != len(bytes):
     raise IOError('Error', result)
