@@ -19,6 +19,13 @@
 #define TRUE (1==1)
 #define FALSE (!TRUE)
 
+void forceReset() {
+  StatusBlink(3);
+  wdt_enable(WDTO_15MS);
+  for(;;)
+    ;
+}
+
 static uchar buffer[8];
 static uchar currentPosition, bytesRemaining;
 usbMsgLen_t usbFunctionSetup(uchar data[8]) {
@@ -52,9 +59,8 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
     return count;
   }
   case CUSTOM_RQ_RESET_DEVICE:
-    wdt_enable(WDTO_15MS);
-    for(;;)
-      ;
+    forceReset();
+    break;
   }
 
   return 0;
