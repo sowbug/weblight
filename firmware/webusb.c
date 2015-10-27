@@ -38,7 +38,7 @@ PROGMEM const uchar BOS_DESCRIPTOR[] = {
 
   0x00, 0x00, 0x03, 0x06,    // Windows version (8.1) (0x06030000)
   0x2E, 0x00,                // Size, MS OS 2.0 descriptor set
-  WL_REQUEST_WINUSB,          // Vendor-assigned bMS_VendorCode
+  WL_REQUEST_WINUSB,         // Vendor-assigned bMS_VendorCode
   0x00                       // Doesn’t support alternate enumeration
 };
 
@@ -50,7 +50,7 @@ const uchar MS_OS_20_DESCRIPTOR_SET[] = {
   0x00, 0x00, 0x03, 0x06,  // Windows version (8.1) (0x06030000)
   0x2E, 0x00,  // Size, MS OS 2.0 descriptor set
 
-  0x08, 0x00,
+  0x08, 0x00,  // wLength
   0x01, 0x00,  // wDescriptorType
   0x01,        // bConfigurationValue
   0x00,        // bReserved
@@ -90,19 +90,18 @@ const uchar WEBUSB_ALLOWED_ORIGINS[] = {
 };
 
 PROGMEM const char usbDescriptorDevice[] = {  // USB device descriptor
-  18,  // sizeof(usbDescriptorDevice): length of descriptor in bytes
-  USBDESCR_DEVICE,        /* descriptor type */
-  0x10, 0x02,             /* USB version supported == 2.1 */
+  0x12,  // sizeof(usbDescriptorDevice): length of descriptor in bytes
+  USBDESCR_DEVICE,        // descriptor type
+  0x10, 0x02,             // USB version supported == 2.1
   USB_CFG_DEVICE_CLASS,
   USB_CFG_DEVICE_SUBCLASS,
-  0,                      /* protocol */
-  8,                      /* max packet size */
-  /* the following two casts affect the first byte of the constant only, but
-   * that's sufficient to avoid a warning with the default values.
-   */
-  (char)USB_CFG_VENDOR_ID,/* 2 bytes */
-  (char)USB_CFG_DEVICE_ID,/* 2 bytes */
-  USB_CFG_DEVICE_VERSION, /* 2 bytes */
+  0,                      // protocol
+  8,                      // max packet size
+  // the following two casts affect the first byte of the constant only, but
+  // that's sufficient to avoid a warning with the default values.
+  (char)USB_CFG_VENDOR_ID,
+  (char)USB_CFG_DEVICE_ID,
+  USB_CFG_DEVICE_VERSION,
   1,  // manufacturer string index
   2,  // product string index
   3,  // serial number string index
