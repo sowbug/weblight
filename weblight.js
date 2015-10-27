@@ -68,6 +68,12 @@ function ab2str(buf) {
 
 function start() {
   'use strict';
+  
+  if (window.location.protocol != "https:" &&
+      window.location.hostname != "localhost") {
+    window.location.href = "https:" +
+        window.location.href.substring(window.location.protocol.length);
+  }
 
   var device = null;
   var intervalId = 0;
