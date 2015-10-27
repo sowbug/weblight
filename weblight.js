@@ -23,7 +23,7 @@ function ab2str(buf) {
         this.onReceive(result.data);
         readLoop();
       }, error => {
-        this.onReceiveError(error);
+        console.log(error);
       });
     };
 
