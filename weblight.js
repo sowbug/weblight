@@ -43,10 +43,7 @@ function ab2str(buf) {
         'recipient': 'interface',
         'request': 0x22,
         'value': 0x01,
-        'index': 0x00}))
-      .then(() => {
-        readLoop();
-      });
+        'index': 0x00}));
   };
 
   webusb.Device.prototype.disconnect = function() {
@@ -153,7 +150,6 @@ function start() {
             'value': 0x0303,
             'index': 0
           }, 64).then(o => {
-            console.log(o);
             console.log("Serial number", ab2str(o.data));
             f(o.data);
           })
@@ -203,9 +199,7 @@ function start() {
               'recipient': 'device',
               'request': 0x01,
               'value': 0x00,
-              'index': 0x00}, rgb).then(o => {
-                console.log(name);
-              });
+              'index': 0x00}, rgb).then(o => {}, e => {console.log(e);});
 
           };
           doLight();
