@@ -38,8 +38,8 @@ Development
 1. Plug in the board. After a few moments you should see `Micronucleus
    done. Thank you!`
 1. Now the lights on the board should run a startup sequence.
-1. Using `lsusb` you should see something like `Bus 002 Device 019: ID
-   1209:a800 WebLight`.
+1. Using `lsusb` you should see something like `Bus 001 Device 006: ID
+   1209:a800 InterBiometrics`.
 
 Usage
 ===
