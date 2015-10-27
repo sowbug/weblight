@@ -71,7 +71,8 @@ print "BOS", len(result), binascii.hexlify(result)
 
 bosParts = \
   struct.unpack('BBHB', result[0:5])
-bosLabels = ["Descriptor length", "Descriptor type", "Total length", "Device caps count"]
+bosLabels = ["Descriptor length", "Descriptor type",
+             "Total length", "Device caps count"]
 tIndex = 0
 for i in bosLabels:
     print "%40s: %d" % (i, bosParts[tIndex])

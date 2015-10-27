@@ -32,6 +32,11 @@
 // MAX_LED_COUNT in led_control.h.
 #define WL_REQUEST_SET_LED_COUNT (2)
 
+// WinUSB: 252
+//
+// WinUSB descriptor.
+#define WL_REQUEST_WINUSB    (252)
+
 // Reset: 253
 //
 // Reset the device, which triggers the bootloader.

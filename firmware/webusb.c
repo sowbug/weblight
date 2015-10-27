@@ -9,12 +9,63 @@
 
 PROGMEM const uchar BOS_DESCRIPTOR[] = {
   // BOS descriptor header
-  0x05, 0x0F, 0x1C, 0x00, 0x01,
+  0x05, 0x0F, 0x38, 0x00, 0x02,
 
   // WebUSB Platform Capability descriptor
-  0x17, 0x10, 0x05, 0x00, 0x38, 0xB6, 0x08, 0x34, 0xA9, 0x09, 0xA0, 0x47,
-  0x8B, 0xFD, 0xA0, 0x76, 0x88, 0x15, 0xB6, 0x65, 0x00, 0x01,
+  0x17, 0x10, 0x05, 0x00,
+
+  0x38, 0xB6, 0x08, 0x34,
+  0xA9, 0x09,
+  0xA0, 0x47,
+  0x8B, 0xFD,
+  0xA0, 0x76, 0x88, 0x15, 0xB6, 0x65,
+  0x00, 0x01,
   WL_REQUEST_WEBUSB,
+
+  // Microsoft OS 2.0 Platform Capability Descriptor
+  // Thanks http://janaxelson.com/files/ms_os_20_descriptors.c
+  0x1C,  // Descriptor size (28 bytes)
+  0x10,  // Descriptor type (Device Capability)
+  0x05,  // Capability type (Platform)
+  0x00,  // Reserved
+
+  // MS OS 2.0 Platform Capability ID (D8DD60DF-4589-4CC7-9CD2-659D9E648A9F)
+  0xDF, 0x60, 0xDD, 0xD8,
+  0x89, 0x45,
+  0xC7, 0x4C,
+  0x9C, 0xD2,
+  0x65, 0x9D, 0x9E, 0x64, 0x8A, 0x9F,
+
+  0x00, 0x00, 0x03, 0x06,    // Windows version (8.1) (0x06030000)
+  0x2E, 0x00,                // Size, MS OS 2.0 descriptor set
+  WL_REQUEST_WINUSB,          // Vendor-assigned bMS_VendorCode
+  0x00                       // Doesn’t support alternate enumeration
+};
+
+// Microsoft OS 2.0 Descriptor Set
+#define WINUSB_REQUEST_DESCRIPTOR (0x07)
+const uchar MS_OS_20_DESCRIPTOR_SET[] = {
+  0x0A, 0x00,  // Descriptor size (10 bytes)
+  0x00, 0x00,  // MS OS 2.0 descriptor set header
+  0x00, 0x00, 0x03, 0x06,  // Windows version (8.1) (0x06030000)
+  0x2E, 0x00,  // Size, MS OS 2.0 descriptor set
+
+  0x08, 0x00,
+  0x01, 0x00,  // wDescriptorType
+  0x01,        // bConfigurationValue
+  0x00,        // bReserved
+  0x24, 0x00,  // wTotalLength
+
+  0x08, 0x00,  // wLength
+  0x02, 0x00,  // wDescriptorType
+  0x00,        // bFirstInterface
+  0x00,        // bReserved
+  0x1C, 0x00,  // wSubsetLength
+
+  0x14, 0x00,  // wLength
+  0x03, 0x00,  // MS_OS_20_FEATURE_COMPATIBLE_ID
+  'W', 'I', 'N', 'U', 'S', 'B', 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
 // The WebUSB descriptors can't be PROGMEM because usbFunctionSetup()
@@ -65,37 +116,50 @@ int webUsbDescriptorStringSerialNumber[EEPROM_SERIAL_LENGTH + 1] = {
 
 USB_PUBLIC usbMsgLen_t usbFunctionDescriptor(usbRequest_t *rq) {
   switch (rq->wValue.bytes[1]) {
-  case USBDESCR_STRING:
-    switch (rq->wValue.bytes[0]) {
-    case 3:
-      usbMsgPtr = (usbMsgPtr_t)(webUsbDescriptorStringSerialNumber);
-      return sizeof(webUsbDescriptorStringSerialNumber);
-    }
-    break;
-  case USB_BOS_DESCRIPTOR_TYPE:
-    usbMsgPtr = (usbMsgPtr_t)(BOS_DESCRIPTOR);
-    return sizeof(BOS_DESCRIPTOR);
-  default:
-    break;
+    case USBDESCR_STRING:
+      switch (rq->wValue.bytes[0]) {
+        case 3:
+          usbMsgPtr = (usbMsgPtr_t)(webUsbDescriptorStringSerialNumber);
+          return sizeof(webUsbDescriptorStringSerialNumber);
+      }
+      break;
+    case USB_BOS_DESCRIPTOR_TYPE:
+      usbMsgPtr = (usbMsgPtr_t)(BOS_DESCRIPTOR);
+      return sizeof(BOS_DESCRIPTOR);
+    default:
+      break;
   }
   return 0;
 }
 
 uint8_t maybeHandleSetup(usbRequest_t* rq, usbMsgLen_t* msg_len) {
-  if (rq->bmRequestType ==
-      (USBRQ_DIR_DEVICE_TO_HOST | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE) &&
-      rq->bRequest == WL_REQUEST_WEBUSB) {
-    if (rq->wIndex.word == WEBUSB_REQUEST_GET_ALLOWED_ORIGINS) {
-      usbMsgPtr = (usbMsgPtr_t)(WEBUSB_ALLOWED_ORIGINS);
-      *msg_len = sizeof(WEBUSB_ALLOWED_ORIGINS);
-      return 1;
-    }
-    if (rq->wIndex.word == WEBUSB_REQUEST_GET_LANDING_PAGE) {
-      usbMsgPtr = (usbMsgPtr_t)(WEBUSB_LANDING_PAGE);
-      *msg_len = sizeof(WEBUSB_LANDING_PAGE);
-      return 1;
+  // USBRQ_DIR_DEVICE_TO_HOST | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE = 0xC0
+  if (rq->bmRequestType !=
+      (USBRQ_DIR_DEVICE_TO_HOST | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE)) {
+    return 0;
+  }
+
+  if (rq->bRequest == WL_REQUEST_WEBUSB) {
+    switch (rq->wIndex.word) {
+      case WEBUSB_REQUEST_GET_ALLOWED_ORIGINS:
+        usbMsgPtr = (usbMsgPtr_t)(WEBUSB_ALLOWED_ORIGINS);
+        *msg_len = sizeof(WEBUSB_ALLOWED_ORIGINS);
+        return 1;
+      case WEBUSB_REQUEST_GET_LANDING_PAGE:
+        usbMsgPtr = (usbMsgPtr_t)(WEBUSB_LANDING_PAGE);
+        *msg_len = sizeof(WEBUSB_LANDING_PAGE);
+        return 1;
     }
   }
+  if (rq->bRequest == WL_REQUEST_WINUSB) {
+    switch (rq->wIndex.word) {
+      case WINUSB_REQUEST_DESCRIPTOR:
+        usbMsgPtr = (usbMsgPtr_t)(MS_OS_20_DESCRIPTOR_SET);
+        *msg_len = sizeof(MS_OS_20_DESCRIPTOR_SET);
+        return 1;
+    }
+  }
+
   return 0;
 }
 
