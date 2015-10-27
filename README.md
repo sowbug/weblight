@@ -14,8 +14,8 @@ installed a base MinGW and MSYS system or equivalent, and have them in
 your system path. On Linux, try something like `sudo apt-get install
 gcc-avr binutils-avr gdb-avr avr-libc avrdude`. On OS X,
 [CrossPack](https://www.obdev.at/products/crosspack/index.html) works.
-* Install libusb-dev. `sudo apt-get install libusb-dev` works on
-  Linux, and `brew install libusb` works on OS X.
+* Install libusb. `sudo apt-get install libusb-dev` works on
+  Linux, and `brew install libusb libusb-compat` works on OS X.
 * Build and install the
   [micronucleus command-line tool](https://github.com/micronucleus/micronucleus/tree/master/commandline)
   to be able to upload to the ATTiny85. Have it somewhere in your PATH.
