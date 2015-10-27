@@ -211,31 +211,16 @@ if(!resetStarts){cli();calibrateOscillator();sei();}
 
 /* -------------------------- Device Description --------------------------- */
 
-#define  USB_CFG_VENDOR_ID       0xc0, 0x16 /* = 0x16c0 = 5824 = voti.nl */
-/* USB vendor ID for the device, low byte first. If you have registered your
- * own Vendor ID, define it here. Otherwise you may use one of obdev's free
- * shared VID/PID pairs. Be sure to read USB-IDs-for-free.txt for rules!
- * *** IMPORTANT NOTE ***
- * This template uses obdev's shared VID/PID pair for Vendor Class devices
- * with libusb: 0x16c0/0x5dc.  Use this VID/PID pair ONLY if you understand
- * the implications!
- */
-#define  USB_CFG_DEVICE_ID       0xdc, 0x05 /* = 0x05dc = 1500 */
-/* This is the ID of the product, low byte first. It is interpreted in the
- * scope of the vendor ID. If you have registered your own VID with usb.org
- * or if you have licensed a PID from somebody else, define it here. Otherwise
- * you may use one of obdev's free shared VID/PID pairs. See the file
- * USB-IDs-for-free.txt for details!
- * *** IMPORTANT NOTE ***
- * This template uses obdev's shared VID/PID pair for Vendor Class devices
- * with libusb: 0x16c0/0x5dc.  Use this VID/PID pair ONLY if you understand
- * the implications!
- */
+#define  USB_CFG_VENDOR_ID       0x09, 0x12 // = 0x1209 = 4617 = pid.codes
+// USB vendor ID for the device, low byte first.
+#define  USB_CFG_DEVICE_ID       0x00, 0xa8 // = 0xa800 = 43008
+// USB product ID, low byte first. It is interpreted in the scope of
+// the vendor ID.
 #define USB_CFG_DEVICE_VERSION  0x00, 0x01
-/* Version number of the device: Minor number first, then major number.
- */
-#define USB_CFG_VENDOR_NAME     'o', 'b', 'd', 'e', 'v', '.', 'a', 't'
-#define USB_CFG_VENDOR_NAME_LEN 8
+// Version number of the device: Minor number first, then major number.
+
+#define USB_CFG_VENDOR_NAME     's', 'o', 'w', 'b', 'u', 'g', '.', 'c', 'o', 'm'
+#define USB_CFG_VENDOR_NAME_LEN 10
 /* These two values define the vendor name returned by the USB device. The name
  * must be given as a list of characters under single quotes. The characters
  * are interpreted as Unicode (UTF-16) entities.

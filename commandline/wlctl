@@ -28,9 +28,9 @@ parser.add_option("-c", "--count",
                   help="configure number of active LEDs (writes to EEPROM)")
 parser.add_option("-s", "--serial",
                   help="specify the serial number of the device to address")
-parser.add_option("--vid", default="0x16c0",
+parser.add_option("--vid", default="0x1209",
                   help="USB VID")
-parser.add_option("--pid", default="0x05dc", help="USB PID")
+parser.add_option("--pid", default="0xa800", help="USB PID")
 
 (options, args) = parser.parse_args()
 
