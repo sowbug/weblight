@@ -68,9 +68,9 @@ function ab2str(buf) {
 
 function start() {
   'use strict';
-  
+
   if (window.location.protocol != "https:" &&
-      window.location.host == "github.com") {
+      window.location.host == "sowbug.github.com") {
     window.location.href = "https:" +
         window.location.href.substring(window.location.protocol.length);
   }
