@@ -28,7 +28,7 @@ function ab2str(buf) {
     };
 
     return this.device_.open()
-        .then(() => this.device_.getConfiguration()
+      .then(() => this.device_.getConfiguration()
             .then(config => {
               if (config.configurationValue == 1) {
                 return Promise.resolve();
@@ -37,26 +37,26 @@ function ab2str(buf) {
               }
             })
             .catch(error => this.device_.setConfiguration(1)))
-        .then(() => this.device_.claimInterface(0))
-        .then(() => this.device_.controlTransferOut({
-            'requestType': 'class',
-            'recipient': 'interface',
-            'request': 0x22,
-            'value': 0x01,
-            'index': 0x00}))
-        .then(() => {
-          readLoop();
-        });
+      .then(() => this.device_.claimInterface(0))
+      .then(() => this.device_.controlTransferOut({
+        'requestType': 'class',
+        'recipient': 'interface',
+        'request': 0x22,
+        'value': 0x01,
+        'index': 0x00}))
+      .then(() => {
+        readLoop();
+      });
   };
 
   webusb.Device.prototype.disconnect = function() {
     return this.device_.controlTransferOut({
-            'requestType': 'class',
-            'recipient': 'interface',
-            'request': 0x22,
-            'value': 0x00,
-            'index': 0x00})
-        .then(() => this.device_.close());
+      'requestType': 'class',
+      'recipient': 'interface',
+      'request': 0x22,
+      'value': 0x00,
+      'index': 0x00})
+      .then(() => this.device_.close());
   };
 
   webusb.Device.prototype.controlTransferOut = function(setup, data) {
@@ -98,64 +98,120 @@ function start() {
       console.log("no device found");
       navigator.usb.addEventListener('connect', function() {
         console.log('connect event', this);
-        start();  // TODO(miket): this is horrible. I need to study up
-                  // on promises.
+
+        // TODO(miket): this is horrible. I need to study up on
+        // promises.
+        start();
       });
     } else {
       device = devices[0];
-      device.connect().then(() => {
-        device.controlTransferIn({
-          'requestType': 'standard',
-          'recipient': 'device',
-          'request': 6,
-          'value': 0x0302,
-          'index': 0x01}, 64).then(o => {
-            console.log("Found device calling itself", ab2str(o.data));
-          });
 
-        var cycle = 0;
-        var name = '';
-        var doLight = function() {
-          let rgb = new Uint8Array(3);
-
-          switch (cycle) {
-          case 0:
-            rgb[0] = 0x80;
-            rgb[1] = 0x00;
-            rgb[2] = 0x00;
-            name = 'red';
-            break;
-          case 1:
-            rgb[0] = 0x00;
-            rgb[1] = 0x80;
-            rgb[2] = 0x00;
-            name = 'green';
-            break;
-          case 2:
-            rgb[0] = 0x00;
-            rgb[1] = 0x00;
-            rgb[2] = 0x80;
-            name = 'blue';
-            break;
-          }
-          if (++cycle > 2) {
-            cycle = 0;
-          }
-          status.innerText = name;
-          device.controlTransferOut({
-            'requestType': 'vendor',
+      function logManufacturer(dev) {
+        return new Promise(function(f, r) {
+          dev.controlTransferIn({
+            'requestType': 'standard',
             'recipient': 'device',
-            'request': 0x01,
-            'value': 0x00,
-            'index': 0x00}, rgb).then(o => {
-              console.log(name);
+            'request': 6,
+            'value': 0x0301,
+            'index': 0
+          }, 64)
+            .then(o => {
+              console.log("Manufacturer", ab2str(o.data));
+              f(o.data);
+            })
+            .catch(o => {
+              console.log("Manufacturer", o);
             });
+        });
+      }
 
-        };
-        doLight();
+      function logProduct(dev) {
+        return new Promise(function(f, r) {
+          dev.controlTransferIn({
+            'requestType': 'standard',
+            'recipient': 'device',
+            'request': 6,
+            'value': 0x0302,
+            'index': 0
+          }, 64)
+            .then(o => {
+              console.log("Product", ab2str(o.data));
+              f(o.data);
+            })
+            .catch(o => {
+              console.log("Product", o);
+            });
+        });
+      }
 
-        intervalId = window.setInterval(doLight, 1000);
-      });
+      function logSerialNumber(dev) {
+        return new Promise(function(f, r) {
+          dev.controlTransferIn({
+            'requestType': 'standard',
+            'recipient': 'device',
+            'request': 6,
+            'value': 0x0303,
+            'index': 0
+          }, 64).then(o => {
+            console.log(o);
+            console.log("Serial number", ab2str(o.data));
+            f(o.data);
+          })
+            .catch(o => {
+              console.log("Serial number", o);
+            });
+        });
+      }
+
+      device.connect()
+        .then(logManufacturer.bind(this, device))
+        .then(logProduct.bind(this, device))
+        .then(logSerialNumber.bind(this, device))
+        .then(() => {
+
+          var cycle = 0;
+          var name = '';
+          var doLight = function() {
+            let rgb = new Uint8Array(3);
+
+            switch (cycle) {
+            case 0:
+              rgb[0] = 0x80;
+              rgb[1] = 0x00;
+              rgb[2] = 0x00;
+              name = 'red';
+              break;
+            case 1:
+              rgb[0] = 0x00;
+              rgb[1] = 0x80;
+              rgb[2] = 0x00;
+              name = 'green';
+              break;
+            case 2:
+              rgb[0] = 0x00;
+              rgb[1] = 0x00;
+              rgb[2] = 0x80;
+              name = 'blue';
+              break;
+            }
+            if (++cycle > 2) {
+              cycle = 0;
+            }
+            status.innerText = name;
+            device.controlTransferOut({
+              'requestType': 'vendor',
+              'recipient': 'device',
+              'request': 0x01,
+              'value': 0x00,
+              'index': 0x00}, rgb).then(o => {
+                console.log(name);
+              });
+
+          };
+          doLight();
+
+          intervalId = window.setInterval(doLight, 1000);
+        });
     }
   });
 }
