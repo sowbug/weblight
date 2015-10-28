@@ -58,12 +58,13 @@ void LEDsOff() {
 
 void StatusBlink(uint8_t count) {
   uint8_t i;
+  LEDsOff();
   for (i = 0; i < count; i++) {
     SetLED(0, 0, 0, 32);
     UpdateLEDs();
     _delay_ms(10);
     SetLED(0, 0, 0, 0);
     UpdateLEDs();
-    _delay_ms(50);
+    _delay_ms(40);
   }
 }
