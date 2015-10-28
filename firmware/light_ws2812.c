@@ -100,7 +100,9 @@ void inline ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
   masklo        =~maskhi&ws2812_PORTREG;
   maskhi |=        ws2812_PORTREG;
   sreg_prev=SREG;
+#ifndef DISABLE_WS2812_CLI
   cli();
+#endif
 
   while (datlen--) {
     curbyte=*data++;
