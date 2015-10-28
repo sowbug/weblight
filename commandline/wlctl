@@ -19,7 +19,7 @@ import usb.util
 usage = "usage: %prog [options] rgbcolor"
 parser = OptionParser(usage)
 parser.add_option("-l", "--list", action="store_true", default=False,
-                  help="list attach devices")
+                  help="list attached devices")
 parser.add_option("-t", "--test", action="store_true", default=False,
                   help="test device")
 parser.add_option("-r", "--reset", action="store_true", default=False,
