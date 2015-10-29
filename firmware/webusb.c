@@ -7,7 +7,7 @@
 
 #define USB_BOS_DESCRIPTOR_TYPE (15)
 
-#define MS_OS_20_DESCRIPTOR_LENGTH (0x2e)
+#define MS_OS_20_DESCRIPTOR_LENGTH (0x1e)
 
 PROGMEM const uchar BOS_DESCRIPTOR[] = {
   // BOS descriptor header
@@ -63,25 +63,11 @@ const uchar MS_OS_20_DESCRIPTOR_SET[MS_OS_20_DESCRIPTOR_LENGTH] = {
   0x00, 0x00, 0x03, 0x06,  // Windows version (8.1) (0x06030000)
   MS_OS_20_DESCRIPTOR_LENGTH, 0x00,  // Size, MS OS 2.0 descriptor set
 
-  // Microsoft OS 2.0 configuration subset header (table 11)
-  0x08, 0x00,  // wLength
-  0x01, 0x00,  // wDescriptorType
-  0x00,        // bConfigurationValue (see above)
-  0x00,        // bReserved
-  0x24, 0x00,  // wTotalLength
-
-  // Microsoft OS 2.0 function subset header (table 12)
-  0x08, 0x00,  // wLength
-  0x02, 0x00,  // wDescriptorType
-  0x00,        // bFirstInterface
-  0x00,        // bReserved
-  0x1C, 0x00,  // wSubsetLength
-
   // Microsoft OS 2.0 compatible ID descriptor (table 13)
   0x14, 0x00,  // wLength
   0x03, 0x00,  // MS_OS_20_FEATURE_COMPATIBLE_ID
   'W',  'I',  'N',  'U',  'S',  'B',  0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
 // The WebUSB descriptors can't be PROGMEM because usbFunctionSetup()
