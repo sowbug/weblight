@@ -43,6 +43,16 @@ PROGMEM const uchar BOS_DESCRIPTOR[] = {
 };
 
 // Microsoft OS 2.0 Descriptor Set
+//
+// See https://goo.gl/4T73ef for discussion about bConfigurationValue:
+//
+// "It looks like we'll need to update the MSOS 2.0 Descriptor docs to
+// match the implementation in USBCCGP. The bConfigurationValue in the
+// configuration subset header should actually just be an index value,
+// not the configuration value. Specifically it's the index value
+// passed to GET_DESCRIPTOR to retrieve the configuration descriptor.
+// Try changing the value to 0 and see if that resolves the issue.
+// Sorry for the confusion."
 #define WINUSB_REQUEST_DESCRIPTOR (0x07)
 const uchar MS_OS_20_DESCRIPTOR_SET[] = {
   0x0A, 0x00,  // Descriptor size (10 bytes)
@@ -52,7 +62,7 @@ const uchar MS_OS_20_DESCRIPTOR_SET[] = {
 
   0x08, 0x00,  // wLength
   0x01, 0x00,  // wDescriptorType
-  0x01,        // bConfigurationValue
+  0x00,        // bConfigurationValue (see above)
   0x00,        // bReserved
   0x24, 0x00,  // wTotalLength
 
