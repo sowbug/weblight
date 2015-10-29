@@ -7,6 +7,8 @@
 
 #define USB_BOS_DESCRIPTOR_TYPE (15)
 
+#define MS_OS_20_DESCRIPTOR_LENGTH (0x2e)
+
 PROGMEM const uchar BOS_DESCRIPTOR[] = {
   // BOS descriptor header
   0x05, 0x0F, 0x38, 0x00, 0x02,
@@ -37,7 +39,7 @@ PROGMEM const uchar BOS_DESCRIPTOR[] = {
   0x65, 0x9D, 0x9E, 0x64, 0x8A, 0x9F,
 
   0x00, 0x00, 0x03, 0x06,    // Windows version (8.1) (0x06030000)
-  0x2E, 0x00,                // Size, MS OS 2.0 descriptor set
+  MS_OS_20_DESCRIPTOR_LENGTH, 0x00,
   WL_REQUEST_WINUSB,         // Vendor-assigned bMS_VendorCode
   0x00                       // Doesn’t support alternate enumeration
 };
@@ -54,27 +56,31 @@ PROGMEM const uchar BOS_DESCRIPTOR[] = {
 // Try changing the value to 0 and see if that resolves the issue.
 // Sorry for the confusion."
 #define WINUSB_REQUEST_DESCRIPTOR (0x07)
-const uchar MS_OS_20_DESCRIPTOR_SET[] = {
+const uchar MS_OS_20_DESCRIPTOR_SET[MS_OS_20_DESCRIPTOR_LENGTH] = {
+  // Microsoft OS 2.0 descriptor set header (table 10)
   0x0A, 0x00,  // Descriptor size (10 bytes)
   0x00, 0x00,  // MS OS 2.0 descriptor set header
   0x00, 0x00, 0x03, 0x06,  // Windows version (8.1) (0x06030000)
-  0x2E, 0x00,  // Size, MS OS 2.0 descriptor set
+  MS_OS_20_DESCRIPTOR_LENGTH, 0x00,  // Size, MS OS 2.0 descriptor set
 
+  // Microsoft OS 2.0 configuration subset header (table 11)
   0x08, 0x00,  // wLength
   0x01, 0x00,  // wDescriptorType
   0x00,        // bConfigurationValue (see above)
   0x00,        // bReserved
   0x24, 0x00,  // wTotalLength
 
+  // Microsoft OS 2.0 function subset header (table 12)
   0x08, 0x00,  // wLength
   0x02, 0x00,  // wDescriptorType
   0x00,        // bFirstInterface
   0x00,        // bReserved
   0x1C, 0x00,  // wSubsetLength
 
+  // Microsoft OS 2.0 compatible ID descriptor (table 13)
   0x14, 0x00,  // wLength
   0x03, 0x00,  // MS_OS_20_FEATURE_COMPATIBLE_ID
-  'W', 'I', 'N', 'U', 'S', 'B', 0x00, 0x00,
+  'W',  'I',  'N',  'U',  'S',  'B',  0x00, 0x00,
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
 
