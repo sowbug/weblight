@@ -84,7 +84,7 @@ if result[5] != 23:
     print "Whoops, no WebUSB descriptor in BOS"
     sys.exit(1)
 
-bosParts = struct.unpack('BBBB16BHB', result[5:])
+bosParts = struct.unpack('BBBB16BHB', result[5:5+23])
 
 # last byte is bVendorCode
 bVendorCode = bosParts[-1]
@@ -96,7 +96,7 @@ WEBUSB_REQUEST_GET_LANDING_PAGE = 2
 PrintDivider()
 
 result = dev.ctrl_transfer(0xC0, bVendorCode, 0,
-    WEBUSB_REQUEST_GET_LANDING_PAGE, 65535)
+    WEBUSB_REQUEST_GET_LANDING_PAGE, 253)
 print "GET_LANDING_PAGE", len(result), binascii.hexlify(result)
 landing_array = result[2:]
 
@@ -105,7 +105,7 @@ print "WebUSB landing page: %s" % (landing_array.tostring())
 PrintDivider()
 
 result = dev.ctrl_transfer(0xC0, bVendorCode, 0,
-    WEBUSB_REQUEST_GET_ALLOWED_ORIGINS, 65535)
+    WEBUSB_REQUEST_GET_ALLOWED_ORIGINS, 253)
 print "GET_ALLOWED_ORIGINS", len(result), binascii.hexlify(result)
 origin_descriptor = result
 if origin_descriptor[0] != 4:
