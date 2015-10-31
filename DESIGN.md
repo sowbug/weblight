@@ -156,3 +156,15 @@ VID/PID pairs, eliminating the need to use garbage pairs or submit to
 the
 [burdensome and expensive requirements](http://www.usb.org/developers/vendor/)
 of the USB Implementers Forum.
+
+Prototype Manufacturing
+===
+
+* [OSH Park](https://oshpark.com/)
+
+* [MacroFab](http://macrofab.net/)
+
+Production Manufacturing
+===
+
+* TODO
