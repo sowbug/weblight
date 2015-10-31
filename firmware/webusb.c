@@ -133,37 +133,6 @@ USB_PUBLIC usbMsgLen_t usbFunctionDescriptor(usbRequest_t *rq) {
   return 0;
 }
 
-uint8_t maybeHandleSetup(usbRequest_t* rq, usbMsgLen_t* msg_len) {
-  // USBRQ_DIR_DEVICE_TO_HOST | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE = 0xC0
-  if (rq->bmRequestType !=
-      (USBRQ_DIR_DEVICE_TO_HOST | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE)) {
-    return 0;
-  }
-
-  if (rq->bRequest == WL_REQUEST_WEBUSB) {
-    switch (rq->wIndex.word) {
-      case WEBUSB_REQUEST_GET_ALLOWED_ORIGINS:
-        usbMsgPtr = (usbMsgPtr_t)(WEBUSB_ALLOWED_ORIGINS);
-        *msg_len = sizeof(WEBUSB_ALLOWED_ORIGINS);
-        return 1;
-      case WEBUSB_REQUEST_GET_LANDING_PAGE:
-        usbMsgPtr = (usbMsgPtr_t)(WEBUSB_LANDING_PAGE);
-        *msg_len = sizeof(WEBUSB_LANDING_PAGE);
-        return 1;
-    }
-  }
-  if (rq->bRequest == WL_REQUEST_WINUSB) {
-    switch (rq->wIndex.word) {
-      case WINUSB_REQUEST_DESCRIPTOR:
-        usbMsgPtr = (usbMsgPtr_t)(MS_OS_20_DESCRIPTOR_SET);
-        *msg_len = sizeof(MS_OS_20_DESCRIPTOR_SET);
-        return 1;
-    }
-  }
-
-  return 0;
-}
-
 void forceReset() {
   StatusBlink(3);
   wdt_enable(WDTO_15MS);
@@ -176,11 +145,6 @@ static uchar currentPosition, bytesRemaining;
 usbMsgLen_t usbFunctionSetup(uchar data[8]) {
   usbRequest_t    *rq = (void *)data;
   static uchar    dataBuffer[4];
-
-  usbMsgLen_t msg_len = 0;
-  if (maybeHandleSetup(rq, &msg_len)) {
-    return msg_len;
-  }
 
   usbMsgPtr = (int)dataBuffer;
   switch (rq->bRequest) {
@@ -202,6 +166,25 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
     SetLEDCount(count);
     WriteLEDCount();
     return count;
+  }
+  case WL_REQUEST_WEBUSB: {
+    switch (rq->wIndex.word) {
+    case WEBUSB_REQUEST_GET_ALLOWED_ORIGINS:
+      usbMsgPtr = (usbMsgPtr_t)(WEBUSB_ALLOWED_ORIGINS);
+      return sizeof(WEBUSB_ALLOWED_ORIGINS);
+    case WEBUSB_REQUEST_GET_LANDING_PAGE:
+        usbMsgPtr = (usbMsgPtr_t)(WEBUSB_LANDING_PAGE);
+        return sizeof(WEBUSB_LANDING_PAGE);
+    }
+    break;
+  }
+  case WL_REQUEST_WINUSB: {
+    switch (rq->wIndex.word) {
+    case WINUSB_REQUEST_DESCRIPTOR:
+      usbMsgPtr = (usbMsgPtr_t)(MS_OS_20_DESCRIPTOR_SET);
+      return sizeof(MS_OS_20_DESCRIPTOR_SET);
+    }
+    break;
   }
   case WL_REQUEST_RESET_DEVICE:
     forceReset();
