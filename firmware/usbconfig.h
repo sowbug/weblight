@@ -114,7 +114,7 @@
  * transfers. Set it to 0 if you don't need it and want to save a couple of
  * bytes.
  */
-#define USB_CFG_IMPLEMENT_FN_READ       0
+#define USB_CFG_IMPLEMENT_FN_READ       1
 /* Set this to 1 if you need to send control replies which are generated
  * "on the fly" when usbFunctionRead() is called. If you only want to send
  * data from a static buffer, set it to 0 and return the data from

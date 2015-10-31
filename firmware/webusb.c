@@ -56,7 +56,7 @@ PROGMEM const uchar BOS_DESCRIPTOR[] = {
 // Try changing the value to 0 and see if that resolves the issue.
 // Sorry for the confusion."
 #define WINUSB_REQUEST_DESCRIPTOR (0x07)
-const uchar MS_OS_20_DESCRIPTOR_SET[MS_OS_20_DESCRIPTOR_LENGTH] = {
+PROGMEM const uchar MS_OS_20_DESCRIPTOR_SET[MS_OS_20_DESCRIPTOR_LENGTH] = {
   // Microsoft OS 2.0 descriptor set header (table 10)
   0x0A, 0x00,  // Descriptor size (10 bytes)
   0x00, 0x00,  // MS OS 2.0 descriptor set header
@@ -70,21 +70,15 @@ const uchar MS_OS_20_DESCRIPTOR_SET[MS_OS_20_DESCRIPTOR_LENGTH] = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
-// The WebUSB descriptors can't be PROGMEM because usbFunctionSetup()
-// doesn't know how to read from flash, and for some weird reason when
-// I tried to implement flash-reading capabilities there, it stalled
-// out the USB pipeline.
-//
-// Solving this will be important if we ever run low on SRAM.
 #define WEBUSB_REQUEST_GET_LANDING_PAGE (0x02)
-const uchar WEBUSB_LANDING_PAGE[] = {
+PROGMEM const uchar WEBUSB_LANDING_PAGE[] = {
   0x23, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/', 's', 'o', 'w', 'b', 'u',
   'g', '.', 'g', 'i', 't', 'h', 'u', 'b', '.', 'i', 'o', '/',
   'w', 'e', 'b', 'l', 'i', 'g', 'h', 't'
 };
 
 #define WEBUSB_REQUEST_GET_ALLOWED_ORIGINS (0x01)
-const uchar WEBUSB_ALLOWED_ORIGINS[] = {
+PROGMEM const uchar WEBUSB_ALLOWED_ORIGINS[] = {
   0x04, 0x00, 0x35, 0x00, 0x1A, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/',
   's', 'o', 'w', 'b', 'u', 'g', '.', 'g', 'i', 't', 'h', 'u', 'b',
   '.', 'i', 'o', 0x17, 0x03, 'h', 't', 't', 'p', ':', '/', '/',
@@ -142,6 +136,8 @@ void forceReset() {
 
 static uchar buffer[8];
 static uchar currentPosition, bytesRemaining;
+const uchar *pmResponsePtr;
+uchar pmResponseBytesRemaining;
 usbMsgLen_t usbFunctionSetup(uchar data[8]) {
   usbRequest_t    *rq = (void *)data;
   static uchar    dataBuffer[4];
@@ -170,19 +166,22 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
   case WL_REQUEST_WEBUSB: {
     switch (rq->wIndex.word) {
     case WEBUSB_REQUEST_GET_ALLOWED_ORIGINS:
-      usbMsgPtr = (usbMsgPtr_t)(WEBUSB_ALLOWED_ORIGINS);
-      return sizeof(WEBUSB_ALLOWED_ORIGINS);
+      pmResponsePtr = WEBUSB_ALLOWED_ORIGINS;
+      pmResponseBytesRemaining = sizeof(WEBUSB_ALLOWED_ORIGINS);
+      return USB_NO_MSG;
     case WEBUSB_REQUEST_GET_LANDING_PAGE:
-        usbMsgPtr = (usbMsgPtr_t)(WEBUSB_LANDING_PAGE);
-        return sizeof(WEBUSB_LANDING_PAGE);
+      pmResponsePtr = WEBUSB_LANDING_PAGE;
+      pmResponseBytesRemaining = sizeof(WEBUSB_LANDING_PAGE);
+      return USB_NO_MSG;
     }
     break;
   }
   case WL_REQUEST_WINUSB: {
     switch (rq->wIndex.word) {
     case WINUSB_REQUEST_DESCRIPTOR:
-      usbMsgPtr = (usbMsgPtr_t)(MS_OS_20_DESCRIPTOR_SET);
-      return sizeof(MS_OS_20_DESCRIPTOR_SET);
+      pmResponsePtr = MS_OS_20_DESCRIPTOR_SET;
+      pmResponseBytesRemaining = sizeof(MS_OS_20_DESCRIPTOR_SET);
+      return USB_NO_MSG;
     }
     break;
   }
@@ -194,7 +193,17 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
   return 0;
 }
 
-uchar usbFunctionWrite(uchar *data, uchar len) {
+USB_PUBLIC uchar usbFunctionRead(uchar *data, uchar len) {
+  if (len > pmResponseBytesRemaining) {
+    len = pmResponseBytesRemaining;
+  }
+  memcpy_P(data, pmResponsePtr, len);
+  pmResponsePtr += len;
+  pmResponseBytesRemaining -= len;
+  return len;
+}
+
+USB_PUBLIC uchar usbFunctionWrite(uchar *data, uchar len) {
   uchar i;
 
   if (len > bytesRemaining) {
