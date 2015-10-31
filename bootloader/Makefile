@@ -8,7 +8,7 @@ FUSEOPT = \
 	-U lfuse:w:0xe1:m \
 	-U hfuse:w:0xdd:m \
 	-U efuse:w:0xfe:m
-HEXFILE = t85_watchdog_reset.hex
+HEXFILE = t85_watchdog_or_ext_reset.hex
 
 flash: $(HEXFILE)
 	$(AVRDUDE) -U flash:w:$(HEXFILE):i
