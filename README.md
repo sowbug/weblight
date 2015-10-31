@@ -59,9 +59,16 @@ Tips
 will help you when you're developing your own WebUSB-compatible
 device.
 
-Notable Bugs
+Notable Bugs and Next Steps
 ===
 
 * I haven't figured out how to stop the WS2812 code from interfering
   with V-USB's picky interrupt requirements. So every once in a while
-  the weblight command-line tool will throw an exception.
+  the weblight command-line tool will throw an exception. After
+  thinking about this for a while, I've concluded that having two
+  timing-sensitive components in the same single-threaded
+  microcontroller is an unsolvable problem, so I'm currently
+  investigating the
+  [APA102C](https://cpldcpu.wordpress.com/2014/11/30/understanding-the-apa102-superled/),
+  which is externally clocked and thus can almost certainly handle
+  being interrupted while the ATTiny is dealing with USB matters.
