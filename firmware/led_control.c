@@ -56,6 +56,10 @@ void LEDsOff() {
   UpdateLEDs();
 }
 
+// Note that this is an invasive method for gross debugging only. It
+// will interfere with V-USB interrupts.
+//
+// TODO(miket): make it more polite.
 void StatusBlink(uint8_t count) {
   uint8_t i;
   LEDsOff();
