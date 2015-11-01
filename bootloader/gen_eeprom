@@ -8,12 +8,15 @@ f = open("eeprom.tmp", "wb")
 # 0-3: signature
 f.write('WebL')
 
-# 4-19: serial(16)
+# 4-5: version (BCD)
+f.write(binascii.unhexlify('0100'))
+
+# 6-21: serial(16 ASCII bytes)
 uuid_str = str(uuid.uuid4())
 serial_str = uuid_str[-16:]
 f.write(serial_str)
 
-# 20: LED count; default = 2 lights
+# 22: LED count; default = 2 lights
 f.write(binascii.unhexlify('02'))
 
 f.close()

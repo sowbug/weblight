@@ -211,12 +211,12 @@ if(!resetStarts){cli();calibrateOscillator();sei();}
 
 /* -------------------------- Device Description --------------------------- */
 
-#define  USB_CFG_VENDOR_ID       0x09, 0x12 // = 0x1209 = 4617 = pid.codes
+#define  USB_CFG_VENDOR_ID       0x09, 0x12  // = 0x1209 = 4617 = pid.codes
 // USB vendor ID for the device, low byte first.
-#define  USB_CFG_DEVICE_ID       0x00, 0xa8 // = 0xa800 = 43008
+#define  USB_CFG_DEVICE_ID       0x00, 0xa8  // = 0xa800 = 43008
 // USB product ID, low byte first. It is interpreted in the scope of
 // the vendor ID.
-#define USB_CFG_DEVICE_VERSION  0x00, 0x01
+#define USB_CFG_DEVICE_VERSION   0x00, 0x01  // = 0x0100 = 1.0
 // Version number of the device: Minor number first, then major number.
 
 #define USB_CFG_VENDOR_NAME     's', 'o', 'w', 'b', 'u', 'g', '.', 'c', 'o', 'm'
