@@ -30,6 +30,7 @@
 # EAGLE
 *.b#*
 *.s#*
+*.l#*
 *.pro
 
 # Misc
