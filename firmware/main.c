@@ -38,24 +38,61 @@ enum {
 
 // TODO: if memory gets tight, many of these can be collapsed into a
 // union.
-uint8_t state;
-uint8_t active_led;
-uint8_t r, g, b;
+static uint8_t state;
+static uint8_t active_led;
+static uint8_t r, g, b;
 
 void initReady() {
   state = STATE_READY;
 }
 
-uchar lastUsbSofCount = 0;
+void doGratuitousBlinking() {
+  static uchar blinkie = 0;
+  if (blinkie) {
+    SetLED(0, 4, 0, 0);
+  } else {
+    SetLED(0, 0, 0, 4);
+  }
+  blinkie = !blinkie;
+}
+
+void doAnimation() {
+  if (0) {
+    // This is where we'd do any animation of the lights that isn't
+    // initiated by a direct host request.
+    doGratuitousBlinking();
+  }
+
+  UpdateLEDs();
+}
+
+static uchar hostIsAsleep = 0;  // TODO: set this appropriately.
+static uchar readyForUpdate = 0;
+static uchar lastUsbSofCount = 0;
 void doReady() {
   usbPoll();
 
-  // If we just got a frame from the host, now might be a good time to
-  // try talking to the LEDs.
-  if (usbSofCount != lastUsbSofCount) {
-    lastUsbSofCount = usbSofCount;
-    UpdateLEDs();
+  // If Timer 1 matched the output-compare register A, then clear it
+  // and mark that it's time for an animation frame.
+  if (TIFR & _BV(OCF1A)) {
+    TIFR |= _BV(OCF1A);
+    readyForUpdate = 1;
   }
+  if (readyForUpdate) {
+    if (hostIsAsleep) {
+      doAnimation();
+      readyForUpdate = 0;
+    } else {
+      if (usbSofCount != lastUsbSofCount) {
+        doAnimation();
+        readyForUpdate = 0;
+      }
+    }
+  }
+  // No matter whether we ran an animation frame, we want to reset the
+  // indicator that we just got a frame from the host, because our
+  // goal is to run animation frames only right after a host frame.
+  lastUsbSofCount = usbSofCount;
 }
 
 void initConnectUSB() {
@@ -123,13 +160,22 @@ void doDisconnectUSB() {
   // ensure the host notices that the device was unplugged.
   initStartupSequence();
 }
+
 void initMCUInit() {
   state = STATE_MCU_INIT;
 }
 
 void doMCUInit() {
-  // select clock: 16.5M/1k -> overflow rate = 16.5M/256k = 62.94 Hz
-  TCCR1 = 0x0b;
+  // Clear on compare match
+  // CK / 16384
+  TCCR1 = _BV(CTC1) |
+    _BV(CS13) | _BV(CS12) | _BV(CS11) | _BV(CS10);
+
+  // CTC compare value: 16500000 / 16384 / 32 = match at ~32Hz
+  //
+  // TODO: for some reason this is looking more like 3Hz. Am I
+  // misreading the datasheet?
+  OCR1A = F_CPU >> (14 + 5);  // 2^14 = 16384; 2^5 = 32
 
   // Even if you don't use the watchdog, turn it off here. On newer
   // devices, the status of the watchdog (on/off, period) is PRESERVED
