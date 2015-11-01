@@ -46,8 +46,16 @@ void initReady() {
   state = STATE_READY;
 }
 
+uchar lastUsbSofCount = 0;
 void doReady() {
   usbPoll();
+
+  // If we just got a frame from the host, now might be a good time to
+  // try talking to the LEDs.
+  if (usbSofCount != lastUsbSofCount) {
+    lastUsbSofCount = usbSofCount;
+    UpdateLEDs();
+  }
 }
 
 void initConnectUSB() {
