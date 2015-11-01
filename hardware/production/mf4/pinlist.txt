@@ -1,0 +1,70 @@
+Pinlist
+
+Exported from weblight_developer.sch at 10/31/15 8:44 PM
+
+EAGLE Version 7.4.0 Copyright (c) 1988-2015 CadSoft
+
+Part       Pad      Pin        Dir      Net
+
+C1         1        1          pas      VCC
+           2        2          pas      GND
+
+C2         1        1          pas      VCC
+           2        2          pas      GND
+
+D1         A        A          pas      GND
+           C        C          pas      USB_D_PLUS_RAW
+
+D2         A        A          pas      GND
+           C        C          pas      USB_D_MINUS_RAW
+
+JP-USB-TOP 5V       VBUS       io       VCC
+           GND      GND        io       GND
+           USB_M    D-         io       USB_D_MINUS_RAW
+           USB_P    D+         io       USB_D_PLUS_RAW
+
+JP1        1        1          pas      MISO
+           2        2          pas      VCC
+           3        3          pas      SCK_1
+           4        4          pas      MOSI/DIN_RAW
+           5        5          pas      RESET
+           6        6          pas      GND
+
+LED1       CI       CI         in       SCK_1
+           CO       CO         out      SCK_2
+           DI       DI         in       DIN_1
+           DO       DO         out      DIN_2
+           GND      GND        pwr      GND
+           VCC      VCC        pwr      VCC
+
+LED2       CI       CI         in       SCK_2
+           CO       CO         out               *** unconnected ***
+           DI       DI         in       DIN_2
+           DO       DO         out               *** unconnected ***
+           GND      GND        pwr      GND
+           VCC      VCC        pwr      VCC
+
+R1         1        1          pas      VCC
+           2        2          pas      USB_D_MINUS_RAW
+
+R2         1        1          pas      USB_D_PLUS_RAW
+           2        2          pas      USB_D_PLUS
+
+R3         1        1          pas      USB_D_MINUS
+           2        2          pas      USB_D_MINUS_RAW
+
+R4         1        1          pas      MOSI/DIN_RAW
+           2        2          pas      DIN_1
+
+SW_RESET   PAD1     P$1        pas      RESET
+           PAD2     P$2        pas      GND
+
+U1         1        PB5(NRES)  io       RESET
+           2        PB3(ADC3)  io       USB_D_MINUS
+           3        PB4(ADC2)  io       USB_D_PLUS
+           4        GND        io       GND
+           5        PB0(MOSI)  io       MOSI/DIN_RAW
+           6        PB1(MISO)  io       MISO
+           7        PB2(SCK/ADC1) io       SCK_1
+           8        VCC        io       VCC
+

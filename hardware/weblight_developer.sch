@@ -129,6 +129,8 @@
 <layer number="229" name="229bmp" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="230" name="230bmp" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="231" name="231bmp" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="232" name="Eagle3D_PG2" color="7" fill="1" visible="no" active="no"/>
+<layer number="233" name="Eagle3D_PG3" color="7" fill="1" visible="no" active="no"/>
 <layer number="248" name="Housing" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="249" name="Edge" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="250" name="Descript" color="3" fill="1" visible="no" active="no"/>
@@ -138,95 +140,6 @@
 </layers>
 <schematic xreflabel="%F%N/%S.%C%R" xrefpart="/%S.%C%R">
 <libraries>
-<library name="SparkFun-LED">
-<description>&lt;h3&gt;SparkFun Electronics' preferred foot prints&lt;/h3&gt;
-In this library you'll find discrete LEDs for illumination or indication, but no displays.&lt;br&gt;&lt;br&gt;
-We've spent an enormous amount of time creating and checking these footprints and parts, but it is the end user's responsibility to ensure correctness and suitablity for a given componet or application. If you enjoy using this library, please buy one of our products at www.sparkfun.com.
-&lt;br&gt;&lt;br&gt;
-&lt;b&gt;Licensing:&lt;/b&gt; Creative Commons ShareAlike 4.0 International - https://creativecommons.org/licenses/by-sa/4.0/ 
-&lt;br&gt;&lt;br&gt;
-You are welcome to use this library for commercial purposes. For attribution, we ask that when you begin to sell your device using our footprint, you email us with a link to the product being sold. We want bragging rights that we helped (in a very small part) to create your 8th world wonder. We would like the opportunity to feature your device on our homepage.</description>
-<packages>
-<package name="WS2812B">
-<description>&lt;b&gt;Intelligent control LED with integrated light source&lt;/b&gt;&lt;p&gt;
-WS2812B&lt;br&gt;
-source: http://www.world-semi.com/uploads/soft/130904/1_1500205981.pdf</description>
-<smd name="1" x="-2.577" y="1.6" dx="1.651" dy="1" layer="1"/>
-<smd name="4" x="2.577" y="1.6" dx="1.651" dy="1" layer="1"/>
-<smd name="3" x="2.577" y="-1.6" dx="1.651" dy="1" layer="1"/>
-<smd name="2" x="-2.577" y="-1.6" dx="1.651" dy="1" layer="1"/>
-<wire x1="-2.5" y1="2.5" x2="-2.5" y2="-2.5" width="0.127" layer="51"/>
-<wire x1="-2.5" y1="-2.5" x2="2.5" y2="-2.5" width="0.127" layer="51"/>
-<wire x1="2.5" y1="-2.5" x2="2.5" y2="2.5" width="0.127" layer="51"/>
-<wire x1="2.5" y1="2.5" x2="-2.5" y2="2.5" width="0.127" layer="51"/>
-<text x="4.254" y="1.2" size="1.016" layer="25">&gt;NAME</text>
-<text x="4.254" y="-1.6" size="0.6096" layer="27">&gt;VALUE</text>
-<wire x1="-2.4892" y1="2.362203125" x2="-2.4892" y2="2.616203125" width="0.2032" layer="21"/>
-<wire x1="-2.4892" y1="2.616203125" x2="-2.4384" y2="2.616203125" width="0.2032" layer="21"/>
-<wire x1="-2.4384" y1="2.616203125" x2="-2.4384" y2="2.611121875" width="0.2032" layer="21"/>
-<wire x1="-2.4384" y1="2.611121875" x2="2.512059375" y2="2.611121875" width="0.2032" layer="21"/>
-<wire x1="2.512059375" y1="2.611121875" x2="2.512059375" y2="2.37998125" width="0.2032" layer="21"/>
-<wire x1="-2.50951875" y1="-2.319021875" x2="-2.50951875" y2="-2.5908" width="0.2032" layer="21"/>
-<wire x1="-2.50951875" y1="-2.5908" x2="-2.45871875" y2="-2.5908" width="0.2032" layer="21"/>
-<wire x1="-2.45871875" y1="-2.5908" x2="-2.45871875" y2="-2.593340625" width="0.2032" layer="21"/>
-<wire x1="-2.45871875" y1="-2.593340625" x2="2.50951875" y2="-2.593340625" width="0.2032" layer="21"/>
-<wire x1="2.50951875" y1="-2.593340625" x2="2.50951875" y2="-2.36728125" width="0.2032" layer="21"/>
-<wire x1="-2.54" y1="-0.889" x2="-2.54" y2="0.8128" width="0.2032" layer="21"/>
-<wire x1="2.54" y1="0.8636" x2="2.54" y2="0" width="0.2032" layer="21"/>
-<wire x1="2.54" y1="0" x2="2.54" y2="-0.8636" width="0.2032" layer="21"/>
-<wire x1="2.54" y1="0" x2="0" y2="-2.54" width="0.2032" layer="21"/>
-</package>
-</packages>
-<symbols>
-<symbol name="WS2812B">
-<description>&lt;b&gt;Intelligent control LED with integrated light source&lt;/b&gt;&lt;p&gt;
-WS2812B&lt;br&gt;
-source: http://www.world-semi.com/uploads/soft/130904/1_1500205981.pdf</description>
-<pin name="VDD" x="-5.08" y="5.08" length="short" direction="pwr"/>
-<pin name="DOUT" x="-5.08" y="-2.54" length="short" direction="out"/>
-<pin name="VSS" x="17.78" y="-2.54" length="short" direction="pwr" rot="R180"/>
-<pin name="DIN" x="17.78" y="5.08" length="short" direction="in" rot="R180"/>
-<wire x1="-2.54" y1="7.62" x2="-2.54" y2="-5.08" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="-5.08" x2="15.24" y2="-5.08" width="0.254" layer="94"/>
-<wire x1="15.24" y1="-5.08" x2="15.24" y2="7.62" width="0.254" layer="94"/>
-<wire x1="15.24" y1="7.62" x2="-2.54" y2="7.62" width="0.254" layer="94"/>
-<text x="-2.286" y="8.382" size="1.778" layer="95">&gt;NAME</text>
-<text x="-2.54" y="-7.62" size="1.778" layer="96">&gt;VALUE</text>
-</symbol>
-</symbols>
-<devicesets>
-<deviceset name="WS2812B" prefix="D" uservalue="yes">
-<description>&lt;b&gt;WS2812B&lt;/b&gt; - Intelligent control LED integrated light source
-
-&lt;p&gt;Technical Specifications:
-&lt;ul&gt;
-&lt;li&gt;Power Supply Voltage (VDD): 3.5 to 5.3 V&lt;/li&gt;
-&lt;li&gt;Input Voltage (VI): -0.5 to VDD+0.5 V&lt;/li&gt;
-&lt;li&gt;Operating Junction Temperature (Topt): -25°C to +80°C&lt;/li&gt;
-&lt;li&gt;Storage Temperature Range (Tstg): -55°C to +150°C&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/p&gt;</description>
-<gates>
-<gate name="G$1" symbol="WS2812B" x="-2.54" y="0"/>
-</gates>
-<devices>
-<device name="" package="WS2812B">
-<connects>
-<connect gate="G$1" pin="DIN" pad="4"/>
-<connect gate="G$1" pin="DOUT" pad="2"/>
-<connect gate="G$1" pin="VDD" pad="1"/>
-<connect gate="G$1" pin="VSS" pad="3"/>
-</connects>
-<technologies>
-<technology name="">
-<attribute name="PROD_ID" value="DIO-12503"/>
-</technology>
-</technologies>
-</device>
-</devices>
-</deviceset>
-</devicesets>
-</library>
 <library name="SparkFun-Connectors">
 <description>&lt;h3&gt;SparkFun Electronics' preferred foot prints&lt;/h3&gt;
 In this library you'll find connectors and sockets- basically anything that can be plugged into or onto.&lt;br&gt;&lt;br&gt;
@@ -7491,12 +7404,47 @@ by exp-project-lbr.ulp</description>
 <text x="-2" y="2" size="1.27" layer="25">&gt;NAME</text>
 <text x="-2" y="-2" size="1.27" layer="27" align="top-left">&gt;VALUE</text>
 </package>
+<package name="APA102">
+<wire x1="-2.5" y1="2.5" x2="2.5" y2="2.5" width="0.127" layer="21"/>
+<wire x1="2.5" y1="2.5" x2="2.5" y2="-1.5" width="0.127" layer="21"/>
+<wire x1="2.5" y1="-1.5" x2="2.5" y2="-2.5" width="0.127" layer="21"/>
+<wire x1="2.5" y1="-2.5" x2="1.5" y2="-2.5" width="0.127" layer="21"/>
+<wire x1="1.5" y1="-2.5" x2="-2.5" y2="-2.5" width="0.127" layer="21"/>
+<wire x1="-2.5" y1="-2.5" x2="-2.5" y2="2.5" width="0.127" layer="21"/>
+<wire x1="1.5" y1="-2.5" x2="2.5" y2="-1.5" width="0.127" layer="21"/>
+<circle x="2.934" y="-2.688" radius="0.1414" width="0.127" layer="21"/>
+<circle x="0" y="0" radius="2.1" width="0.127" layer="21"/>
+<smd name="VCC" x="-2" y="1.7" dx="2" dy="1.1" layer="1"/>
+<smd name="CO" x="-2" y="0" dx="2" dy="1.1" layer="1"/>
+<smd name="DO" x="-2" y="-1.7" dx="2" dy="1.1" layer="1"/>
+<smd name="DI" x="2" y="-1.7" dx="2" dy="1.1" layer="1"/>
+<smd name="CI" x="2" y="0" dx="2" dy="1.1" layer="1"/>
+<smd name="GND" x="2" y="1.7" dx="2" dy="1.1" layer="1"/>
+<text x="-1.7" y="2.9" size="0.8128" layer="25" font="vector">&gt;NAME</text>
+<text x="-2" y="-2.83" size="0.8128" layer="27" font="vector" align="top-left">&gt;VALUE</text>
+</package>
 </packages>
 <symbols>
 <symbol name="BUTTON_TD-85XU">
 <pin name="P$1" x="-7.62" y="0" length="middle" direction="pas"/>
 <pin name="P$2" x="7.62" y="0" length="middle" direction="pas" rot="R180"/>
 <wire x1="1.27" y1="2.286" x2="-2.54" y2="0" width="0.254" layer="94"/>
+</symbol>
+<symbol name="APA102">
+<wire x1="-7.62" y1="-5.08" x2="-2.54" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="-5.08" x2="7.62" y2="-5.08" width="0.254" layer="94"/>
+<text x="-7.62" y="10.922" size="1.27" layer="95">&gt;NAME</text>
+<text x="-7.62" y="-7.112" size="1.27" layer="96">&gt;VALUE</text>
+<pin name="VCC" x="-12.7" y="7.62" length="middle" direction="pwr"/>
+<pin name="GND" x="-12.7" y="5.08" length="middle" direction="pwr"/>
+<pin name="DI" x="12.7" y="7.62" length="middle" direction="in" rot="R180"/>
+<pin name="DO" x="12.7" y="0" length="middle" direction="out" rot="R180"/>
+<pin name="CI" x="12.7" y="5.08" length="middle" direction="in" rot="R180"/>
+<pin name="CO" x="12.7" y="-2.54" length="middle" direction="out" rot="R180"/>
+<wire x1="7.62" y1="10.16" x2="7.62" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-5.08" x2="-7.62" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="-5.08" x2="-7.62" y2="10.16" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="10.16" x2="7.62" y2="10.16" width="0.254" layer="94"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -7516,6 +7464,26 @@ by exp-project-lbr.ulp</description>
 </device>
 </devices>
 </deviceset>
+<deviceset name="APA102" prefix="LED">
+<gates>
+<gate name="G$1" symbol="APA102" x="0" y="-2.54"/>
+</gates>
+<devices>
+<device name="" package="APA102">
+<connects>
+<connect gate="G$1" pin="CI" pad="CI"/>
+<connect gate="G$1" pin="CO" pad="CO"/>
+<connect gate="G$1" pin="DI" pad="DI"/>
+<connect gate="G$1" pin="DO" pad="DO"/>
+<connect gate="G$1" pin="GND" pad="GND"/>
+<connect gate="G$1" pin="VCC" pad="VCC"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
 </devicesets>
 </library>
 </libraries>
@@ -7528,7 +7496,6 @@ by exp-project-lbr.ulp</description>
 </class>
 </classes>
 <parts>
-<part name="D3" library="SparkFun-LED" deviceset="WS2812B" device="" value="WS2812B"/>
 <part name="JP-USB-TOP" library="SparkFun-Connectors" deviceset="USB" device="PCB"/>
 <part name="C1" library="rcl" deviceset="C-US" device="C0805" value="10uF"/>
 <part name="C2" library="rcl" deviceset="C-US" device="C0805" value="0.1uF"/>
@@ -7537,8 +7504,7 @@ by exp-project-lbr.ulp</description>
 <part name="R1" library="rcl" deviceset="R-US_" device="R0805" value="1.5K"/>
 <part name="D1" library="microbuilder" deviceset="DIODE" device="SOD-323" value="3.6V"/>
 <part name="D2" library="microbuilder" deviceset="DIODE" device="SOD-323" value="3.6V"/>
-<part name="D4" library="SparkFun-LED" deviceset="WS2812B" device="" value="WS2812B"/>
-<part name="U1" library="SparkFun-DigitalIC" deviceset="ATTINY45" device="TINY85-20-SMT" value="ATtiny85-20SU"/>
+<part name="U1" library="SparkFun-DigitalIC" deviceset="ATTINY45" device="TINY85-20-SMT" value="ATTiny85-20SU"/>
 <part name="P+2" library="supply1" deviceset="VCC" device=""/>
 <part name="GND2" library="supply1" deviceset="GND" device=""/>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
@@ -7550,34 +7516,36 @@ by exp-project-lbr.ulp</description>
 <part name="R4" library="rcl" deviceset="R-US_" device="R0805" value="470"/>
 <part name="JP1" library="SparkFun-Connectors" deviceset="AVR_SPI_PRG_6" device="2X3_LOCK"/>
 <part name="SW_RESET" library="weblight" deviceset="BUTTON_TD-85XU" device=""/>
+<part name="LED1" library="weblight" deviceset="APA102" device=""/>
+<part name="LED2" library="weblight" deviceset="APA102" device=""/>
 </parts>
 <sheets>
 <sheet>
 <plain>
 </plain>
 <instances>
-<instance part="D3" gate="G$1" x="73.66" y="68.58"/>
 <instance part="JP-USB-TOP" gate="G$1" x="-48.26" y="73.66" rot="R180"/>
-<instance part="C1" gate="G$1" x="7.62" y="53.34"/>
-<instance part="C2" gate="G$1" x="17.78" y="53.34"/>
-<instance part="R3" gate="G$1" x="-17.78" y="55.88" rot="R90"/>
-<instance part="R2" gate="G$1" x="-10.16" y="48.26" rot="R90"/>
-<instance part="R1" gate="G$1" x="-17.78" y="76.2" rot="R90"/>
-<instance part="D1" gate="G$1" x="-33.02" y="55.88" rot="R90"/>
+<instance part="C1" gate="G$1" x="7.62" y="50.8"/>
+<instance part="C2" gate="G$1" x="17.78" y="50.8"/>
+<instance part="R3" gate="G$1" x="-17.78" y="50.8" rot="R90"/>
+<instance part="R2" gate="G$1" x="-10.16" y="48.26" rot="R270"/>
+<instance part="R1" gate="G$1" x="-17.78" y="76.2" rot="R270"/>
+<instance part="D1" gate="G$1" x="-33.02" y="53.34" rot="R90"/>
 <instance part="D2" gate="G$1" x="-27.94" y="48.26" rot="R90"/>
-<instance part="D4" gate="G$1" x="73.66" y="45.72"/>
 <instance part="U1" gate="G$1" x="12.7" y="73.66"/>
 <instance part="P+2" gate="VCC" x="-17.78" y="93.98"/>
 <instance part="GND2" gate="1" x="-5.08" y="60.96"/>
 <instance part="GND3" gate="1" x="-33.02" y="35.56"/>
-<instance part="P+3" gate="VCC" x="12.7" y="60.96"/>
-<instance part="GND5" gate="1" x="12.7" y="43.18"/>
+<instance part="P+3" gate="VCC" x="12.7" y="58.42"/>
+<instance part="GND5" gate="1" x="12.7" y="40.64"/>
 <instance part="P+4" gate="VCC" x="-5.08" y="88.9"/>
 <instance part="GND4" gate="1" x="99.06" y="30.48"/>
 <instance part="P+5" gate="VCC" x="60.96" y="86.36"/>
-<instance part="R4" gate="G$1" x="91.44" y="86.36" rot="R180"/>
+<instance part="R4" gate="G$1" x="83.82" y="81.28"/>
 <instance part="JP1" gate="G$1" x="45.72" y="66.04"/>
 <instance part="SW_RESET" gate="G$1" x="45.72" y="48.26"/>
+<instance part="LED1" gate="G$1" x="81.28" y="63.5"/>
+<instance part="LED2" gate="G$1" x="81.28" y="43.18"/>
 </instances>
 <busses>
 </busses>
@@ -7586,16 +7554,16 @@ by exp-project-lbr.ulp</description>
 <segment>
 <pinref part="C1" gate="G$1" pin="1"/>
 <pinref part="C2" gate="G$1" pin="1"/>
-<wire x1="17.78" y1="55.88" x2="12.7" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="53.34" x2="12.7" y2="53.34" width="0.1524" layer="91"/>
 <pinref part="P+3" gate="VCC" pin="VCC"/>
-<wire x1="12.7" y1="55.88" x2="7.62" y2="55.88" width="0.1524" layer="91"/>
-<wire x1="12.7" y1="58.42" x2="12.7" y2="55.88" width="0.1524" layer="91"/>
-<junction x="12.7" y="55.88"/>
+<wire x1="12.7" y1="53.34" x2="7.62" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="12.7" y1="55.88" x2="12.7" y2="53.34" width="0.1524" layer="91"/>
+<junction x="12.7" y="53.34"/>
 </segment>
 <segment>
 <pinref part="JP-USB-TOP" gate="G$1" pin="VBUS"/>
 <wire x1="-45.72" y1="71.12" x2="-22.86" y2="71.12" width="0.1524" layer="91"/>
-<pinref part="R1" gate="G$1" pin="2"/>
+<pinref part="R1" gate="G$1" pin="1"/>
 <wire x1="-17.78" y1="86.36" x2="-22.86" y2="86.36" width="0.1524" layer="91"/>
 <junction x="-17.78" y="86.36"/>
 <pinref part="P+2" gate="VCC" pin="VCC"/>
@@ -7610,18 +7578,18 @@ by exp-project-lbr.ulp</description>
 <wire x1="-5.08" y1="81.28" x2="-2.54" y2="81.28" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="D3" gate="G$1" pin="VDD"/>
-<wire x1="60.96" y1="73.66" x2="68.58" y2="73.66" width="0.1524" layer="91"/>
-<pinref part="D4" gate="G$1" pin="VDD"/>
-<wire x1="68.58" y1="50.8" x2="60.96" y2="50.8" width="0.1524" layer="91"/>
-<wire x1="60.96" y1="50.8" x2="60.96" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="60.96" y1="71.12" x2="68.58" y2="71.12" width="0.1524" layer="91"/>
 <pinref part="P+5" gate="VCC" pin="VCC"/>
-<wire x1="60.96" y1="68.58" x2="60.96" y2="73.66" width="0.1524" layer="91"/>
-<wire x1="60.96" y1="83.82" x2="60.96" y2="73.66" width="0.1524" layer="91"/>
-<junction x="60.96" y="73.66"/>
+<wire x1="60.96" y1="50.8" x2="60.96" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="60.96" y1="68.58" x2="60.96" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="60.96" y1="83.82" x2="60.96" y2="71.12" width="0.1524" layer="91"/>
+<junction x="60.96" y="71.12"/>
 <pinref part="JP1" gate="G$1" pin="2"/>
 <wire x1="55.88" y1="68.58" x2="60.96" y2="68.58" width="0.1524" layer="91"/>
 <junction x="60.96" y="68.58"/>
+<pinref part="LED1" gate="G$1" pin="VCC"/>
+<pinref part="LED2" gate="G$1" pin="VCC"/>
+<wire x1="60.96" y1="50.8" x2="68.58" y2="50.8" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -7629,38 +7597,30 @@ by exp-project-lbr.ulp</description>
 <pinref part="C1" gate="G$1" pin="2"/>
 <pinref part="C2" gate="G$1" pin="2"/>
 <pinref part="GND5" gate="1" pin="GND"/>
-<wire x1="17.78" y1="48.26" x2="12.7" y2="48.26" width="0.1524" layer="91"/>
-<wire x1="12.7" y1="48.26" x2="7.62" y2="48.26" width="0.1524" layer="91"/>
-<wire x1="12.7" y1="48.26" x2="12.7" y2="45.72" width="0.1524" layer="91"/>
-<junction x="12.7" y="48.26"/>
+<wire x1="17.78" y1="45.72" x2="12.7" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="12.7" y1="45.72" x2="7.62" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="12.7" y1="45.72" x2="12.7" y2="43.18" width="0.1524" layer="91"/>
+<junction x="12.7" y="45.72"/>
 </segment>
 <segment>
-<pinref part="D2" gate="G$1" pin="A"/>
 <pinref part="GND3" gate="1" pin="GND"/>
 <pinref part="D1" gate="G$1" pin="A"/>
-<wire x1="-33.02" y1="40.64" x2="-33.02" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="-33.02" y1="40.64" x2="-33.02" y2="50.8" width="0.1524" layer="91"/>
 <wire x1="-33.02" y1="40.64" x2="-33.02" y2="38.1" width="0.1524" layer="91"/>
 <junction x="-33.02" y="40.64"/>
 <pinref part="JP-USB-TOP" gate="G$1" pin="GND"/>
 <wire x1="-45.72" y1="73.66" x2="-38.1" y2="73.66" width="0.1524" layer="91"/>
 <wire x1="-38.1" y1="73.66" x2="-38.1" y2="40.64" width="0.1524" layer="91"/>
 <wire x1="-38.1" y1="40.64" x2="-33.02" y2="40.64" width="0.1524" layer="91"/>
-<wire x1="-27.94" y1="40.64" x2="-33.02" y2="40.64" width="0.1524" layer="91"/>
-<junction x="-27.94" y="40.64"/>
+<pinref part="D2" gate="G$1" pin="A"/>
 <wire x1="-27.94" y1="40.64" x2="-27.94" y2="45.72" width="0.1524" layer="91"/>
+<wire x1="-27.94" y1="40.64" x2="-33.02" y2="40.64" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="GND4" gate="1" pin="GND"/>
-<pinref part="D4" gate="G$1" pin="VSS"/>
-<pinref part="D3" gate="G$1" pin="VSS"/>
-<wire x1="91.44" y1="66.04" x2="99.06" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="99.06" y1="66.04" x2="99.06" y2="43.18" width="0.1524" layer="91"/>
-<wire x1="99.06" y1="43.18" x2="91.44" y2="43.18" width="0.1524" layer="91"/>
-<junction x="99.06" y="43.18"/>
-<wire x1="99.06" y1="43.18" x2="99.06" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="99.06" y1="35.56" x2="99.06" y2="33.02" width="0.1524" layer="91"/>
-<wire x1="99.06" y1="35.56" x2="58.42" y2="35.56" width="0.1524" layer="91"/>
-<junction x="99.06" y="35.56"/>
+<wire x1="99.06" y1="35.56" x2="66.04" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="35.56" x2="58.42" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="58.42" y1="35.56" x2="58.42" y2="63.5" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="G$1" pin="6"/>
 <wire x1="58.42" y1="63.5" x2="55.88" y2="63.5" width="0.1524" layer="91"/>
@@ -7669,6 +7629,14 @@ by exp-project-lbr.ulp</description>
 <wire x1="55.88" y1="48.26" x2="55.88" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="55.88" y1="35.56" x2="58.42" y2="35.56" width="0.1524" layer="91"/>
 <junction x="58.42" y="35.56"/>
+<pinref part="LED1" gate="G$1" pin="GND"/>
+<wire x1="68.58" y1="68.58" x2="66.04" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="68.58" x2="66.04" y2="48.26" width="0.1524" layer="91"/>
+<junction x="66.04" y="35.56"/>
+<pinref part="LED2" gate="G$1" pin="GND"/>
+<wire x1="66.04" y1="48.26" x2="66.04" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="48.26" x2="68.58" y2="48.26" width="0.1524" layer="91"/>
+<junction x="66.04" y="48.26"/>
 </segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="GND"/>
@@ -7693,9 +7661,9 @@ by exp-project-lbr.ulp</description>
 <net name="MOSI/DIN_RAW" class="0">
 <segment>
 <wire x1="63.5" y1="81.28" x2="71.12" y2="81.28" width="0.1524" layer="91"/>
-<wire x1="71.12" y1="81.28" x2="71.12" y2="86.36" width="0.1524" layer="91"/>
-<pinref part="R4" gate="G$1" pin="2"/>
-<wire x1="71.12" y1="86.36" x2="86.36" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="71.12" y1="81.28" x2="73.66" y2="81.28" width="0.1524" layer="91"/>
+<pinref part="R4" gate="G$1" pin="1"/>
+<wire x1="73.66" y1="81.28" x2="78.74" y2="81.28" width="0.1524" layer="91"/>
 <wire x1="63.5" y1="81.28" x2="63.5" y2="66.04" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="G$1" pin="4"/>
 <wire x1="63.5" y1="66.04" x2="55.88" y2="66.04" width="0.1524" layer="91"/>
@@ -7713,21 +7681,27 @@ by exp-project-lbr.ulp</description>
 <wire x1="35.56" y1="68.58" x2="38.1" y2="68.58" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="SCK" class="0">
+<net name="SCK_1" class="0">
 <segment>
 <wire x1="27.94" y1="66.04" x2="27.94" y2="76.2" width="0.1524" layer="91"/>
 <pinref part="U1" gate="G$1" pin="PB2(SCK/ADC1)"/>
 <wire x1="27.94" y1="76.2" x2="25.4" y2="76.2" width="0.1524" layer="91"/>
 <wire x1="27.94" y1="66.04" x2="38.1" y2="66.04" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="G$1" pin="3"/>
+<wire x1="27.94" y1="76.2" x2="68.58" y2="76.2" width="0.1524" layer="91"/>
+<junction x="27.94" y="76.2"/>
+<wire x1="68.58" y1="76.2" x2="96.52" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="96.52" y1="76.2" x2="96.52" y2="68.58" width="0.1524" layer="91"/>
+<pinref part="LED1" gate="G$1" pin="CI"/>
+<wire x1="96.52" y1="68.58" x2="93.98" y2="68.58" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="USB_D_MINUS" class="0">
 <segment>
-<wire x1="33.02" y1="73.66" x2="33.02" y2="38.1" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="73.66" x2="33.02" y2="33.02" width="0.1524" layer="91"/>
 <pinref part="R3" gate="G$1" pin="1"/>
-<wire x1="33.02" y1="38.1" x2="-17.78" y2="38.1" width="0.1524" layer="91"/>
-<wire x1="-17.78" y1="38.1" x2="-17.78" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="33.02" y1="33.02" x2="-17.78" y2="33.02" width="0.1524" layer="91"/>
+<wire x1="-17.78" y1="33.02" x2="-17.78" y2="45.72" width="0.1524" layer="91"/>
 <pinref part="U1" gate="G$1" pin="PB3(ADC3)"/>
 <wire x1="33.02" y1="73.66" x2="25.4" y2="73.66" width="0.1524" layer="91"/>
 </segment>
@@ -7735,9 +7709,9 @@ by exp-project-lbr.ulp</description>
 <net name="USB_D_MINUS_RAW" class="0">
 <segment>
 <pinref part="R3" gate="G$1" pin="2"/>
-<wire x1="-17.78" y1="60.96" x2="-17.78" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="-17.78" y1="55.88" x2="-17.78" y2="68.58" width="0.1524" layer="91"/>
 <pinref part="JP-USB-TOP" gate="G$1" pin="D-"/>
-<pinref part="R1" gate="G$1" pin="1"/>
+<pinref part="R1" gate="G$1" pin="2"/>
 <wire x1="-17.78" y1="68.58" x2="-27.94" y2="68.58" width="0.1524" layer="91"/>
 <wire x1="-27.94" y1="68.58" x2="-45.72" y2="68.58" width="0.1524" layer="91"/>
 <wire x1="-17.78" y1="71.12" x2="-17.78" y2="68.58" width="0.1524" layer="91"/>
@@ -7753,17 +7727,17 @@ by exp-project-lbr.ulp</description>
 <pinref part="JP-USB-TOP" gate="G$1" pin="D+"/>
 <wire x1="-45.72" y1="66.04" x2="-33.02" y2="66.04" width="0.1524" layer="91"/>
 <wire x1="-33.02" y1="66.04" x2="-10.16" y2="66.04" width="0.1524" layer="91"/>
-<pinref part="R2" gate="G$1" pin="2"/>
+<pinref part="R2" gate="G$1" pin="1"/>
 <wire x1="-10.16" y1="66.04" x2="-10.16" y2="53.34" width="0.1524" layer="91"/>
 <pinref part="D1" gate="G$1" pin="C"/>
-<wire x1="-33.02" y1="58.42" x2="-33.02" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="-33.02" y1="55.88" x2="-33.02" y2="66.04" width="0.1524" layer="91"/>
 <junction x="-33.02" y="66.04"/>
 <junction x="-33.02" y="66.04"/>
 </segment>
 </net>
 <net name="USB_D_PLUS" class="0">
 <segment>
-<pinref part="R2" gate="G$1" pin="1"/>
+<pinref part="R2" gate="G$1" pin="2"/>
 <wire x1="-10.16" y1="43.18" x2="-10.16" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="-10.16" y1="35.56" x2="30.48" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="30.48" y1="35.56" x2="30.48" y2="71.12" width="0.1524" layer="91"/>
@@ -7771,35 +7745,36 @@ by exp-project-lbr.ulp</description>
 <wire x1="25.4" y1="71.12" x2="30.48" y2="71.12" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="DIN_2" class="0">
-<segment>
-<pinref part="D3" gate="G$1" pin="DOUT"/>
-<wire x1="68.58" y1="66.04" x2="66.04" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="66.04" y1="66.04" x2="66.04" y2="58.42" width="0.1524" layer="91"/>
-<wire x1="66.04" y1="58.42" x2="96.52" y2="58.42" width="0.1524" layer="91"/>
-<wire x1="96.52" y1="58.42" x2="96.52" y2="50.8" width="0.1524" layer="91"/>
-<pinref part="D4" gate="G$1" pin="DIN"/>
-<wire x1="96.52" y1="50.8" x2="91.44" y2="50.8" width="0.1524" layer="91"/>
-</segment>
-</net>
 <net name="DIN_1" class="0">
 <segment>
-<pinref part="D3" gate="G$1" pin="DIN"/>
-<wire x1="104.14" y1="73.66" x2="91.44" y2="73.66" width="0.1524" layer="91"/>
-<wire x1="104.14" y1="73.66" x2="104.14" y2="86.36" width="0.1524" layer="91"/>
-<pinref part="R4" gate="G$1" pin="1"/>
-<wire x1="104.14" y1="86.36" x2="96.52" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="71.12" x2="93.98" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="71.12" x2="99.06" y2="81.28" width="0.1524" layer="91"/>
+<pinref part="R4" gate="G$1" pin="2"/>
+<wire x1="99.06" y1="81.28" x2="88.9" y2="81.28" width="0.1524" layer="91"/>
+<pinref part="LED1" gate="G$1" pin="DI"/>
+</segment>
+</net>
+<net name="DIN_2" class="0">
+<segment>
+<pinref part="LED1" gate="G$1" pin="DO"/>
+<wire x1="93.98" y1="63.5" x2="99.06" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="63.5" x2="99.06" y2="50.8" width="0.1524" layer="91"/>
+<pinref part="LED2" gate="G$1" pin="DI"/>
+<wire x1="99.06" y1="50.8" x2="93.98" y2="50.8" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="SCK_2" class="0">
+<segment>
+<pinref part="LED1" gate="G$1" pin="CO"/>
+<wire x1="93.98" y1="60.96" x2="96.52" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="96.52" y1="60.96" x2="96.52" y2="48.26" width="0.1524" layer="91"/>
+<pinref part="LED2" gate="G$1" pin="CI"/>
+<wire x1="96.52" y1="48.26" x2="93.98" y2="48.26" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
 </sheet>
 </sheets>
-<errors>
-<approved hash="104,1,68.58,73.66,D3,VDD,VCC,,,"/>
-<approved hash="104,1,91.44,66.04,D3,VSS,GND,,,"/>
-<approved hash="104,1,68.58,50.8,D4,VDD,VCC,,,"/>
-<approved hash="104,1,91.44,43.18,D4,VSS,GND,,,"/>
-</errors>
 </schematic>
 </drawing>
 </eagle>
