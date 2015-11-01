@@ -1,6 +1,6 @@
 Pinlist
 
-Exported from weblight.sch at 10/25/15 10:15 PM
+Exported from weblight.sch at 10/31/15 9:27 PM
 
 EAGLE Version 7.4.0 Copyright (c) 1988-2015 CadSoft
 
@@ -18,26 +18,6 @@ D1           A        A          pas      GND
 D2           A        A          pas      GND
              K        C          pas      USB_D_MINUS_RAW
 
-D3           1        VDD        pwr      VCC
-             2        DOUT       out      DIN_2
-             3        VSS        pwr      GND
-             4        DIN        in       DIN_1
-
-D4           1        VDD        pwr      VCC
-             2        DOUT       out      DIN_3
-             3        VSS        pwr      GND
-             4        DIN        in       DIN_2
-
-D5           1        VDD        pwr      VCC
-             2        DOUT       out      DIN_4
-             3        VSS        pwr      GND
-             4        DIN        in       DIN_3
-
-D6           1        VDD        pwr      VCC
-             2        DOUT       out               *** unconnected ***
-             3        VSS        pwr      GND
-             4        DIN        in       DIN_4
-
 JP-USB-MICRO 1        5V         pwr      VCC
              2        D-         io       USB_D_MINUS_RAW
              3        D+         io       USB_D_PLUS_RAW
@@ -54,6 +34,34 @@ JP-USB-TOP   5V       VBUS       io       VCC
              GND      GND        io       GND
              USB_M    D-         io       USB_D_MINUS_RAW
              USB_P    D+         io       USB_D_PLUS_RAW
+
+LED1         CI       CI         in       CLK_1
+             CO       CO         out      CLK_2
+             DI       DI         in       DIN_1
+             DO       DO         out      DIN_2
+             GND      GND        pwr      GND
+             VCC      VCC        pwr      VCC
+
+LED2         CI       CI         in       CLK_2
+             CO       CO         out      CLK_3
+             DI       DI         in       DIN_2
+             DO       DO         out      DIN_3
+             GND      GND        pwr      GND
+             VCC      VCC        pwr      VCC
+
+LED3         CI       CI         in       CLK_3
+             CO       CO         out      CLK_4
+             DI       DI         in       DIN_3
+             DO       DO         out      DIN_4
+             GND      GND        pwr      GND
+             VCC      VCC        pwr      VCC
+
+LED4         CI       CI         in       CLK_4
+             CO       CO         out               *** unconnected ***
+             DI       DI         in       DIN_4
+             DO       DO         out               *** unconnected ***
+             GND      GND        pwr      GND
+             VCC      VCC        pwr      VCC
 
 R1           1        1          pas      USB_D_MINUS_RAW
              2        2          pas      VCC
@@ -76,6 +84,6 @@ U1           1        PB5(NRES)  io       N_RESET
              4        GND        io       GND
              5        PB0(MOSI)  io       DIN_RAW
              6        PB1(MISO)  io                *** unconnected ***
-             7        PB2(SCK/ADC1) io                *** unconnected ***
+             7        PB2(SCK/ADC1) io       CLK_1
              8        VCC        io       VCC
 
