@@ -1972,10 +1972,10 @@ Please make sure your boards conform to these design rules.</description>
 </signal>
 <signal name="N$2">
 <polygon width="0.4064" layer="1">
-<vertex x="0" y="12.065"/>
-<vertex x="43.18" y="12.065"/>
-<vertex x="43.18" y="0"/>
-<vertex x="0" y="0"/>
+<vertex x="-0.635" y="12.7"/>
+<vertex x="43.815" y="12.7"/>
+<vertex x="43.815" y="-0.635"/>
+<vertex x="-0.635" y="-0.635"/>
 </polygon>
 </signal>
 </signals>
