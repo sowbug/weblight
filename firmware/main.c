@@ -39,8 +39,6 @@ enum {
 // TODO: if memory gets tight, many of these can be collapsed into a
 // union.
 static uint8_t state;
-static uint8_t active_led;
-static uint8_t r, g, b;
 
 void initReady() {
   state = STATE_READY;
@@ -105,33 +103,47 @@ void doConnectUSB() {
   initReady();
 }
 
+static uint8_t active_led;
+static uint8_t startup_color;
+static uint8_t remaining_disconnect_delay_ms;
 void initStartupSequence() {
   state = STATE_STARTUP_SEQUENCE;
-  r = 255; g = 0; b = 0; active_led = 0;
+  active_led = 0;
+  startup_color = 0;
+  remaining_disconnect_delay_ms = 250;
 }
 
 void doStartupSequence() {
-  // Thanks http://codepen.io/Codepixl/pen/ogWWaK/
-  if (r > 0 && b == 0) {
-    r--;
-    g++;
+#define STARTUP_BRIGHTNESS (16)
+#define STARTUP_FRAME_LENGTH_MS (20)
+  switch (startup_color++) {
+    case 0:
+      SetLED(active_led, STARTUP_BRIGHTNESS, 0, 0);
+      break;
+    case 1:
+      SetLED(active_led, 0, STARTUP_BRIGHTNESS, 0);
+      break;
+    case 2:
+      SetLED(active_led, 0, 0, STARTUP_BRIGHTNESS);
+      break;
+    default:
+      startup_color = 0;
+      SetLED(active_led++, 0, 0, 0);
+      break;
   }
-  if (g > 0 && r == 0) {
-    g--;
-    b++;
-  }
-  if (b > 0 && g == 0) {
-    r++;
-    b--;
-  }
-  SetLED(active_led, r >> 3, g >> 3, b >> 3);
   UpdateLEDs();
-  _delay_ms(1);
-  if (r == 255 && b == 0 && g == 0) {
+
+  _delay_ms(STARTUP_FRAME_LENGTH_MS);
+  if (remaining_disconnect_delay_ms >= STARTUP_FRAME_LENGTH_MS) {
+    remaining_disconnect_delay_ms -= STARTUP_FRAME_LENGTH_MS;
+  }
+
+  if (active_led == GetLEDCount()) {
     LEDsOff();
-    if (active_led++ == GetLEDCount()) {
-      initConnectUSB();
+    while (remaining_disconnect_delay_ms-- > 0) {
+      _delay_ms(1);
     }
+    initConnectUSB();
   }
 }
 

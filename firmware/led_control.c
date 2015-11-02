@@ -69,6 +69,6 @@ void StatusBlink(uint8_t count) {
     _delay_ms(10);
     SetLED(0, 0, 0, 0);
     UpdateLEDs();
-    _delay_ms(40);
+    _delay_ms(30);
   }
 }
