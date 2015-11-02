@@ -95,11 +95,11 @@ function installServiceWorker() {
 	  // At this point, registration has taken place. The service worker
 	  // will not handle requests until this page and any other instances
 	  // of this page (in other tabs, etc.) have been closed/reloaded.
-	  document.querySelector('#status').textContent = 'succeeded';
+	  console.log("document.querySelector('#status').textContent = 'success';");
 	}).catch(function(error) {
 	  // Something went wrong during registration. The service-worker.js
 	  // file might be unavailable or contain a syntax error.
-	  document.querySelector('#status').textContent = error;
+	  console.log("document.querySelector('#status').textContent = error;");
 	});
   } else {
     // The current browser doesn't support service workers.
