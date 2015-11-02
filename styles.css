@@ -3,12 +3,13 @@ body {
 }
 
 .centered {
-margin: auto;
+  margin: auto;
 }
 
 .card-square.mdl-card {
   width: 320px;
   height: 320px;
+  margin-bottom: 1em;
 }
 
 .card-square > .mdl-card__title {
@@ -25,4 +26,14 @@ margin: auto;
 
 .mdl-demo .mdl-card .mdl-card__supporting-text {
   color: inherit;
+}
+
+.device {
+  text-align: center;
+  border: 2px solid #888;
+  height: 4em;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1em;
 }

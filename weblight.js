@@ -1,11 +1,14 @@
 var webusb = {};
+var lightsParent;
 
 function ab2str(buf) {
-  return String.fromCharCode.apply(null, new Uint8Array(buf));
+  return String.fromCharCode.apply(null, new Uint16Array(buf.slice(2)));
 }
 
 (function() {
   'use strict';
+
+  webusb.devices = {};
 
   webusb.getDevices = function() {
     return navigator.usb.getDevices().then(devices => {
@@ -15,6 +18,15 @@ function ab2str(buf) {
 
   webusb.Device = function(device) {
     this.device_ = device;
+    webusb.devices[device.guid] = this;
+  };
+
+  webusb.deleteDevice = function(device) {
+    delete webusb.devices[device.device_.guid];
+  };
+
+  webusb.getDeviceFromGuid = function(guid) {
+    return webusb.devices[guid];
   };
 
   webusb.Device.prototype.connect = function() {
@@ -98,146 +110,140 @@ function installServiceWorker() {
   }
 }
 
-function loop() {
-  'use strict';
+function logDeviceStrings(device) {
+  console.log("Connection:",
+	      device.device_.manufacturerName,
+	      device.device_.productName,
+	      device.device_.serialNumber);
+}
 
-  var device = null;
-  var intervalId = 0;
-  var color = document.getElementById('color');
+function blinkLights(device) {
+  var rgb = new Uint8Array(3);
 
-  navigator.usb.addEventListener('disconnect', function(event) {
-    console.log('disconnect event', event.device, device);
-    if (!device) {
-      return;
-    }
-    if (device.device_.guid == event.device.guid && intervalId > 0) {
-      console.log('stopping');
-      clearInterval(intervalId);
-      intervalId = 0;
+  var name = '';
+  switch (device.cycle) {
+    case 0:
+    rgb[0] = 0x80;
+    rgb[1] = 0x00;
+    rgb[2] = 0x00;
+    name = 'red';
+    break;
+    case 1:
+      rgb[0] = 0x00;
+      rgb[1] = 0x80;
+      rgb[2] = 0x00;
+      name = 'green';
+      break;
+      case 2:
+      rgb[0] = 0x00;
+      rgb[1] = 0x00;
+      rgb[2] = 0x80;
+      name = 'blue';
+      break;
+  }
+  setElementColor(device.element, name);
+  if (++device.cycle > 2) {
+    device.cycle = 0;
+  }
+  device.controlTransferOut({
+    'requestType': 'vendor',
+    'recipient': 'device',
+    'request': 0x01,
+    'value': 0x00,
+    'index': 0x00}, rgb)
+	.then(o => {}, e => {console.log(e); disconnectDevice(device.guid);});
+}
 
-      color.innerText = 'no device';
-      device.disconnect();
-    }
-  });
+function startBlinkLights(device) {
+  console.log("startBlinkLights", device);
 
+  device.cycle = 0;
+  blinkLights(device);
+  device.intervalId = window.setInterval(blinkLights.bind(this, device), 1000);
+}
+
+function setElementDeviceInfo(e, text) {
+  e.childNodes[0].innerText = text;
+}
+
+function setElementColor(e, color) {
+  e.childNodes[1].innerText = color;
+}
+
+function connectDevice(device) {
+  var e = document.createElement("div");
+  e.className = "card-square mdl-card mdl-shadow--2dp centered";
+  var eId = document.createElement("div");
+  eId.className = "mdl-card__title mdl-card--expand";
+  var eColor = document.createElement("div");
+  eColor.className = "mdl-card__supporting-text";
+  e.appendChild(eId);
+  e.appendChild(eColor);
+  lightsParent.appendChild(e);
+  device.element = e;
+  var s = device.device_.productName + "\n" +
+      device.device_.serialNumber;
+  setElementDeviceInfo(device.element, s);
+  device.connect()
+      .then(logDeviceStrings(device))
+      .then(startBlinkLights(device))
+      .then(function() { console.log("connected", device) });
+}
+
+function handleConnectEvent(event) {
+  var rawDevice = event.device;
+  var guid = rawDevice.guid;
+  console.log('connect event', rawDevice, guid);
+  var device = new webusb.Device(rawDevice);
+  connectDevice(device);
+}
+
+function cleanUpDevice(device) {
+  clearInterval(device.intervalId);
+  webusb.deleteDevice(device);
+}
+
+function disconnectDevice(guid) {
+  if (!guid in webusb.devices) {
+    console.log(guid, "not known");
+    return;
+  }
+
+  var device = webusb.getDeviceFromGuid(guid);
+  if (device) {  // This can fail if the I/O code already threw an exception
+    console.log("removing!");
+    lightsParent.removeChild(device.element);
+    device.disconnect()
+	.then(s => {
+	  console.log("disconnected", device);
+	  cleanUpDevice(device);
+	}, e => {
+	  console.log("nothing to disconnect", device);
+	  cleanUpDevice(device);
+	});
+  }
+}
+
+function handleDisconnectEvent(event) {
+  var rawDevice = event.device;
+  var guid = rawDevice.guid;
+  console.log('disconnect event', rawDevice, guid);
+  disconnectDevice(guid);
+
+  //    color.innerText = 'no device';
+}
+
+function registerEventListeners() {
+  navigator.usb.addEventListener('connect', handleConnectEvent);
+  navigator.usb.addEventListener('disconnect', handleDisconnectEvent);
+}
+
+function startInitialConnections() {
   webusb.getDevices().then(devices => {
-
-    if (devices.length == 0) {
-      color.innerText = 'no device';
-      console.log("no device found");
-      navigator.usb.addEventListener('connect', function() {
-        console.log('connect event', this);
-
-        // TODO(miket): this is horrible. I need to study up on
-        // promises.
-        loop();
-      });
-    } else {
-      device = devices[0];
-
-      function logManufacturer(dev) {
-        return new Promise(function(f, r) {
-          dev.controlTransferIn({
-            'requestType': 'standard',
-            'recipient': 'device',
-            'request': 6,
-            'value': 0x0301,
-            'index': 0
-          }, 64)
-            .then(o => {
-              console.log("Manufacturer", ab2str(o.data));
-              f(o.data);
-            })
-            .catch(o => {
-              console.log("Manufacturer", o);
-            });
-        });
-      }
-
-      function logProduct(dev) {
-        return new Promise(function(f, r) {
-          dev.controlTransferIn({
-            'requestType': 'standard',
-            'recipient': 'device',
-            'request': 6,
-            'value': 0x0302,
-            'index': 0
-          }, 64)
-            .then(o => {
-              console.log("Product", ab2str(o.data));
-              f(o.data);
-            })
-            .catch(o => {
-              console.log("Product", o);
-            });
-        });
-      }
-
-      function logSerialNumber(dev) {
-        return new Promise(function(f, r) {
-          dev.controlTransferIn({
-            'requestType': 'standard',
-            'recipient': 'device',
-            'request': 6,
-            'value': 0x0303,
-            'index': 0
-          }, 64).then(o => {
-            console.log("Serial number", ab2str(o.data));
-            f(o.data);
-          })
-            .catch(o => {
-              console.log("Serial number", o);
-            });
-        });
-      }
-
-      device.connect()
-        .then(logManufacturer.bind(this, device))
-        .then(logProduct.bind(this, device))
-        .then(logSerialNumber.bind(this, device))
-        .then(() => {
-
-          var cycle = 0;
-          var name = '';
-          var doLight = function() {
-            let rgb = new Uint8Array(3);
-
-            switch (cycle) {
-            case 0:
-              rgb[0] = 0x80;
-              rgb[1] = 0x00;
-              rgb[2] = 0x00;
-              name = 'red';
-              break;
-            case 1:
-              rgb[0] = 0x00;
-              rgb[1] = 0x80;
-              rgb[2] = 0x00;
-              name = 'green';
-              break;
-            case 2:
-              rgb[0] = 0x00;
-              rgb[1] = 0x00;
-              rgb[2] = 0x80;
-              name = 'blue';
-              break;
-            }
-            if (++cycle > 2) {
-              cycle = 0;
-            }
-            color.innerText = name;
-            device.controlTransferOut({
-              'requestType': 'vendor',
-              'recipient': 'device',
-              'request': 0x01,
-              'value': 0x00,
-              'index': 0x00}, rgb).then(o => {}, e => {console.log(e);});
-
-          };
-          doLight();
-
-          intervalId = window.setInterval(doLight, 1000);
-        });
+    console.log(devices);
+    for (var i in devices) {
+      var device = devices[i];
+      connectDevice(device);
     }
   });
 }
@@ -245,7 +251,11 @@ function loop() {
 function start() {
   ensureHTTPS();
   installServiceWorker();
-  loop();
+  registerEventListeners();
+
+  lightsParent = document.getElementById("lightsParent");
+
+  startInitialConnections();
 }
 
 document.addEventListener('DOMContentLoaded', start, false);
