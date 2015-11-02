@@ -148,7 +148,7 @@
 <wire x1="43.18" y1="10.73" x2="41.91" y2="12" width="0" layer="20" curve="90"/>
 <wire x1="41.91" y1="12" x2="1.27" y2="12" width="0" layer="20"/>
 <wire x1="1.27" y1="12" x2="0" y2="10.73" width="0" layer="20" curve="90"/>
-<text x="42.545" y="2.54" size="0.8128" layer="22" font="vector" rot="MR0">Version osh4</text>
+<text x="42.545" y="2.54" size="0.8128" layer="22" font="vector" rot="MR0">a-osh1</text>
 <polygon width="0.4064" layer="43">
 <vertex x="0" y="12.065"/>
 <vertex x="9.525" y="12.065"/>
@@ -158,6 +158,7 @@
 </polygon>
 <text x="42.545" y="1.27" size="0.8128" layer="22" font="vector" rot="MR0">github.com/sowbug/weblight</text>
 <rectangle x1="24.765" y1="1.27" x2="42.545" y2="3.175" layer="43"/>
+<text x="0.635" y="11.43" size="0.8128" layer="21" font="vector" align="top-left">WebLight</text>
 </plain>
 <libraries>
 <library name="rcl">

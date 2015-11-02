@@ -7404,24 +7404,23 @@ by exp-project-lbr.ulp</description>
 <text x="-2" y="2" size="1.27" layer="25">&gt;NAME</text>
 <text x="-2" y="-2" size="1.27" layer="27" align="top-left">&gt;VALUE</text>
 </package>
-<package name="APA102">
-<wire x1="-2.5" y1="2.5" x2="2.5" y2="2.5" width="0.127" layer="21"/>
-<wire x1="2.5" y1="2.5" x2="2.5" y2="-1.5" width="0.127" layer="21"/>
-<wire x1="2.5" y1="-1.5" x2="2.5" y2="-2.5" width="0.127" layer="21"/>
-<wire x1="2.5" y1="-2.5" x2="1.5" y2="-2.5" width="0.127" layer="21"/>
-<wire x1="1.5" y1="-2.5" x2="-2.5" y2="-2.5" width="0.127" layer="21"/>
-<wire x1="-2.5" y1="-2.5" x2="-2.5" y2="2.5" width="0.127" layer="21"/>
-<wire x1="1.5" y1="-2.5" x2="2.5" y2="-1.5" width="0.127" layer="21"/>
-<circle x="2.934" y="-2.688" radius="0.1414" width="0.127" layer="21"/>
-<circle x="0" y="0" radius="2.1" width="0.127" layer="21"/>
-<smd name="VCC" x="-2" y="1.7" dx="2" dy="1.1" layer="1"/>
-<smd name="CO" x="-2" y="0" dx="2" dy="1.1" layer="1"/>
-<smd name="DO" x="-2" y="-1.7" dx="2" dy="1.1" layer="1"/>
-<smd name="DI" x="2" y="-1.7" dx="2" dy="1.1" layer="1"/>
-<smd name="CI" x="2" y="0" dx="2" dy="1.1" layer="1"/>
-<smd name="GND" x="2" y="1.7" dx="2" dy="1.1" layer="1"/>
-<text x="-1.7" y="2.9" size="0.8128" layer="25" font="vector">&gt;NAME</text>
-<text x="-2" y="-2.83" size="0.8128" layer="27" font="vector" align="top-left">&gt;VALUE</text>
+<package name="WS2812B">
+<wire x1="2.5" y1="-2.5" x2="-2.5" y2="-2.5" width="0.127" layer="21"/>
+<wire x1="-2.5" y1="-2.5" x2="-2.5" y2="1.6" width="0.127" layer="21"/>
+<wire x1="-2.5" y1="1.6" x2="-2.5" y2="2.5" width="0.127" layer="21"/>
+<wire x1="-2.5" y1="2.5" x2="-1.6" y2="2.5" width="0.127" layer="21"/>
+<wire x1="-1.6" y1="2.5" x2="2.5" y2="2.5" width="0.127" layer="21"/>
+<wire x1="2.5" y1="2.5" x2="2.5" y2="-2.5" width="0.127" layer="21"/>
+<wire x1="-2.5" y1="1.6" x2="-1.6" y2="2.5" width="0.127" layer="21"/>
+<smd name="1-VDD" x="2.45" y="-1.65" dx="1.5" dy="0.9" layer="1" rot="R180"/>
+<smd name="2-DOUT" x="2.45" y="1.65" dx="1.5" dy="0.9" layer="1" rot="R180"/>
+<smd name="4-DIN" x="-2.45" y="-1.65" dx="1.5" dy="0.9" layer="1" rot="R180"/>
+<smd name="3-GND" x="-2.45" y="1.65" dx="1.5" dy="0.9" layer="1" rot="R180"/>
+<circle x="0" y="0" radius="1.7204625" width="0.127" layer="21"/>
+<text x="3.4925" y="1.5875" size="0.8128" layer="25" ratio="10" rot="R270">&gt;NAME</text>
+<wire x1="-1.6" y1="2.5" x2="-1.3" y2="2.8" width="0.127" layer="21"/>
+<wire x1="-1.3" y1="2.8" x2="-1.7" y2="3.2" width="0.127" layer="21"/>
+<wire x1="-1.7" y1="3.2" x2="-2.5" y2="2.5" width="0.127" layer="21"/>
 </package>
 </packages>
 <symbols>
@@ -7430,21 +7429,29 @@ by exp-project-lbr.ulp</description>
 <pin name="P$2" x="7.62" y="0" length="middle" direction="pas" rot="R180"/>
 <wire x1="1.27" y1="2.286" x2="-2.54" y2="0" width="0.254" layer="94"/>
 </symbol>
-<symbol name="APA102">
-<wire x1="-7.62" y1="-5.08" x2="-2.54" y2="-5.08" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="-5.08" x2="7.62" y2="-5.08" width="0.254" layer="94"/>
-<text x="-7.62" y="10.922" size="1.27" layer="95">&gt;NAME</text>
-<text x="-7.62" y="-7.112" size="1.27" layer="96">&gt;VALUE</text>
-<pin name="VCC" x="-12.7" y="7.62" length="middle" direction="pwr"/>
-<pin name="GND" x="-12.7" y="5.08" length="middle" direction="pwr"/>
-<pin name="DI" x="12.7" y="7.62" length="middle" direction="in" rot="R180"/>
-<pin name="DO" x="12.7" y="0" length="middle" direction="out" rot="R180"/>
-<pin name="CI" x="12.7" y="5.08" length="middle" direction="in" rot="R180"/>
-<pin name="CO" x="12.7" y="-2.54" length="middle" direction="out" rot="R180"/>
-<wire x1="7.62" y1="10.16" x2="7.62" y2="-5.08" width="0.254" layer="94"/>
-<wire x1="7.62" y1="-5.08" x2="-7.62" y2="-5.08" width="0.254" layer="94"/>
-<wire x1="-7.62" y1="-5.08" x2="-7.62" y2="10.16" width="0.254" layer="94"/>
-<wire x1="-7.62" y1="10.16" x2="7.62" y2="10.16" width="0.254" layer="94"/>
+<symbol name="WS2812B">
+<pin name="DIN" x="-5.08" y="0" visible="pad" length="short" direction="in"/>
+<pin name="DOUT" x="5.08" y="0" visible="pad" length="short" direction="out" rot="R180"/>
+<pin name="VDD" x="0" y="5.08" visible="pad" length="short" rot="R270"/>
+<pin name="GND" x="0" y="-5.08" visible="pad" length="short" rot="R90"/>
+<wire x1="-2.54" y1="2.54" x2="2.54" y2="2.54" width="0.254" layer="94"/>
+<wire x1="2.54" y1="2.54" x2="2.54" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="2.54" y1="-2.54" x2="-2.54" y2="-2.54" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="-2.54" x2="-2.54" y2="2.54" width="0.254" layer="94"/>
+<wire x1="-2.032" y1="0.254" x2="-1.778" y2="0" width="0.254" layer="94"/>
+<wire x1="-1.778" y1="0" x2="-2.032" y2="-0.254" width="0.254" layer="94"/>
+<wire x1="1.778" y1="0.254" x2="2.032" y2="0" width="0.254" layer="94"/>
+<wire x1="2.032" y1="0" x2="1.778" y2="-0.254" width="0.254" layer="94"/>
+<wire x1="0" y1="1.778" x2="0" y2="0.508" width="0.254" layer="94"/>
+<wire x1="0" y1="0.508" x2="-0.762" y2="0.508" width="0.254" layer="94"/>
+<wire x1="-0.762" y1="0.508" x2="0" y2="-0.762" width="0.254" layer="94"/>
+<wire x1="0" y1="-0.762" x2="0.762" y2="0.508" width="0.254" layer="94"/>
+<wire x1="0.762" y1="0.508" x2="0" y2="0.508" width="0.254" layer="94"/>
+<wire x1="0" y1="-0.762" x2="0" y2="-1.778" width="0.254" layer="94"/>
+<wire x1="-0.762" y1="-0.762" x2="0.762" y2="-0.762" width="0.254" layer="94"/>
+<wire x1="0.762" y1="-1.27" x2="1.016" y2="-1.524" width="0.254" layer="94"/>
+<wire x1="1.016" y1="-1.016" x2="1.27" y2="-1.27" width="0.254" layer="94"/>
+<text x="2.54" y="3.048" size="0.6096" layer="95">&gt;NAME</text>
 </symbol>
 </symbols>
 <devicesets>
@@ -7464,19 +7471,17 @@ by exp-project-lbr.ulp</description>
 </device>
 </devices>
 </deviceset>
-<deviceset name="APA102" prefix="LED">
+<deviceset name="WS2812B" prefix="L">
 <gates>
-<gate name="G$1" symbol="APA102" x="0" y="-2.54"/>
+<gate name="G$1" symbol="WS2812B" x="0" y="0"/>
 </gates>
 <devices>
-<device name="" package="APA102">
+<device name="" package="WS2812B">
 <connects>
-<connect gate="G$1" pin="CI" pad="CI"/>
-<connect gate="G$1" pin="CO" pad="CO"/>
-<connect gate="G$1" pin="DI" pad="DI"/>
-<connect gate="G$1" pin="DO" pad="DO"/>
-<connect gate="G$1" pin="GND" pad="GND"/>
-<connect gate="G$1" pin="VCC" pad="VCC"/>
+<connect gate="G$1" pin="DIN" pad="4-DIN"/>
+<connect gate="G$1" pin="DOUT" pad="2-DOUT"/>
+<connect gate="G$1" pin="GND" pad="3-GND"/>
+<connect gate="G$1" pin="VDD" pad="1-VDD"/>
 </connects>
 <technologies>
 <technology name=""/>
@@ -7516,8 +7521,8 @@ by exp-project-lbr.ulp</description>
 <part name="R4" library="rcl" deviceset="R-US_" device="R0805" value="470"/>
 <part name="JP1" library="SparkFun-Connectors" deviceset="AVR_SPI_PRG_6" device="2X3_LOCK"/>
 <part name="SW_RESET" library="weblight" deviceset="BUTTON_TD-85XU" device=""/>
-<part name="LED1" library="weblight" deviceset="APA102" device=""/>
-<part name="LED2" library="weblight" deviceset="APA102" device=""/>
+<part name="LED1" library="weblight" deviceset="WS2812B" device=""/>
+<part name="LED2" library="weblight" deviceset="WS2812B" device=""/>
 </parts>
 <sheets>
 <sheet>
@@ -7541,11 +7546,11 @@ by exp-project-lbr.ulp</description>
 <instance part="P+4" gate="VCC" x="-5.08" y="88.9"/>
 <instance part="GND4" gate="1" x="99.06" y="30.48"/>
 <instance part="P+5" gate="VCC" x="60.96" y="86.36"/>
-<instance part="R4" gate="G$1" x="83.82" y="81.28"/>
+<instance part="R4" gate="G$1" x="71.12" y="81.28"/>
 <instance part="JP1" gate="G$1" x="45.72" y="66.04"/>
 <instance part="SW_RESET" gate="G$1" x="45.72" y="48.26"/>
-<instance part="LED1" gate="G$1" x="81.28" y="63.5"/>
-<instance part="LED2" gate="G$1" x="81.28" y="43.18"/>
+<instance part="LED1" gate="G$1" x="91.44" y="66.04"/>
+<instance part="LED2" gate="G$1" x="73.66" y="43.18"/>
 </instances>
 <busses>
 </busses>
@@ -7578,18 +7583,20 @@ by exp-project-lbr.ulp</description>
 <wire x1="-5.08" y1="81.28" x2="-2.54" y2="81.28" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<wire x1="60.96" y1="71.12" x2="68.58" y2="71.12" width="0.1524" layer="91"/>
 <pinref part="P+5" gate="VCC" pin="VCC"/>
 <wire x1="60.96" y1="50.8" x2="60.96" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="60.96" y1="68.58" x2="60.96" y2="71.12" width="0.1524" layer="91"/>
-<wire x1="60.96" y1="83.82" x2="60.96" y2="71.12" width="0.1524" layer="91"/>
-<junction x="60.96" y="71.12"/>
+<wire x1="60.96" y1="68.58" x2="60.96" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="60.96" y1="83.82" x2="60.96" y2="76.2" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="G$1" pin="2"/>
 <wire x1="55.88" y1="68.58" x2="60.96" y2="68.58" width="0.1524" layer="91"/>
 <junction x="60.96" y="68.58"/>
-<pinref part="LED1" gate="G$1" pin="VCC"/>
-<pinref part="LED2" gate="G$1" pin="VCC"/>
-<wire x1="60.96" y1="50.8" x2="68.58" y2="50.8" width="0.1524" layer="91"/>
+<wire x1="60.96" y1="50.8" x2="73.66" y2="50.8" width="0.1524" layer="91"/>
+<pinref part="LED2" gate="G$1" pin="VDD"/>
+<wire x1="73.66" y1="50.8" x2="73.66" y2="48.26" width="0.1524" layer="91"/>
+<pinref part="LED1" gate="G$1" pin="VDD"/>
+<wire x1="91.44" y1="76.2" x2="91.44" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="76.2" x2="60.96" y2="76.2" width="0.1524" layer="91"/>
+<junction x="60.96" y="76.2"/>
 </segment>
 </net>
 <net name="GND" class="0">
@@ -7619,8 +7626,11 @@ by exp-project-lbr.ulp</description>
 <segment>
 <pinref part="GND4" gate="1" pin="GND"/>
 <wire x1="99.06" y1="35.56" x2="99.06" y2="33.02" width="0.1524" layer="91"/>
-<wire x1="99.06" y1="35.56" x2="66.04" y2="35.56" width="0.1524" layer="91"/>
-<wire x1="66.04" y1="35.56" x2="58.42" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="35.56" x2="91.44" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="35.56" x2="73.66" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="73.66" y1="35.56" x2="91.44" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="91.44" y1="35.56" x2="73.66" y2="35.56" width="0.1524" layer="91"/>
+<wire x1="73.66" y1="35.56" x2="58.42" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="58.42" y1="35.56" x2="58.42" y2="63.5" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="G$1" pin="6"/>
 <wire x1="58.42" y1="63.5" x2="55.88" y2="63.5" width="0.1524" layer="91"/>
@@ -7629,14 +7639,13 @@ by exp-project-lbr.ulp</description>
 <wire x1="55.88" y1="48.26" x2="55.88" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="55.88" y1="35.56" x2="58.42" y2="35.56" width="0.1524" layer="91"/>
 <junction x="58.42" y="35.56"/>
+<junction x="91.44" y="35.56"/>
+<junction x="91.44" y="35.56"/>
 <pinref part="LED1" gate="G$1" pin="GND"/>
-<wire x1="68.58" y1="68.58" x2="66.04" y2="68.58" width="0.1524" layer="91"/>
-<wire x1="66.04" y1="68.58" x2="66.04" y2="48.26" width="0.1524" layer="91"/>
-<junction x="66.04" y="35.56"/>
+<wire x1="91.44" y1="35.56" x2="91.44" y2="60.96" width="0.1524" layer="91"/>
 <pinref part="LED2" gate="G$1" pin="GND"/>
-<wire x1="66.04" y1="48.26" x2="66.04" y2="35.56" width="0.1524" layer="91"/>
-<wire x1="66.04" y1="48.26" x2="68.58" y2="48.26" width="0.1524" layer="91"/>
-<junction x="66.04" y="48.26"/>
+<wire x1="73.66" y1="35.56" x2="73.66" y2="38.1" width="0.1524" layer="91"/>
+<junction x="73.66" y="35.56"/>
 </segment>
 <segment>
 <pinref part="U1" gate="G$1" pin="GND"/>
@@ -7660,10 +7669,8 @@ by exp-project-lbr.ulp</description>
 </net>
 <net name="MOSI/DIN_RAW" class="0">
 <segment>
-<wire x1="63.5" y1="81.28" x2="71.12" y2="81.28" width="0.1524" layer="91"/>
-<wire x1="71.12" y1="81.28" x2="73.66" y2="81.28" width="0.1524" layer="91"/>
 <pinref part="R4" gate="G$1" pin="1"/>
-<wire x1="73.66" y1="81.28" x2="78.74" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="63.5" y1="81.28" x2="66.04" y2="81.28" width="0.1524" layer="91"/>
 <wire x1="63.5" y1="81.28" x2="63.5" y2="66.04" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="G$1" pin="4"/>
 <wire x1="63.5" y1="66.04" x2="55.88" y2="66.04" width="0.1524" layer="91"/>
@@ -7679,21 +7686,6 @@ by exp-project-lbr.ulp</description>
 <wire x1="35.56" y1="78.74" x2="25.4" y2="78.74" width="0.1524" layer="91"/>
 <pinref part="JP1" gate="G$1" pin="1"/>
 <wire x1="35.56" y1="68.58" x2="38.1" y2="68.58" width="0.1524" layer="91"/>
-</segment>
-</net>
-<net name="SCK_1" class="0">
-<segment>
-<wire x1="27.94" y1="66.04" x2="27.94" y2="76.2" width="0.1524" layer="91"/>
-<pinref part="U1" gate="G$1" pin="PB2(SCK/ADC1)"/>
-<wire x1="27.94" y1="76.2" x2="25.4" y2="76.2" width="0.1524" layer="91"/>
-<wire x1="27.94" y1="66.04" x2="38.1" y2="66.04" width="0.1524" layer="91"/>
-<pinref part="JP1" gate="G$1" pin="3"/>
-<wire x1="27.94" y1="76.2" x2="68.58" y2="76.2" width="0.1524" layer="91"/>
-<junction x="27.94" y="76.2"/>
-<wire x1="68.58" y1="76.2" x2="96.52" y2="76.2" width="0.1524" layer="91"/>
-<wire x1="96.52" y1="76.2" x2="96.52" y2="68.58" width="0.1524" layer="91"/>
-<pinref part="LED1" gate="G$1" pin="CI"/>
-<wire x1="96.52" y1="68.58" x2="93.98" y2="68.58" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="USB_D_MINUS" class="0">
@@ -7747,29 +7739,32 @@ by exp-project-lbr.ulp</description>
 </net>
 <net name="DIN_1" class="0">
 <segment>
-<wire x1="99.06" y1="71.12" x2="93.98" y2="71.12" width="0.1524" layer="91"/>
-<wire x1="99.06" y1="71.12" x2="99.06" y2="81.28" width="0.1524" layer="91"/>
+<pinref part="LED1" gate="G$1" pin="DIN"/>
+<wire x1="81.28" y1="66.04" x2="86.36" y2="66.04" width="0.1524" layer="91"/>
 <pinref part="R4" gate="G$1" pin="2"/>
-<wire x1="99.06" y1="81.28" x2="88.9" y2="81.28" width="0.1524" layer="91"/>
-<pinref part="LED1" gate="G$1" pin="DI"/>
+<wire x1="81.28" y1="66.04" x2="81.28" y2="78.74" width="0.1524" layer="91"/>
+<wire x1="81.28" y1="78.74" x2="81.28" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="81.28" y1="81.28" x2="76.2" y2="81.28" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="DIN_2" class="0">
 <segment>
-<pinref part="LED1" gate="G$1" pin="DO"/>
-<wire x1="93.98" y1="63.5" x2="99.06" y2="63.5" width="0.1524" layer="91"/>
-<wire x1="99.06" y1="63.5" x2="99.06" y2="50.8" width="0.1524" layer="91"/>
-<pinref part="LED2" gate="G$1" pin="DI"/>
-<wire x1="99.06" y1="50.8" x2="93.98" y2="50.8" width="0.1524" layer="91"/>
+<pinref part="LED1" gate="G$1" pin="DOUT"/>
+<wire x1="96.52" y1="66.04" x2="99.06" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="66.04" x2="99.06" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="99.06" y1="58.42" x2="66.04" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="58.42" x2="66.04" y2="43.18" width="0.1524" layer="91"/>
+<pinref part="LED2" gate="G$1" pin="DIN"/>
+<wire x1="66.04" y1="43.18" x2="68.58" y2="43.18" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="SCK_2" class="0">
+<net name="N$4" class="0">
 <segment>
-<pinref part="LED1" gate="G$1" pin="CO"/>
-<wire x1="93.98" y1="60.96" x2="96.52" y2="60.96" width="0.1524" layer="91"/>
-<wire x1="96.52" y1="60.96" x2="96.52" y2="48.26" width="0.1524" layer="91"/>
-<pinref part="LED2" gate="G$1" pin="CI"/>
-<wire x1="96.52" y1="48.26" x2="93.98" y2="48.26" width="0.1524" layer="91"/>
+<pinref part="JP1" gate="G$1" pin="3"/>
+<pinref part="U1" gate="G$1" pin="PB2(SCK/ADC1)"/>
+<wire x1="27.94" y1="76.2" x2="25.4" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="66.04" x2="27.94" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="66.04" x2="38.1" y2="66.04" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
