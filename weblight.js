@@ -66,18 +66,44 @@ function ab2str(buf) {
 
 })();
 
-function start() {
-  'use strict';
-
+function ensureHTTPS() {
   if (window.location.protocol != "https:" &&
       window.location.host == "sowbug.github.io") {
     window.location.href = "https:" +
         window.location.href.substring(window.location.protocol.length);
   }
+}
+
+function installServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    // Override the default scope of '/' with './', so that the registration
+    // applies to the current directory and everything underneath it.
+    navigator.serviceWorker.register('service-worker.js', {scope: './'})
+	.then(function(registration) {
+	  // At this point, registration has taken place. The service worker
+	  // will not handle requests until this page and any other instances
+	  // of this page (in other tabs, etc.) have been closed/reloaded.
+	  document.querySelector('#status').textContent = 'succeeded';
+	}).catch(function(error) {
+	  // Something went wrong during registration. The service-worker.js
+	  // file might be unavailable or contain a syntax error.
+	  document.querySelector('#status').textContent = error;
+	});
+  } else {
+    // The current browser doesn't support service workers.
+    var aElement = document.createElement('a');
+    aElement.href = 'http://www.chromium.org/blink/serviceworker/service-worker-faq';
+    aElement.textContent = 'Service Worker Unavailable';
+    document.querySelector('#status').appendChild(aElement);
+  }
+}
+
+function loop() {
+  'use strict';
 
   var device = null;
   var intervalId = 0;
-  var status = document.getElementById('color');
+  var color = document.getElementById('color');
 
   navigator.usb.addEventListener('disconnect', function(event) {
     console.log('disconnect event', event.device, device);
@@ -89,7 +115,7 @@ function start() {
       clearInterval(intervalId);
       intervalId = 0;
 
-      status.innerText = 'no device';
+      color.innerText = 'no device';
       device.disconnect();
     }
   });
@@ -97,14 +123,14 @@ function start() {
   webusb.getDevices().then(devices => {
 
     if (devices.length == 0) {
-      status.innerText = 'no device';
+      color.innerText = 'no device';
       console.log("no device found");
       navigator.usb.addEventListener('connect', function() {
         console.log('connect event', this);
 
         // TODO(miket): this is horrible. I need to study up on
         // promises.
-        start();
+        loop();
       });
     } else {
       device = devices[0];
@@ -199,7 +225,7 @@ function start() {
             if (++cycle > 2) {
               cycle = 0;
             }
-            status.innerText = name;
+            color.innerText = name;
             device.controlTransferOut({
               'requestType': 'vendor',
               'recipient': 'device',
@@ -214,6 +240,12 @@ function start() {
         });
     }
   });
+}
+
+function start() {
+  ensureHTTPS();
+  installServiceWorker();
+  loop();
 }
 
 document.addEventListener('DOMContentLoaded', start, false);
