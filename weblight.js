@@ -120,24 +120,25 @@ function logDeviceStrings(device) {
 function blinkLights(device) {
   var rgb = new Uint8Array(3);
 
+  var brightness = 0x20;
   var name = '';
   switch (device.cycle) {
     case 0:
-    rgb[0] = 0x80;
+    rgb[0] = brightness;
     rgb[1] = 0x00;
     rgb[2] = 0x00;
     name = 'red';
     break;
     case 1:
       rgb[0] = 0x00;
-      rgb[1] = 0x80;
+      rgb[1] = brightness;
       rgb[2] = 0x00;
       name = 'green';
       break;
       case 2:
       rgb[0] = 0x00;
       rgb[1] = 0x00;
-      rgb[2] = 0x80;
+      rgb[2] = brightness;
       name = 'blue';
       break;
   }
