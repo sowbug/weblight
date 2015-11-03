@@ -7,7 +7,7 @@ F_CPU   = 16500000	# in Hz
 HEXFILE = main.hex
 AVRDUDE = avrdude -c usbtiny -p $(DEVICE)
 WLCTL = ../commandline/wlctl
-MICRONUCLEUS = micronucleus --run $(HEXFILE)
+MICRONUCLEUS = micronucleus
 
 CFLAGS  = -Iusbdrv -I. -DDEBUG_LEVEL=0
 OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o \
