@@ -22,6 +22,8 @@ parser.add_option("-l", "--list", action="store_true", default=False,
                   help="list attached devices")
 parser.add_option("-t", "--test", action="store_true", default=False,
                   help="test device")
+parser.add_option("-9", "--stress", action="store_true", default=False,
+                  help="stress-test device")
 parser.add_option("-r", "--reset", action="store_true", default=False,
                   help="reset device")
 parser.add_option("-c", "--count",
@@ -93,6 +95,26 @@ if options.test:
     else:
         print "Test failed:", result
         sys.exit(1)
+
+if options.stress:
+  import os
+  import time
+
+  print "Press control-c to stop."
+  count = 0
+  start_time = time.clock()
+  while True:
+    bytes = bytearray(os.urandom(3))
+    count += 1
+    elapsed = 10 * (time.clock() - start_time)
+    try:
+      result = dev.ctrl_transfer(0x40, WL_REQUEST_SET_RGB, 0, 0, bytes)
+    except usb.core.USBError, e:
+      print "\n\nFailed @ %d, %0.1f with %s" % (count, elapsed, e)
+      break
+    sys.stdout.write("\rIterations: %10d  Time: %10.1f" % (count, elapsed))
+    sys.stdout.flush()
+  sys.exit(0)
 
 if options.count:
     result = dev.ctrl_transfer(0x40, WL_REQUEST_SET_LED_COUNT,
