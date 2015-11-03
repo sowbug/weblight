@@ -57,6 +57,9 @@ manufacturers.
 [reputed](http://electronics.stackexchange.com/questions/13174/connectorless-usb-on-a-pcb)
 to work OK, and short-run PCB manufacturers support it.
 
+* The SparkFun EAGLE part for connectorless type-A says "If possible,
+ensure that your PCB is about 2.4mm thick to fit snugly."
+
 * 1.6mm is typical for prototyping PCBs. This works with a piece of
 paper taped on the back of the PCB, beneath the connector area.
 Otherwise it's a loose fit that is unreliable in some USB ports.
@@ -84,7 +87,7 @@ and PIC18.
 popular choice for small applications that bitbang USB. The SOIC8
 version costs about 75 cents in quantity 100+.
 
-* The ATMega u2 and u4 series have built-in USB support, but they are
+* The ATMega 'u2 and 'u4 series have built-in USB support, but they are
 relatively expensive (more than $3/unit in quantity).
 
 LED
@@ -109,7 +112,7 @@ similar luminosity and power characteristics. However, it uses an
 SPI-like protocol that is not sensitive to timing, making it ideal for
 an application like this where the microcontroller will be servicing
 timing-sensitive bitbanged USB requests. As of October 2015, is
-slightly more expensive than the WS2812 in quantity (12 cents vs. 25
+slightly more expensive than the WS2812 in quantity (12 cents vs. 10
 cents), but because the maker and DIY lighting communities are
 embracing it, its price should come down soon.
 
@@ -128,7 +131,7 @@ to be faster, and claims better compatibility.
 * Having a bootloader is desirable during development, and likely to
 be useful to update production devices. It might turn out to be
 unnecessary for production devices, but today there is little cost to
-keeping it.
+keeping it because we aren't bumping up against program-space limits.
 
 * [light_ws2812](https://github.com/cpldcpu/light_ws2812) is a much
 lighterweight WS2812 library compared to
@@ -137,7 +140,8 @@ noted above, WS2812 is not the long-term choice for this project.
 
 * As shown in the
 [Adafruit DotStar](https://github.com/adafruit/Adafruit_DotStar)
-Arduino library for APA102, there isn't a tremendous need for a large
+Arduino and [Polulu](https://github.com/pololu/apa102-arduino)
+libraries for APA102, there isn't a tremendous need for a large
 or resource-intensive software library for this LED.
 
 * TODO: describe V-USB and usbFunctionSetup()
