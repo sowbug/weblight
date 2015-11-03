@@ -10,11 +10,11 @@ FUSEOPT = \
 	-U efuse:w:0xfe:m
 HEXFILE = t85_watchdog_or_ext_reset.hex
 
+fuse:
+	$(AVRDUDE) $(FUSEOPT) -B 250
+
 flash: $(HEXFILE)
 	$(AVRDUDE) -U flash:w:$(HEXFILE):i
-
-fuse:
-	$(AVRDUDE) $(FUSEOPT) -B 20
 
 eeprom:
 	./gen_eeprom
