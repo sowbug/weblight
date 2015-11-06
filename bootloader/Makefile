@@ -11,7 +11,7 @@ FUSEOPT = \
 HEXFILE = t85_watchdog_or_ext_reset.hex
 
 fuse:
-	$(AVRDUDE) $(FUSEOPT) -B 250
+	$(AVRDUDE) $(FUSEOPT) -B 20
 
 flash: $(HEXFILE)
 	$(AVRDUDE) -U flash:w:$(HEXFILE):i
