@@ -30,15 +30,6 @@ function ab2str(buf) {
   };
 
   webusb.Device.prototype.connect = function() {
-    let readLoop = () => {
-      this.device_.transferIn(2, 64).then(result => {
-        this.onReceive(result.data);
-        readLoop();
-      }, error => {
-        console.log(error);
-      });
-    };
-
     return this.device_.open()
       .then(() => this.device_.getConfiguration()
             .then(config => {
