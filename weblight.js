@@ -160,7 +160,8 @@ function startBlinkLights(device) {
 
   device.cycle = 0;
   blinkLights(device);
-  device.intervalId = window.setInterval(blinkLights.bind(this, device), 1000);
+  device.intervalId = window.setInterval(blinkLights.bind(this, device),
+                                         Math.random() * 1750 + 250);
 }
 
 function setElementDeviceInfo(e, text) {
