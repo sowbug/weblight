@@ -1,6 +1,6 @@
 Pinlist
 
-Exported from weblight.sch at 11/15/15 7:32 AM
+Exported from weblight.sch at 11/15/15 2:04 PM
 
 EAGLE Version 7.4.0 Copyright (c) 1988-2015 CadSoft
 
@@ -18,6 +18,13 @@ D1           A        A          pas      GND
 D2           A        A          pas      GND
              K        C          pas      USB_D_MINUS_RAW
 
+ICSP         1        \RST       io       N_RESET
+             2        MOSI       io       DIN_1/MOSI
+             3        MISO       io       MISO
+             4        SCK        io       CLK_1/SCK
+             5        GND        io       GND
+             6        VCC        io       VCC
+
 JP-USB-MICRO 1        5V         pwr      VCC
              2        D-         io       USB_D_MINUS_RAW
              3        D+         io       USB_D_PLUS_RAW
@@ -30,9 +37,9 @@ JP-USB-MICRO 1        5V         pwr      VCC
              S5       SLD        pwr      SLD
              S6       SLD        pwr      SLD
 
-LED1         CI       CI         in       CLK_1
+LED1         CI       CI         in       CLK_1/SCK
              CO       CO         out      CLK_2
-             DI       DI         in       DIN_1
+             DI       DI         in       DIN_1/MOSI
              DO       DO         out      DIN_2
              GND      GND        pwr      GND
              VCC      VCC        pwr      VCC
@@ -61,11 +68,11 @@ LED4         CI       CI         in       CLK_4
 R1           1        1          pas      VCC
              2        2          pas      USB_D_MINUS_RAW
 
-R2           1        1          pas      USB_D_MINUS_RAW
-             2        2          pas      USB_D_MINUS
-
-R3           1        1          pas      USB_D_PLUS
+R2           1        1          pas      USB_D_PLUS
              2        2          pas      USB_D_PLUS_RAW
+
+R3           1        1          pas      USB_D_MINUS_RAW
+             2        2          pas      USB_D_MINUS
 
 R4           1        1          pas      VCC
              2        2          pas      N_RESET
@@ -74,8 +81,8 @@ U1           1        PB5(NRES)  io       N_RESET
              2        PB3(ADC3)  io       USB_D_MINUS
              3        PB4(ADC2)  io       USB_D_PLUS
              4        GND        io       GND
-             5        PB0(MOSI)  io       DIN_1
-             6        PB1(MISO)  io                *** unconnected ***
-             7        PB2(SCK/ADC1) io       CLK_1
+             5        PB0(MOSI)  io       DIN_1/MOSI
+             6        PB1(MISO)  io       MISO
+             7        PB2(SCK/ADC1) io       CLK_1/SCK
              8        VCC        io       VCC
 

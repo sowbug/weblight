@@ -77,7 +77,10 @@
 <layer number="112" name="tSilk" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="113" name="IDFDebug" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="116" name="Patch_BOT" color="9" fill="4" visible="yes" active="yes"/>
+<layer number="117" name="mPads" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="118" name="Rect_Pads" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="119" name="mUnrouted" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="120" name="mDimension" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="121" name="_tsilk" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="122" name="_bsilk" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="123" name="tTestmark" color="7" fill="1" visible="yes" active="yes"/>
@@ -87,15 +90,38 @@
 <layer number="127" name="_tValues" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="128" name="_bValues" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="129" name="Mask" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="130" name="mbStop" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="131" name="tAdjust" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="132" name="bAdjust" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="133" name="mtFinish" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="134" name="mbFinish" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="135" name="mtGlue" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="136" name="mbGlue" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="137" name="mtTest" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="138" name="mbTest" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="139" name="mtKeepout" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="140" name="mbKeepout" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="141" name="mtRestrict" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="142" name="mbRestrict" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="143" name="mvRestrict" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="144" name="Drill_legend" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="145" name="mHoles" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="146" name="mMilling" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="147" name="mMeasures" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="148" name="mDocument" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="149" name="mReference" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="150" name="Notes" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="151" name="HeatSink" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="152" name="_bDocu" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="153" name="FabDoc1" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="154" name="FabDoc2" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="155" name="FabDoc3" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="191" name="mNets" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="192" name="mBusses" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="193" name="mPins" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="194" name="mSymbols" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="195" name="mNames" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="196" name="mValues" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="199" name="Contour" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="200" name="200bmp" color="1" fill="10" visible="yes" active="yes"/>
 <layer number="201" name="201bmp" color="2" fill="10" visible="yes" active="yes"/>
@@ -6771,6 +6797,246 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </deviceset>
 </devicesets>
 </library>
+<library name="Protofusion">
+<packages>
+<package name="POGOPROG-CONN">
+<description>Standard pogo pin programming header with two alignment holes. Small SMD pads.</description>
+<smd name="3" x="0" y="1.27" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="2" x="0" y="2.54" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="4" x="0" y="0" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="1" x="0" y="3.81" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="5" x="0" y="-1.27" dx="0.889" dy="0.8128" layer="1"/>
+<hole x="0" y="5.08" drill="0.508"/>
+<hole x="0" y="-3.81" drill="0.508"/>
+<wire x1="-0.635" y1="5.715" x2="0.635" y2="5.715" width="0.127" layer="21"/>
+<wire x1="0.635" y1="5.715" x2="0.635" y2="-4.445" width="0.127" layer="21"/>
+<wire x1="0.635" y1="-4.445" x2="-0.635" y2="-4.445" width="0.127" layer="21"/>
+<wire x1="-0.635" y1="-4.445" x2="-0.635" y2="5.715" width="0.127" layer="21"/>
+<smd name="6" x="0" y="-2.54" dx="0.889" dy="0.8128" layer="1"/>
+<polygon width="0.127" layer="21">
+<vertex x="-0.635" y="3.175"/>
+<vertex x="0.635" y="3.175"/>
+<vertex x="0.635" y="5.715"/>
+<vertex x="-0.635" y="5.715"/>
+</polygon>
+<text x="-1.27" y="6.35" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1.27" y="-6.35" size="1.27" layer="27">&gt;VALUE</text>
+<circle x="0" y="5.08" radius="0.635" width="0" layer="29"/>
+<circle x="0" y="-3.81" radius="0.635" width="0" layer="29"/>
+<circle x="0" y="-3.81" radius="0.635" width="0" layer="30"/>
+<circle x="0" y="5.08" radius="0.635" width="0" layer="30"/>
+</package>
+<package name="POGOPROG-CONN-0H">
+<description>No holes, 2 vias, pogo pin programming header.</description>
+<smd name="3" x="0" y="1.27" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="2" x="0" y="2.54" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="4" x="0" y="0" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="5" x="0" y="-1.27" dx="0.889" dy="0.8128" layer="1"/>
+<wire x1="-0.635" y1="4.445" x2="0.635" y2="4.445" width="0.127" layer="21"/>
+<wire x1="0.635" y1="4.445" x2="0.635" y2="-3.175" width="0.127" layer="21"/>
+<wire x1="0.635" y1="-3.175" x2="-0.635" y2="-3.175" width="0.127" layer="21"/>
+<wire x1="-0.635" y1="-3.175" x2="-0.635" y2="4.445" width="0.127" layer="21"/>
+<polygon width="0.127" layer="21">
+<vertex x="-0.635" y="1.905"/>
+<vertex x="0.635" y="1.905"/>
+<vertex x="0.635" y="4.445"/>
+<vertex x="-0.635" y="4.445"/>
+</polygon>
+<text x="-1.27" y="5.08" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1.27" y="-5.08" size="1.27" layer="27">&gt;VALUE</text>
+<pad name="1" x="0" y="3.81" drill="0.4572"/>
+<pad name="6" x="0" y="-2.54" drill="0.4572"/>
+</package>
+<package name="POGOPROG-CONN-1H">
+<description>Standard pogo pin programming header with ONE alignment hole. Small SMD pads.</description>
+<smd name="3" x="0" y="0" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="2" x="0" y="1.27" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="4" x="0" y="-1.27" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="1" x="0" y="2.54" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="5" x="0" y="-2.54" dx="0.889" dy="0.8128" layer="1"/>
+<hole x="0" y="3.81" drill="0.5"/>
+<wire x1="-0.635" y1="4.445" x2="0.635" y2="4.445" width="0.127" layer="21"/>
+<wire x1="0.635" y1="4.445" x2="0.635" y2="-4.445" width="0.127" layer="21"/>
+<wire x1="0.635" y1="-4.445" x2="-0.635" y2="-4.445" width="0.127" layer="21"/>
+<wire x1="-0.635" y1="-4.445" x2="-0.635" y2="4.445" width="0.127" layer="21"/>
+<smd name="6" x="0" y="-3.81" dx="0.889" dy="0.8128" layer="1"/>
+<polygon width="0.127" layer="21">
+<vertex x="-0.635" y="1.905"/>
+<vertex x="0.635" y="1.905"/>
+<vertex x="0.635" y="4.445"/>
+<vertex x="-0.635" y="4.445"/>
+</polygon>
+<text x="-1.27" y="5.08" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1.27" y="-6.35" size="1.27" layer="27">&gt;VALUE</text>
+</package>
+<package name="POGOPROG-CONN-OH-SMALLERVIAS">
+<description>No holes, 2 vias, pogo pin programming header. With smaller vias.</description>
+<smd name="3" x="0" y="0" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="2" x="0" y="1.27" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="4" x="0" y="-1.27" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="5" x="0" y="-2.54" dx="0.889" dy="0.8128" layer="1"/>
+<wire x1="-0.635" y1="3.175" x2="0.635" y2="3.175" width="0.127" layer="21"/>
+<wire x1="0.635" y1="3.175" x2="0.635" y2="-4.445" width="0.127" layer="21"/>
+<wire x1="0.635" y1="-4.445" x2="-0.635" y2="-4.445" width="0.127" layer="21"/>
+<wire x1="-0.635" y1="-4.445" x2="-0.635" y2="3.175" width="0.127" layer="21"/>
+<polygon width="0.127" layer="21">
+<vertex x="-0.635" y="0.635"/>
+<vertex x="0.635" y="0.635"/>
+<vertex x="0.635" y="3.175"/>
+<vertex x="-0.635" y="3.175"/>
+</polygon>
+<text x="-1.27" y="3.81" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1.27" y="-6.35" size="1.27" layer="27">&gt;VALUE</text>
+<pad name="1" x="0" y="2.54" drill="0.381"/>
+<pad name="6" x="0" y="-3.81" drill="0.381"/>
+</package>
+<package name="POGOPROG-CONN-W">
+<description>Standard pogo pin programming header with two alignment holes. WIDE smd pads.</description>
+<smd name="3" x="0" y="0" dx="1.143" dy="0.8128" layer="1"/>
+<smd name="2" x="0" y="1.27" dx="1.143" dy="0.8128" layer="1"/>
+<smd name="4" x="0" y="-1.27" dx="1.143" dy="0.8128" layer="1"/>
+<smd name="1" x="0" y="2.54" dx="1.143" dy="0.8128" layer="1"/>
+<smd name="5" x="0" y="-2.54" dx="1.143" dy="0.8128" layer="1"/>
+<hole x="0" y="3.81" drill="0.5"/>
+<hole x="0" y="-5.08" drill="0.5"/>
+<wire x1="-0.635" y1="4.445" x2="0.635" y2="4.445" width="0.127" layer="21"/>
+<wire x1="0.635" y1="4.445" x2="0.635" y2="-5.715" width="0.127" layer="21"/>
+<wire x1="0.635" y1="-5.715" x2="-0.635" y2="-5.715" width="0.127" layer="21"/>
+<wire x1="-0.635" y1="-5.715" x2="-0.635" y2="4.445" width="0.127" layer="21"/>
+<smd name="6" x="0" y="-3.81" dx="1.143" dy="0.8128" layer="1"/>
+<polygon width="0.127" layer="21">
+<vertex x="-0.635" y="1.905"/>
+<vertex x="0.635" y="1.905"/>
+<vertex x="0.635" y="4.445"/>
+<vertex x="-0.635" y="4.445"/>
+</polygon>
+<text x="-1.27" y="5.08" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1.27" y="-7.62" size="1.27" layer="27">&gt;VALUE</text>
+</package>
+<package name="POGOPROG-CONN-OH-1V">
+<description>No holes, 1 via, pogo pin programming header.</description>
+<smd name="3" x="0" y="0" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="2" x="0" y="1.27" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="4" x="0" y="-1.27" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="5" x="0" y="-2.54" dx="0.889" dy="0.8128" layer="1"/>
+<wire x1="-0.635" y1="3.175" x2="0.635" y2="3.175" width="0.127" layer="21"/>
+<wire x1="0.635" y1="3.175" x2="0.635" y2="-4.445" width="0.127" layer="21"/>
+<wire x1="0.635" y1="-4.445" x2="-0.635" y2="-4.445" width="0.127" layer="21"/>
+<wire x1="-0.635" y1="-4.445" x2="-0.635" y2="3.175" width="0.127" layer="21"/>
+<polygon width="0.127" layer="21">
+<vertex x="-0.635" y="0.635"/>
+<vertex x="0.635" y="0.635"/>
+<vertex x="0.635" y="3.175"/>
+<vertex x="-0.635" y="3.175"/>
+</polygon>
+<text x="-1.27" y="3.81" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1.27" y="-6.35" size="1.27" layer="27">&gt;VALUE</text>
+<pad name="1" x="0" y="2.54" drill="0.4572"/>
+<smd name="6" x="0" y="-3.81" dx="0.889" dy="0.8128" layer="1"/>
+</package>
+</packages>
+<symbols>
+<symbol name="POGOPROG-CONN">
+<pin name="MOSI" x="-2.54" y="-5.08" length="short"/>
+<pin name="MISO" x="-2.54" y="-2.54" length="short"/>
+<pin name="SCK" x="-2.54" y="0" length="short"/>
+<pin name="\RST" x="-2.54" y="-7.62" length="short"/>
+<pin name="VCC" x="-2.54" y="5.08" length="short"/>
+<pin name="GND" x="-2.54" y="2.54" length="short"/>
+<text x="0" y="7.62" size="1.778" layer="95">&gt;NAME</text>
+<text x="0" y="-10.16" size="1.778" layer="95" rot="MR180">&gt;VALUE</text>
+<rectangle x1="0" y1="-8.89" x2="1.27" y2="6.35" layer="94"/>
+</symbol>
+</symbols>
+<devicesets>
+<deviceset name="POGOPIN-CONN">
+<description>Protofusion custom pogo pin programming header</description>
+<gates>
+<gate name="J" symbol="POGOPROG-CONN" x="0" y="0"/>
+</gates>
+<devices>
+<device name="STANDARD" package="POGOPROG-CONN">
+<connects>
+<connect gate="J" pin="GND" pad="5"/>
+<connect gate="J" pin="MISO" pad="3"/>
+<connect gate="J" pin="MOSI" pad="2"/>
+<connect gate="J" pin="SCK" pad="4"/>
+<connect gate="J" pin="VCC" pad="6"/>
+<connect gate="J" pin="\RST" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="WITHVIAS" package="POGOPROG-CONN-0H">
+<connects>
+<connect gate="J" pin="GND" pad="5"/>
+<connect gate="J" pin="MISO" pad="3"/>
+<connect gate="J" pin="MOSI" pad="2"/>
+<connect gate="J" pin="SCK" pad="4"/>
+<connect gate="J" pin="VCC" pad="6"/>
+<connect gate="J" pin="\RST" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="ONEHOLE" package="POGOPROG-CONN-1H">
+<connects>
+<connect gate="J" pin="GND" pad="5"/>
+<connect gate="J" pin="MISO" pad="3"/>
+<connect gate="J" pin="MOSI" pad="2"/>
+<connect gate="J" pin="SCK" pad="4"/>
+<connect gate="J" pin="VCC" pad="6"/>
+<connect gate="J" pin="\RST" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="WITHVIAS-SMV" package="POGOPROG-CONN-OH-SMALLERVIAS">
+<connects>
+<connect gate="J" pin="GND" pad="5"/>
+<connect gate="J" pin="MISO" pad="3"/>
+<connect gate="J" pin="MOSI" pad="2"/>
+<connect gate="J" pin="SCK" pad="4"/>
+<connect gate="J" pin="VCC" pad="6"/>
+<connect gate="J" pin="\RST" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="WIDE" package="POGOPROG-CONN-W">
+<connects>
+<connect gate="J" pin="GND" pad="5"/>
+<connect gate="J" pin="MISO" pad="3"/>
+<connect gate="J" pin="MOSI" pad="2"/>
+<connect gate="J" pin="SCK" pad="4"/>
+<connect gate="J" pin="VCC" pad="6"/>
+<connect gate="J" pin="\RST" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="WITHVIAS-1V" package="POGOPROG-CONN-OH-1V">
+<connects>
+<connect gate="J" pin="GND" pad="5"/>
+<connect gate="J" pin="MISO" pad="3"/>
+<connect gate="J" pin="MOSI" pad="2"/>
+<connect gate="J" pin="SCK" pad="4"/>
+<connect gate="J" pin="VCC" pad="6"/>
+<connect gate="J" pin="\RST" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
+</devicesets>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -6783,13 +7049,13 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <parts>
 <part name="C1" library="rcl" deviceset="C-US" device="C0402" value="1uF"/>
 <part name="C2" library="rcl" deviceset="C-US" device="C0402" value="0.1uF"/>
-<part name="R2" library="rcl" deviceset="R-US_" device="R0402" value="68"/>
 <part name="R3" library="rcl" deviceset="R-US_" device="R0402" value="68"/>
+<part name="R2" library="rcl" deviceset="R-US_" device="R0402" value="68"/>
 <part name="R1" library="rcl" deviceset="R-US_" device="R0402" value="1.5K"/>
 <part name="D1" library="microbuilder" deviceset="DIODE" device="SOD-523" value="3.6V"/>
 <part name="D2" library="microbuilder" deviceset="DIODE" device="SOD-523" value="3.6V"/>
 <part name="U1" library="SparkFun-DigitalIC" deviceset="ATTINY45" device="TINY85-20-SMT" value="ATtiny85-20SU"/>
-<part name="JP-USB-MICRO" library="MF_Connectors" deviceset="USB" device="_MICRO_RIGHT"/>
+<part name="JP-USB-MICRO" library="MF_Connectors" deviceset="USB" device="_MICRO_RIGHT" value="USB"/>
 <part name="P+2" library="supply1" deviceset="VCC" device=""/>
 <part name="GND2" library="supply1" deviceset="GND" device=""/>
 <part name="GND3" library="supply1" deviceset="GND" device=""/>
@@ -6807,6 +7073,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="HOLE3" library="microbuilder" deviceset="MOUNTINGHOLE" device="2.0"/>
 <part name="HOLE4" library="microbuilder" deviceset="MOUNTINGHOLE" device="2.0"/>
 <part name="HOLE1" library="microbuilder" deviceset="MOUNTINGHOLE" device="2.0"/>
+<part name="ICSP" library="Protofusion" deviceset="POGOPIN-CONN" device="ONEHOLE"/>
 </parts>
 <sheets>
 <sheet>
@@ -6815,22 +7082,22 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <instances>
 <instance part="C1" gate="G$1" x="2.54" y="30.48" rot="R180"/>
 <instance part="C2" gate="G$1" x="17.78" y="30.48" rot="R180"/>
-<instance part="R2" gate="G$1" x="-5.08" y="55.88"/>
-<instance part="R3" gate="G$1" x="2.54" y="50.8" rot="R180"/>
-<instance part="R1" gate="G$1" x="-27.94" y="63.5" rot="R270"/>
+<instance part="R3" gate="G$1" x="-5.08" y="55.88"/>
+<instance part="R2" gate="G$1" x="2.54" y="50.8" rot="R180"/>
+<instance part="R1" gate="G$1" x="-38.1" y="63.5"/>
 <instance part="D1" gate="G$1" x="-33.02" y="45.72" rot="R90"/>
 <instance part="D2" gate="G$1" x="-27.94" y="40.64" rot="R90"/>
 <instance part="U1" gate="G$1" x="-2.54" y="73.66"/>
-<instance part="JP-USB-MICRO" gate="G$1" x="-53.34" y="53.34"/>
-<instance part="P+2" gate="VCC" x="-33.02" y="96.52"/>
-<instance part="GND2" gate="1" x="-20.32" y="60.96"/>
+<instance part="JP-USB-MICRO" gate="G$1" x="-73.66" y="53.34"/>
+<instance part="P+2" gate="VCC" x="-55.88" y="93.98"/>
+<instance part="GND2" gate="1" x="-20.32" y="30.48"/>
 <instance part="GND3" gate="1" x="-33.02" y="30.48"/>
 <instance part="P+3" gate="VCC" x="10.16" y="40.64"/>
 <instance part="GND5" gate="1" x="10.16" y="22.86"/>
 <instance part="P+4" gate="VCC" x="-20.32" y="96.52"/>
 <instance part="GND4" gate="1" x="35.56" y="5.08"/>
 <instance part="P+5" gate="VCC" x="35.56" y="96.52"/>
-<instance part="R4" gate="G$1" x="17.78" y="66.04" rot="R180"/>
+<instance part="R4" gate="G$1" x="17.78" y="60.96" rot="R180"/>
 <instance part="LED1" gate="G$1" x="50.8" y="73.66"/>
 <instance part="LED2" gate="G$1" x="50.8" y="53.34"/>
 <instance part="LED3" gate="G$1" x="50.8" y="33.02"/>
@@ -6839,6 +7106,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <instance part="HOLE3" gate="G$1" x="-40.64" y="17.78"/>
 <instance part="HOLE4" gate="G$1" x="-33.02" y="17.78"/>
 <instance part="HOLE1" gate="G$1" x="-25.4" y="17.78"/>
+<instance part="ICSP" gate="J" x="-76.2" y="78.74" rot="R180"/>
 </instances>
 <busses>
 </busses>
@@ -6856,13 +7124,19 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <segment>
 <pinref part="R1" gate="G$1" pin="1"/>
 <pinref part="JP-USB-MICRO" gate="G$1" pin="5V"/>
-<wire x1="-33.02" y1="73.66" x2="-33.02" y2="58.42" width="0.1524" layer="91"/>
-<junction x="-33.02" y="73.66"/>
+<wire x1="-55.88" y1="71.12" x2="-55.88" y2="58.42" width="0.1524" layer="91"/>
+<junction x="-55.88" y="71.12"/>
 <pinref part="P+2" gate="VCC" pin="VCC"/>
-<wire x1="-33.02" y1="58.42" x2="-45.72" y2="58.42" width="0.1524" layer="91"/>
-<wire x1="-33.02" y1="73.66" x2="-33.02" y2="93.98" width="0.1524" layer="91"/>
-<wire x1="-27.94" y1="68.58" x2="-27.94" y2="73.66" width="0.1524" layer="91"/>
-<wire x1="-27.94" y1="73.66" x2="-33.02" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="-55.88" y1="58.42" x2="-66.04" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="-55.88" y1="71.12" x2="-55.88" y2="73.66" width="0.1524" layer="91"/>
+<wire x1="-55.88" y1="73.66" x2="-55.88" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="-43.18" y1="63.5" x2="-48.26" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="-48.26" y1="63.5" x2="-48.26" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="-48.26" y1="68.58" x2="-48.26" y2="71.12" width="0.1524" layer="91"/>
+<wire x1="-48.26" y1="71.12" x2="-55.88" y2="71.12" width="0.1524" layer="91"/>
+<pinref part="ICSP" gate="J" pin="VCC"/>
+<wire x1="-73.66" y1="73.66" x2="-55.88" y2="73.66" width="0.1524" layer="91"/>
+<junction x="-55.88" y="73.66"/>
 </segment>
 <segment>
 <pinref part="P+4" gate="VCC" pin="VCC"/>
@@ -6877,10 +7151,8 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pinref part="LED1" gate="G$1" pin="VCC"/>
 <wire x1="38.1" y1="81.28" x2="38.1" y2="88.9" width="0.1524" layer="91"/>
 <pinref part="R4" gate="G$1" pin="1"/>
-<wire x1="22.86" y1="66.04" x2="27.94" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="27.94" y1="66.04" x2="27.94" y2="60.96" width="0.1524" layer="91"/>
-<wire x1="27.94" y1="60.96" x2="27.94" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="27.94" y1="66.04" x2="27.94" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="60.96" x2="27.94" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="60.96" x2="27.94" y2="88.9" width="0.1524" layer="91"/>
 <wire x1="27.94" y1="88.9" x2="35.56" y2="88.9" width="0.1524" layer="91"/>
 <junction x="35.56" y="88.9"/>
 <pinref part="LED2" gate="G$1" pin="VCC"/>
@@ -6889,9 +7161,9 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pinref part="LED4" gate="G$1" pin="VCC"/>
 <wire x1="38.1" y1="20.32" x2="27.94" y2="20.32" width="0.1524" layer="91"/>
 <wire x1="27.94" y1="20.32" x2="27.94" y2="40.64" width="0.1524" layer="91"/>
-<junction x="27.94" y="66.04"/>
+<junction x="27.94" y="60.96"/>
 <pinref part="LED3" gate="G$1" pin="VCC"/>
-<wire x1="27.94" y1="40.64" x2="27.94" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="40.64" x2="27.94" y2="60.96" width="0.1524" layer="91"/>
 <wire x1="38.1" y1="40.64" x2="27.94" y2="40.64" width="0.1524" layer="91"/>
 <junction x="27.94" y="40.64"/>
 </segment>
@@ -6914,7 +7186,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="-33.02" y1="35.56" x2="-33.02" y2="33.02" width="0.1524" layer="91"/>
 <junction x="-33.02" y="35.56"/>
 <pinref part="JP-USB-MICRO" gate="G$1" pin="GND"/>
-<wire x1="-45.72" y1="48.26" x2="-38.1" y2="48.26" width="0.1524" layer="91"/>
+<wire x1="-66.04" y1="48.26" x2="-38.1" y2="48.26" width="0.1524" layer="91"/>
 <wire x1="-38.1" y1="48.26" x2="-38.1" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="-38.1" y1="35.56" x2="-33.02" y2="35.56" width="0.1524" layer="91"/>
 <wire x1="-27.94" y1="35.56" x2="-33.02" y2="35.56" width="0.1524" layer="91"/>
@@ -6925,8 +7197,14 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pinref part="U1" gate="G$1" pin="GND"/>
 <wire x1="-17.78" y1="68.58" x2="-20.32" y2="68.58" width="0.1524" layer="91"/>
 <wire x1="-20.32" y1="68.58" x2="-20.32" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="-20.32" y1="66.04" x2="-20.32" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="-20.32" y1="66.04" x2="-20.32" y2="33.02" width="0.1524" layer="91"/>
 <pinref part="GND2" gate="1" pin="GND"/>
+<pinref part="ICSP" gate="J" pin="GND"/>
+<wire x1="-73.66" y1="76.2" x2="-43.18" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="-43.18" y1="76.2" x2="-40.64" y2="76.2" width="0.1524" layer="91"/>
+<wire x1="-40.64" y1="76.2" x2="-40.64" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="-40.64" y1="68.58" x2="-20.32" y2="68.58" width="0.1524" layer="91"/>
+<junction x="-20.32" y="68.58"/>
 </segment>
 <segment>
 <wire x1="35.56" y1="35.56" x2="35.56" y2="27.94" width="0.1524" layer="91"/>
@@ -6952,7 +7230,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <net name="USB_D_MINUS" class="0">
 <segment>
 <wire x1="33.02" y1="73.66" x2="33.02" y2="55.88" width="0.1524" layer="91"/>
-<pinref part="R2" gate="G$1" pin="2"/>
+<pinref part="R3" gate="G$1" pin="2"/>
 <wire x1="33.02" y1="55.88" x2="0" y2="55.88" width="0.1524" layer="91"/>
 <pinref part="U1" gate="G$1" pin="PB3(ADC3)"/>
 <wire x1="33.02" y1="73.66" x2="10.16" y2="73.66" width="0.1524" layer="91"/>
@@ -6960,23 +7238,24 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </net>
 <net name="USB_D_MINUS_RAW" class="0">
 <segment>
-<pinref part="R2" gate="G$1" pin="1"/>
+<pinref part="R3" gate="G$1" pin="1"/>
 <wire x1="-10.16" y1="55.88" x2="-27.94" y2="55.88" width="0.1524" layer="91"/>
 <pinref part="R1" gate="G$1" pin="2"/>
-<wire x1="-27.94" y1="58.42" x2="-27.94" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="-33.02" y1="63.5" x2="-27.94" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="-27.94" y1="63.5" x2="-27.94" y2="55.88" width="0.1524" layer="91"/>
 <junction x="-27.94" y="55.88"/>
 <pinref part="D2" gate="G$1" pin="C"/>
 <wire x1="-27.94" y1="43.18" x2="-27.94" y2="55.88" width="0.1524" layer="91"/>
 <junction x="-27.94" y="55.88"/>
 <junction x="-27.94" y="55.88"/>
 <pinref part="JP-USB-MICRO" gate="G$1" pin="D-"/>
-<wire x1="-27.94" y1="55.88" x2="-45.72" y2="55.88" width="0.1524" layer="91"/>
+<wire x1="-27.94" y1="55.88" x2="-66.04" y2="55.88" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="USB_D_PLUS_RAW" class="0">
 <segment>
 <wire x1="-33.02" y1="50.8" x2="-10.16" y2="50.8" width="0.1524" layer="91"/>
-<pinref part="R3" gate="G$1" pin="2"/>
+<pinref part="R2" gate="G$1" pin="2"/>
 <wire x1="-10.16" y1="50.8" x2="-7.62" y2="50.8" width="0.1524" layer="91"/>
 <wire x1="-7.62" y1="50.8" x2="-2.54" y2="50.8" width="0.1524" layer="91"/>
 <pinref part="D1" gate="G$1" pin="C"/>
@@ -6985,42 +7264,43 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <junction x="-33.02" y="50.8"/>
 <pinref part="JP-USB-MICRO" gate="G$1" pin="D+"/>
 <wire x1="-33.02" y1="50.8" x2="-33.02" y2="53.34" width="0.1524" layer="91"/>
-<wire x1="-33.02" y1="53.34" x2="-45.72" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="-33.02" y1="53.34" x2="-66.04" y2="53.34" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="USB_D_PLUS" class="0">
 <segment>
-<pinref part="R3" gate="G$1" pin="1"/>
+<pinref part="R2" gate="G$1" pin="1"/>
 <wire x1="7.62" y1="50.8" x2="30.48" y2="50.8" width="0.1524" layer="91"/>
 <wire x1="30.48" y1="50.8" x2="30.48" y2="71.12" width="0.1524" layer="91"/>
 <pinref part="U1" gate="G$1" pin="PB4(ADC2)"/>
 <wire x1="10.16" y1="71.12" x2="30.48" y2="71.12" width="0.1524" layer="91"/>
 </segment>
 </net>
-<net name="DIN_1" class="0">
-<segment>
-<wire x1="76.2" y1="91.44" x2="66.04" y2="91.44" width="0.1524" layer="91"/>
-<wire x1="76.2" y1="91.44" x2="76.2" y2="81.28" width="0.1524" layer="91"/>
-<pinref part="LED1" gate="G$1" pin="DI"/>
-<wire x1="76.2" y1="81.28" x2="63.5" y2="81.28" width="0.1524" layer="91"/>
-<wire x1="10.16" y1="81.28" x2="20.32" y2="81.28" width="0.1524" layer="91"/>
-<wire x1="20.32" y1="81.28" x2="20.32" y2="86.36" width="0.1524" layer="91"/>
-<wire x1="20.32" y1="86.36" x2="20.32" y2="91.44" width="0.1524" layer="91"/>
-<wire x1="20.32" y1="91.44" x2="55.88" y2="91.44" width="0.1524" layer="91"/>
-<pinref part="U1" gate="G$1" pin="PB0(MOSI)"/>
-<wire x1="66.04" y1="91.44" x2="55.88" y2="91.44" width="0.1524" layer="91"/>
-</segment>
-</net>
 <net name="N_RESET" class="0">
 <segment>
-<pinref part="U1" gate="G$1" pin="PB5(NRES)"/>
+<pinref part="ICSP" gate="J" pin="\RST"/>
+<wire x1="-73.66" y1="86.36" x2="-40.64" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="-40.64" y1="86.36" x2="-40.64" y2="78.74" width="0.1524" layer="91"/>
+<wire x1="-40.64" y1="78.74" x2="-22.86" y2="78.74" width="0.1524" layer="91"/>
+<wire x1="-22.86" y1="78.74" x2="-22.86" y2="60.96" width="0.1524" layer="91"/>
 <pinref part="R4" gate="G$1" pin="2"/>
-<wire x1="10.16" y1="68.58" x2="10.16" y2="66.04" width="0.1524" layer="91"/>
-<wire x1="10.16" y1="66.04" x2="12.7" y2="66.04" width="0.1524" layer="91"/>
+<wire x1="-22.86" y1="60.96" x2="7.62" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="U1" gate="G$1" pin="PB5(NRES)"/>
+<wire x1="7.62" y1="60.96" x2="12.7" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="10.16" y1="68.58" x2="12.7" y2="68.58" width="0.1524" layer="91"/>
+<wire x1="12.7" y1="68.58" x2="12.7" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="12.7" y1="63.5" x2="7.62" y2="63.5" width="0.1524" layer="91"/>
+<wire x1="7.62" y1="63.5" x2="7.62" y2="60.96" width="0.1524" layer="91"/>
+<junction x="7.62" y="60.96"/>
 </segment>
 </net>
-<net name="CLK_1" class="0">
+<net name="CLK_1/SCK" class="0">
 <segment>
+<pinref part="ICSP" gate="J" pin="SCK"/>
+<wire x1="-73.66" y1="78.74" x2="-45.72" y2="78.74" width="0.1524" layer="91"/>
+<wire x1="-45.72" y1="78.74" x2="-45.72" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="-45.72" y1="88.9" x2="25.4" y2="88.9" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="88.9" x2="25.4" y2="86.36" width="0.1524" layer="91"/>
 <pinref part="U1" gate="G$1" pin="PB2(SCK/ADC1)"/>
 <wire x1="10.16" y1="76.2" x2="33.02" y2="76.2" width="0.1524" layer="91"/>
 <wire x1="33.02" y1="76.2" x2="33.02" y2="86.36" width="0.1524" layer="91"/>
@@ -7028,6 +7308,8 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="66.04" y1="86.36" x2="66.04" y2="78.74" width="0.1524" layer="91"/>
 <pinref part="LED1" gate="G$1" pin="CI"/>
 <wire x1="66.04" y1="78.74" x2="63.5" y2="78.74" width="0.1524" layer="91"/>
+<wire x1="25.4" y1="86.36" x2="33.02" y2="86.36" width="0.1524" layer="91"/>
+<junction x="33.02" y="86.36"/>
 </segment>
 </net>
 <net name="DIN_2" class="0">
@@ -7084,13 +7366,41 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <wire x1="68.58" y1="17.78" x2="63.5" y2="17.78" width="0.1524" layer="91"/>
 </segment>
 </net>
+<net name="MISO" class="0">
+<segment>
+<pinref part="ICSP" gate="J" pin="MISO"/>
+<wire x1="-73.66" y1="81.28" x2="-35.56" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="-35.56" y1="81.28" x2="-35.56" y2="86.36" width="0.1524" layer="91"/>
+<wire x1="-35.56" y1="86.36" x2="22.86" y2="86.36" width="0.1524" layer="91"/>
+<pinref part="U1" gate="G$1" pin="PB1(MISO)"/>
+<wire x1="22.86" y1="86.36" x2="22.86" y2="78.74" width="0.1524" layer="91"/>
+<wire x1="22.86" y1="78.74" x2="10.16" y2="78.74" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="DIN_1/MOSI" class="0">
+<segment>
+<pinref part="ICSP" gate="J" pin="MOSI"/>
+<wire x1="-73.66" y1="83.82" x2="-38.1" y2="83.82" width="0.1524" layer="91"/>
+<wire x1="-38.1" y1="83.82" x2="-38.1" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="10.16" y1="81.28" x2="20.32" y2="81.28" width="0.1524" layer="91"/>
+<pinref part="U1" gate="G$1" pin="PB0(MOSI)"/>
+<wire x1="20.32" y1="81.28" x2="20.32" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="91.44" x2="-38.1" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="76.2" y1="91.44" x2="66.04" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="76.2" y1="91.44" x2="76.2" y2="81.28" width="0.1524" layer="91"/>
+<pinref part="LED1" gate="G$1" pin="DI"/>
+<wire x1="76.2" y1="81.28" x2="63.5" y2="81.28" width="0.1524" layer="91"/>
+<wire x1="66.04" y1="91.44" x2="55.88" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="20.32" y1="91.44" x2="55.88" y2="91.44" width="0.1524" layer="91"/>
+<junction x="20.32" y="91.44"/>
+</segment>
+</net>
 </nets>
 </sheet>
 </sheets>
 <errors>
-<approved hash="104,1,-45.72,58.42,JP-USB-MICRO,5V,VCC,,,"/>
-<approved hash="204,1,-45.72,45.72,JP-USB-MICRO,SLD,,,,"/>
-<approved hash="113,1,-50.165,54.8323,JP-USB-MICRO,,,,,"/>
+<approved hash="104,1,-66.04,58.42,JP-USB-MICRO,5V,VCC,,,"/>
+<approved hash="204,1,-66.04,45.72,JP-USB-MICRO,SLD,,,,"/>
 </errors>
 </schematic>
 </drawing>
