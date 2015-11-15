@@ -9,11 +9,25 @@ AVRDUDE = avrdude -c usbtiny -p $(DEVICE)
 WLCTL = ../commandline/wlctl
 MICRONUCLEUS = micronucleus
 
+# WS2812 = 0
+# APA102 = 1
+BOARD_VARIANT ?= 1
+
 CFLAGS  = -Iusbdrv -I. -DDEBUG_LEVEL=0
 OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o \
-          main.o eeprom.c led_control.c osccal.c webusb.c light_ws2812.c
+          main.o eeprom.c led_control.c osccal.c webusb.c
 
-COMPILE = avr-gcc -Wall -Os -DF_CPU=$(F_CPU) $(CFLAGS) -mmcu=$(DEVICE)
+
+ifeq ($(BOARD_VARIANT), 0)
+	OBJECTS += light_ws2812.c
+endif
+ifeq ($(BOARD_VARIANT), 1)
+	OBJECTS += light_apa102.c
+endif
+
+COMPILE = avr-gcc \
+									-Wall -Os -DF_CPU=$(F_CPU) $(CFLAGS) -mmcu=$(DEVICE) \
+									-DBOARD_VARIANT=$(BOARD_VARIANT)
 
 # symbolic targets:
 help:
