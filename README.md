@@ -25,7 +25,14 @@ gcc-avr binutils-avr gdb-avr avr-libc avrdude`. On OS X,
 Programming a newly built board
 ===
 
-* Connect an AVR programmer.
+* Connect a 6-pin AVR programmer. Note that if you've built the
+  production version of the board, you'll need either an SOIC-8 clip
+  manually wired for the ATtiny85, or else a
+  [ProtoProg](http://protofusion.org/wordpress/2013/05/open-hardware-pogo-pin-programmer/)
+  programming
+  adapter. [This is the project I ordered](https://oshpark.com/shared_projects/fqvxyzoH)
+  from OSH Park, and you'll want [0.68mm diameter, 16mm length pogo
+  pins](http://www.ebay.com/sch/i.html?_trksid=p3984.m570.l1313.TR0.TRC0&_nkw=%09+10pcs+P50-J1+Dia+0.68mm+Length+16mm+75g+Spring+Test.&_sacat=0&_from=R40), probably from eBay.
 * `cd bootloader`
 * Configure the makefile to talk to your type of programmer (default
   usbtiny).
