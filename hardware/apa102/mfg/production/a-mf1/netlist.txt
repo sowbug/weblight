@@ -1,0 +1,79 @@
+Netlist
+
+Exported from weblight.sch at 11/15/15 7:32 AM
+
+EAGLE Version 7.4.0 Copyright (c) 1988-2015 CadSoft
+
+Net             Part         Pad      Pin        Sheet
+
+CLK_1           LED1         CI       CI         1
+                U1           7        PB2(SCK/ADC1) 1
+
+CLK_2           LED1         CO       CO         1
+                LED2         CI       CI         1
+
+CLK_3           LED2         CO       CO         1
+                LED3         CI       CI         1
+
+CLK_4           LED3         CO       CO         1
+                LED4         CI       CI         1
+
+DIN_1           LED1         DI       DI         1
+                U1           5        PB0(MOSI)  1
+
+DIN_2           LED1         DO       DO         1
+                LED2         DI       DI         1
+
+DIN_3           LED2         DO       DO         1
+                LED3         DI       DI         1
+
+DIN_4           LED3         DO       DO         1
+                LED4         DI       DI         1
+
+GND             C1           1        1          1
+                C2           1        1          1
+                D1           A        A          1
+                D2           A        A          1
+                JP-USB-MICRO 5        GND        1
+                LED1         GND      GND        1
+                LED2         GND      GND        1
+                LED3         GND      GND        1
+                LED4         GND      GND        1
+                U1           4        GND        1
+
+N_RESET         R4           2        2          1
+                U1           1        PB5(NRES)  1
+
+SLD             JP-USB-MICRO S1       SLD        1
+                JP-USB-MICRO S2       SLD        1
+                JP-USB-MICRO S3       SLD        1
+                JP-USB-MICRO S4       SLD        1
+                JP-USB-MICRO S5       SLD        1
+                JP-USB-MICRO S6       SLD        1
+
+USB_D_MINUS     R2           2        2          1
+                U1           2        PB3(ADC3)  1
+
+USB_D_MINUS_RAW D2           K        C          1
+                JP-USB-MICRO 2        D-         1
+                R1           2        2          1
+                R2           1        1          1
+
+USB_D_PLUS      R3           1        1          1
+                U1           3        PB4(ADC2)  1
+
+USB_D_PLUS_RAW  D1           K        C          1
+                JP-USB-MICRO 3        D+         1
+                R3           2        2          1
+
+VCC             C1           2        2          1
+                C2           2        2          1
+                JP-USB-MICRO 1        5V         1
+                LED1         VCC      VCC        1
+                LED2         VCC      VCC        1
+                LED3         VCC      VCC        1
+                LED4         VCC      VCC        1
+                R1           1        1          1
+                R4           1        1          1
+                U1           8        VCC        1
+
