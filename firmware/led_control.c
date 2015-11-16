@@ -1,10 +1,10 @@
 #include "led_control.h"
-#if BOARD_VARIANT == 0
+#if BOARD_VARIANT == BV_WS2812
 #include "light_ws2812.h"
 #else
 #include "light_apa102.h"
 #endif
-#include <util/delay.h>     // for _delay_ms()
+#include <util/delay.h>  // for _delay_ms()
 
 struct cRGB led[MAX_LED_COUNT];
 static uint8_t led_count = 0;
@@ -34,7 +34,7 @@ static unsigned char leds_need_update = 0;
 void UpdateLEDs() {
   if (leds_need_update) {
     leds_need_update = 0;
-#if BOARD_VARIANT == 0
+#if BOARD_VARIANT == BV_WS2812
     ws2812_setleds(led, led_count);
 #else
     apa102_setleds(led, led_count);

@@ -4,13 +4,13 @@
 
 #include <avr/interrupt.h>  // for sei()
 #include <avr/io.h>
-#include <avr/pgmspace.h>   // required by usbdrv.h
+#include <avr/pgmspace.h>  // required by usbdrv.h
 #include <avr/wdt.h>
-#include <util/delay.h>     // for _delay_ms()
+#include <util/delay.h>  // for _delay_ms()
 
 #include "eeprom.h"
 #include "led_control.h"
-#include "requests.h"       // The custom request numbers we use
+#include "requests.h"  // The custom request numbers we use
 #include "usbconfig.h"
 #include "usbdrv.h"
 #include "webusb.h"
@@ -37,8 +37,6 @@ enum {
 };
 
 static uint8_t state;
-static uchar hostIsAsleep = 0;
-static uint8_t hostIsFallingAsleep = 0;
 
 void initReady() {
   state = STATE_READY;
@@ -46,70 +44,34 @@ void initReady() {
 
 void doGratuitousBlinking() {
   static uchar blinkie = 0;
-  if (hostIsAsleep) {
-    if (blinkie) {
-      SetLEDs(128, 128, 0);
-    } else {
-      SetLEDs(0, 128, 128);
-    }
+  if (blinkie) {
+    SetLEDs(4, 0, 0);
   } else {
-    if (blinkie) {
-      SetLEDs(4, 0, 0);
-    } else {
-      SetLEDs(0, 0, 4);
-    }
+    SetLEDs(0, 0, 4);
   }
   blinkie = !blinkie;
 }
 
-static uchar shouldDoAnimation = 0;
 void doAnimation() {
-  if (shouldDoAnimation) {
-    // This is where we'd do any animation of the lights that isn't
-    // initiated by a direct host request.
+#if BOARD_VARIANT == BV_APA102
+  // This is where we do any animation of the lights that isn't
+  // initiated by a direct host request.
+  if (FALSE) {
     doGratuitousBlinking();
   }
-
-  UpdateLEDs();
+#endif
 }
 
-static uchar readyForUpdate = 0;
-static uchar lastUsbSofCountForHeartbeat = 0;
-static uchar lastUsbSofCountForSynchronization = 0;
 void doReady() {
   usbPoll();
+  UpdateLEDs();
 
   // If Timer 1 matched the output-compare register A, then clear it
-  // and mark that it's time for an animation frame.
+  // and do an animation frame.
   if (TIFR & _BV(OCF1A)) {
     TIFR |= _BV(OCF1A);
     TCNT1 = 0;
-    readyForUpdate = 1;
-  }
-  if (readyForUpdate) {
-    readyForUpdate = 0;
-
-    if (usbSofCount != lastUsbSofCountForHeartbeat) {
-      lastUsbSofCountForHeartbeat = usbSofCount;
-      hostIsAsleep = 0;
-      hostIsFallingAsleep = 0;
-    }
-
-    if (hostIsAsleep) {
-      doAnimation();
-
-    } else {
-      if (usbSofCount != lastUsbSofCountForSynchronization) {
-        lastUsbSofCountForSynchronization = usbSofCount;
-        doAnimation();
-      } else {
-        ++hostIsFallingAsleep;
-        if (hostIsFallingAsleep > 10) {  // 10 @ 32Hz = about .31 second
-          hostIsAsleep = 1;
-          hostIsFallingAsleep = 0;
-        }
-      }
-    }
+    doAnimation();
   }
 }
 
@@ -123,34 +85,43 @@ void doConnectUSB() {
   initReady();
 }
 
-static uint8_t active_led;
 static uint8_t startup_color;
 static uint8_t remaining_disconnect_delay_ms;
 void initStartupSequence() {
   state = STATE_STARTUP_SEQUENCE;
-  active_led = 0;
   startup_color = 0;
   remaining_disconnect_delay_ms = 250;
 }
 
 void doStartupSequence() {
 #define STARTUP_BRIGHTNESS (16)
-#define STARTUP_FRAME_LENGTH_MS (20)
+#define STARTUP_FRAME_LENGTH_MS (40)
+  uint8_t r = 0, g = 0, b = 0, done = 0;
   switch (startup_color++) {
     case 0:
-      SetLED(active_led, STARTUP_BRIGHTNESS, 0, 0);
+      b = STARTUP_BRIGHTNESS;
       break;
     case 1:
-      SetLED(active_led, 0, STARTUP_BRIGHTNESS, 0);
+      r = STARTUP_BRIGHTNESS;
       break;
     case 2:
-      SetLED(active_led, 0, 0, STARTUP_BRIGHTNESS);
+      r = STARTUP_BRIGHTNESS;
+      g = STARTUP_BRIGHTNESS;
+      break;
+    case 3:
+      b = STARTUP_BRIGHTNESS;
+      break;
+    case 4:
+      g = STARTUP_BRIGHTNESS;
+      break;
+    case 5:
+      r = STARTUP_BRIGHTNESS;
       break;
     default:
-      startup_color = 0;
-      SetLED(active_led++, 0, 0, 0);
+      done = 1;
       break;
   }
+  SetLEDs(r, g, b);
   UpdateLEDs();
 
   _delay_ms(STARTUP_FRAME_LENGTH_MS);
@@ -158,7 +129,7 @@ void doStartupSequence() {
     remaining_disconnect_delay_ms -= STARTUP_FRAME_LENGTH_MS;
   }
 
-  if (active_led == GetLEDCount()) {
+  if (done) {
     LEDsOff();
     while (remaining_disconnect_delay_ms-- > 0) {
       _delay_ms(1);
@@ -198,21 +169,25 @@ void initMCUInit() {
 }
 
 void doMCUInit() {
-  // Set the timer we use for our animation frames
-  TCCR1 = _BV(CS13) | _BV(CS12) | _BV(CS11) | _BV(CS10);  // CK / 16384
+  // ReadEEPROM() turns off the LEDs, but let's be sure because that's
+  // an undocumented side effect.
+  LEDsOff();
 
+  // Set the timer we use for our animation frames: CK / 16384
   // CTC compare value: 16500000 / 16384 / 32 = match at ~32Hz
-  OCR1A = (F_CPU >> (14 + 5));  // 2^14 = 16384; 2^5 = 32
+  // 2^14 = 16384; 2^5 = 32
+  TCCR1 = _BV(CS13) | _BV(CS12) | _BV(CS11) | _BV(CS10);
+  OCR1A = (F_CPU >> (14 + 5));
 
-  // Even if you don't use the watchdog, turn it off here. On newer
-  // devices, the status of the watchdog (on/off, period) is PRESERVED
-  // OVER RESET!
+  // If this fires, it will (probably) cause the startup sequence to
+  // repeat, which will give us an indication that something's wrong.
   wdt_enable(WDTO_1S);
 
-  // Side effect: turns off LEDs
   ReadEEPROM();
 
   usbInit();
+
+  // We're done with this state. Go to next.
   initDisconnectUSB();
 }
 
