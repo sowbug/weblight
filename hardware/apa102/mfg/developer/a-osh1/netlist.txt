@@ -1,0 +1,80 @@
+Netlist
+
+Exported from weblight_developer.sch at 11/15/15 4:36 PM
+
+EAGLE Version 7.4.0 Copyright (c) 1988-2015 CadSoft
+
+Net             Part       Pad      Pin        Sheet
+
+CLK_1/SCK       ICSP1      3        3          1
+                ICSP2      4        SCK        1
+                LED1       CI       CI         1
+                U1         7        PB2(SCK/ADC1) 1
+
+CLK_2           LED1       CO       CO         1
+                LED2       CI       CI         1
+
+CLK_3           JP1        2        2          1
+                LED2       CO       CO         1
+
+DATA_1/MOSI     ICSP1      4        4          1
+                ICSP2      2        MOSI       1
+                LED1       DI       DI         1
+                U1         5        PB0(MOSI)  1
+
+DATA_2          LED1       DO       DO         1
+                LED2       DI       DI         1
+
+DATA_3          JP1        3        3          1
+                LED2       DO       DO         1
+
+GND             C1         2        2          1
+                C2         2        2          1
+                D1         A        A          1
+                D2         A        A          1
+                ICSP1      6        6          1
+                ICSP2      5        GND        1
+                JP-USB-TOP GND      GND        1
+                JP1        4        4          1
+                LED1       GND      GND        1
+                LED2       GND      GND        1
+                SW1        P$2      2          1
+                U1         4        GND        1
+
+MISO            ICSP1      1        1          1
+                ICSP2      3        MISO       1
+                U1         6        PB1(MISO)  1
+
+N_RESET         ICSP1      5        5          1
+                ICSP2      1        \RST       1
+                R4         1        1          1
+                SW1        P$1      1          1
+                U1         1        PB5(NRES)  1
+
+USB_D_MINUS     R3         1        1          1
+                U1         2        PB3(ADC3)  1
+
+USB_D_MINUS_RAW D2         C        C          1
+                JP-USB-TOP USB_M    D-         1
+                R1         2        2          1
+                R3         2        2          1
+
+USB_D_PLUS      R2         2        2          1
+                U1         3        PB4(ADC2)  1
+
+USB_D_PLUS_RAW  D1         C        C          1
+                JP-USB-TOP USB_P    D+         1
+                R2         1        1          1
+
+VCC             C1         1        1          1
+                C2         1        1          1
+                ICSP1      2        2          1
+                ICSP2      6        VCC        1
+                JP-USB-TOP 5V       VBUS       1
+                JP1        1        1          1
+                LED1       VCC      VCC        1
+                LED2       VCC      VCC        1
+                R1         1        1          1
+                R4         2        2          1
+                U1         8        VCC        1
+
