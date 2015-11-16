@@ -4,7 +4,6 @@
 
 WL_REQUEST_ECHO = 0
 WL_REQUEST_SET_RGB = 1
-WL_REQUEST_SET_LED_COUNT = 2
 WL_REQUEST_RESET_DEVICE = 253
 WL_REQUEST_WEBUSB = 254
 
@@ -26,8 +25,6 @@ parser.add_option("-9", "--stress", action="store_true", default=False,
                   help="stress-test device")
 parser.add_option("-r", "--reset", action="store_true", default=False,
                   help="reset device")
-parser.add_option("-c", "--count",
-                  help="configure number of active LEDs (writes to EEPROM)")
 parser.add_option("-s", "--serial",
                   help="specify the serial number of the device to address")
 parser.add_option("--vid", default="0x1209",
@@ -115,12 +112,6 @@ if options.stress:
     sys.stdout.write("\rIterations: %10d  Time: %10.1f" % (count, elapsed))
     sys.stdout.flush()
   sys.exit(0)
-
-if options.count:
-    result = dev.ctrl_transfer(0x40, WL_REQUEST_SET_LED_COUNT,
-                               int(options.count), 0)
-    print 'Count:', result
-    sys.exit(0)
 
 if len(args) == 0:
     parser.print_usage()

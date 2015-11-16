@@ -157,12 +157,6 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
       bytesRemaining = sizeof(buffer);
     }
     return USB_NO_MSG;
-  case WL_REQUEST_SET_LED_COUNT: {
-    uint8_t count = rq->wValue.bytes[0];
-    SetLEDCount(count);
-    WriteLEDCount();
-    return count;
-  }
   case WL_REQUEST_WEBUSB: {
     switch (rq->wIndex.word) {
     case WEBUSB_REQUEST_GET_ALLOWED_ORIGINS:

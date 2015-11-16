@@ -17,14 +17,4 @@ void ReadEEPROM() {
   for (i = 0; i < EEPROM_SERIAL_LENGTH; ++i) {
     webUsbDescriptorStringSerialNumber[1 + i] = serial_bytes[i];
   }
-
-  SetLEDCount(eeprom_read_byte((void*)EEPROM_LED_COUNT_START));
-}
-
-void WriteLEDCount() {
-  uint8_t count = eeprom_read_byte((void*)EEPROM_LED_COUNT_START);
-  uint8_t sram_count = GetLEDCount();
-  if (count != sram_count) {
-    eeprom_write_byte((void*)EEPROM_LED_COUNT_START, sram_count);
-  }
 }

@@ -6,28 +6,10 @@
 #endif
 #include <util/delay.h>  // for _delay_ms()
 
-struct cRGB led[MAX_LED_COUNT];
-static uint8_t led_count = 0;
+struct cRGB led[LED_COUNT];
 
 uint8_t GetLEDCount() {
-  return led_count;
-}
-
-void SetLEDCount(uint8_t c) {
-  if (c < 1) {
-    c = 1;
-  }
-  if (c > MAX_LED_COUNT) {
-    c = MAX_LED_COUNT;
-  }
-
-  // If the count changed, turn off *all* the LEDs.
-  if (led_count != c) {
-    led_count = MAX_LED_COUNT;
-    LEDsOff();
-  }
-
-  led_count = c;
+  return LED_COUNT;
 }
 
 static unsigned char leds_need_update = 0;
@@ -35,9 +17,9 @@ void UpdateLEDs() {
   if (leds_need_update) {
     leds_need_update = 0;
 #if BOARD_VARIANT == BV_WS2812
-    ws2812_setleds(led, led_count);
+    ws2812_setleds(led, LED_COUNT);
 #else
-    apa102_setleds(led, led_count);
+    apa102_setleds(led, LED_COUNT);
 #endif
   }
 }
@@ -51,14 +33,14 @@ void SetLED(uint8_t i, uint8_t r, uint8_t g, uint8_t b) {
 
 void SetLEDs(uint8_t r, uint8_t g, uint8_t b) {
   uint8_t i;
-  for (i = 0; i < led_count; ++i) {
+  for (i = 0; i < LED_COUNT; ++i) {
     SetLED(i, r, g, b);
   }
 }
 
 void LEDsOff() {
   uint8_t i;
-  for (i = 0; i < MAX_LED_COUNT; ++i) {
+  for (i = 0; i < LED_COUNT; ++i) {
     SetLED(i, 0, 0, 0);
   }
   UpdateLEDs();

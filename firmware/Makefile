@@ -12,6 +12,7 @@ MICRONUCLEUS = micronucleus
 BV_WS2812 = 0
 BV_APA102 = 1
 BOARD_VARIANT ?= $(BV_APA102)
+LED_COUNT = 2
 
 CFLAGS  = -Iusbdrv -I. -DDEBUG_LEVEL=0
 OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o \
@@ -26,6 +27,7 @@ endif
 
 COMPILE = avr-gcc \
 									-Wall -Os -DF_CPU=$(F_CPU) $(CFLAGS) -mmcu=$(DEVICE) \
+									-DLED_COUNT=$(LED_COUNT) \
 									-DBOARD_VARIANT=$(BOARD_VARIANT) \
 									-DBV_WS2812=$(BV_WS2812) \
 									-DBV_APA102=$(BV_APA102)

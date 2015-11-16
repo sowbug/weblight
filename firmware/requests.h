@@ -23,15 +23,6 @@
 // Pass three bytes as OUT data to indicate the desired RGB color.
 #define WL_REQUEST_SET_RGB (1)
 
-// Set LED Count: 2
-//
-// Sets the number of active LEDs. Control-OUT.
-//
-// The requested number is passed in the "wValue" field of the control
-// transfer. No OUT data is sent. The number is clamped if it exceeds
-// MAX_LED_COUNT in led_control.h.
-#define WL_REQUEST_SET_LED_COUNT (2)
-
 // WinUSB: 252
 //
 // WinUSB descriptor.
