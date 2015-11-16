@@ -6755,50 +6755,6 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <text x="-1.7" y="2.9" size="0.8128" layer="25" font="vector">&gt;NAME</text>
 <text x="-2" y="-2.83" size="0.8128" layer="27" font="vector" align="top-left">&gt;VALUE</text>
 </package>
-</packages>
-<symbols>
-<symbol name="APA102">
-<wire x1="-7.62" y1="-5.08" x2="-2.54" y2="-5.08" width="0.254" layer="94"/>
-<wire x1="-2.54" y1="-5.08" x2="7.62" y2="-5.08" width="0.254" layer="94"/>
-<text x="-7.62" y="10.922" size="1.27" layer="95">&gt;NAME</text>
-<text x="-7.62" y="-7.112" size="1.27" layer="96">&gt;VALUE</text>
-<pin name="VCC" x="-12.7" y="7.62" length="middle" direction="pwr"/>
-<pin name="GND" x="-12.7" y="5.08" length="middle" direction="pwr"/>
-<pin name="DI" x="12.7" y="7.62" length="middle" direction="in" rot="R180"/>
-<pin name="DO" x="12.7" y="0" length="middle" direction="out" rot="R180"/>
-<pin name="CI" x="12.7" y="5.08" length="middle" direction="in" rot="R180"/>
-<pin name="CO" x="12.7" y="-2.54" length="middle" direction="out" rot="R180"/>
-<wire x1="7.62" y1="10.16" x2="7.62" y2="-5.08" width="0.254" layer="94"/>
-<wire x1="7.62" y1="-5.08" x2="-7.62" y2="-5.08" width="0.254" layer="94"/>
-<wire x1="-7.62" y1="-5.08" x2="-7.62" y2="10.16" width="0.254" layer="94"/>
-<wire x1="-7.62" y1="10.16" x2="7.62" y2="10.16" width="0.254" layer="94"/>
-</symbol>
-</symbols>
-<devicesets>
-<deviceset name="APA102" prefix="LED">
-<gates>
-<gate name="G$1" symbol="APA102" x="0" y="-2.54"/>
-</gates>
-<devices>
-<device name="" package="APA102">
-<connects>
-<connect gate="G$1" pin="CI" pad="CI"/>
-<connect gate="G$1" pin="CO" pad="CO"/>
-<connect gate="G$1" pin="DI" pad="DI"/>
-<connect gate="G$1" pin="DO" pad="DO"/>
-<connect gate="G$1" pin="GND" pad="GND"/>
-<connect gate="G$1" pin="VCC" pad="VCC"/>
-</connects>
-<technologies>
-<technology name=""/>
-</technologies>
-</device>
-</devices>
-</deviceset>
-</devicesets>
-</library>
-<library name="Protofusion">
-<packages>
 <package name="POGOPROG-CONN">
 <description>Standard pogo pin programming header with two alignment holes. Small SMD pads.</description>
 <smd name="3" x="0" y="1.27" dx="0.889" dy="0.8128" layer="1"/>
@@ -6936,6 +6892,22 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </package>
 </packages>
 <symbols>
+<symbol name="APA102">
+<wire x1="-7.62" y1="-5.08" x2="-2.54" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-2.54" y1="-5.08" x2="7.62" y2="-5.08" width="0.254" layer="94"/>
+<text x="-7.62" y="10.922" size="1.27" layer="95">&gt;NAME</text>
+<text x="-7.62" y="-7.112" size="1.27" layer="96">&gt;VALUE</text>
+<pin name="VCC" x="-12.7" y="7.62" length="middle" direction="pwr"/>
+<pin name="GND" x="-12.7" y="5.08" length="middle" direction="pwr"/>
+<pin name="DI" x="12.7" y="7.62" length="middle" direction="in" rot="R180"/>
+<pin name="DO" x="12.7" y="0" length="middle" direction="out" rot="R180"/>
+<pin name="CI" x="12.7" y="5.08" length="middle" direction="in" rot="R180"/>
+<pin name="CO" x="12.7" y="-2.54" length="middle" direction="out" rot="R180"/>
+<wire x1="7.62" y1="10.16" x2="7.62" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="7.62" y1="-5.08" x2="-7.62" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="-5.08" x2="-7.62" y2="10.16" width="0.254" layer="94"/>
+<wire x1="-7.62" y1="10.16" x2="7.62" y2="10.16" width="0.254" layer="94"/>
+</symbol>
 <symbol name="POGOPROG-CONN">
 <pin name="MOSI" x="-2.54" y="-5.08" length="short"/>
 <pin name="MISO" x="-2.54" y="-2.54" length="short"/>
@@ -6949,6 +6921,26 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </symbol>
 </symbols>
 <devicesets>
+<deviceset name="APA102" prefix="LED">
+<gates>
+<gate name="G$1" symbol="APA102" x="0" y="-2.54"/>
+</gates>
+<devices>
+<device name="" package="APA102">
+<connects>
+<connect gate="G$1" pin="CI" pad="CI"/>
+<connect gate="G$1" pin="CO" pad="CO"/>
+<connect gate="G$1" pin="DI" pad="DI"/>
+<connect gate="G$1" pin="DO" pad="DO"/>
+<connect gate="G$1" pin="GND" pad="GND"/>
+<connect gate="G$1" pin="VCC" pad="VCC"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+</devices>
+</deviceset>
 <deviceset name="POGOPIN-CONN">
 <description>Protofusion custom pogo pin programming header</description>
 <gates>
@@ -7073,7 +7065,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <part name="HOLE3" library="microbuilder" deviceset="MOUNTINGHOLE" device="2.0"/>
 <part name="HOLE4" library="microbuilder" deviceset="MOUNTINGHOLE" device="2.0"/>
 <part name="HOLE1" library="microbuilder" deviceset="MOUNTINGHOLE" device="2.0"/>
-<part name="ICSP" library="Protofusion" deviceset="POGOPIN-CONN" device="ONEHOLE"/>
+<part name="ICSP" library="weblight" deviceset="POGOPIN-CONN" device="WITHVIAS" value="POGOPIN-CONNWITHVIAS"/>
 </parts>
 <sheets>
 <sheet>
@@ -7089,7 +7081,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <instance part="D2" gate="G$1" x="-27.94" y="40.64" rot="R90"/>
 <instance part="U1" gate="G$1" x="-2.54" y="73.66"/>
 <instance part="JP-USB-MICRO" gate="G$1" x="-73.66" y="53.34"/>
-<instance part="P+2" gate="VCC" x="-55.88" y="93.98"/>
+<instance part="P+2" gate="VCC" x="-55.88" y="96.52"/>
 <instance part="GND2" gate="1" x="-20.32" y="30.48"/>
 <instance part="GND3" gate="1" x="-33.02" y="30.48"/>
 <instance part="P+3" gate="VCC" x="10.16" y="40.64"/>
@@ -7129,7 +7121,7 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pinref part="P+2" gate="VCC" pin="VCC"/>
 <wire x1="-55.88" y1="58.42" x2="-66.04" y2="58.42" width="0.1524" layer="91"/>
 <wire x1="-55.88" y1="71.12" x2="-55.88" y2="73.66" width="0.1524" layer="91"/>
-<wire x1="-55.88" y1="73.66" x2="-55.88" y2="91.44" width="0.1524" layer="91"/>
+<wire x1="-55.88" y1="73.66" x2="-55.88" y2="93.98" width="0.1524" layer="91"/>
 <wire x1="-43.18" y1="63.5" x2="-48.26" y2="63.5" width="0.1524" layer="91"/>
 <wire x1="-48.26" y1="63.5" x2="-48.26" y2="68.58" width="0.1524" layer="91"/>
 <wire x1="-48.26" y1="68.58" x2="-48.26" y2="71.12" width="0.1524" layer="91"/>

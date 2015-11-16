@@ -1,6 +1,6 @@
 Netlist
 
-Exported from weblight.sch at 11/15/15 2:04 PM
+Exported from weblight.sch at 11/15/15 4:49 PM
 
 EAGLE Version 7.4.0 Copyright (c) 1988-2015 CadSoft
 
