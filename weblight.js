@@ -117,10 +117,7 @@ function hexToRgb(hex) {
   } : null;
 }
 
-function handleColorChange(device) {
-  var picker = device.element.getElementsByClassName("lightPicker")[0];
-  var color = hexToRgb(picker.value);
-
+function setDeviceColor(device, r, g, b) {
   var rgb = new Uint8Array(3);
   rgb[0] = color.r;
   rgb[1] = color.g;
@@ -135,6 +132,13 @@ function handleColorChange(device) {
 	  .then(o => {}, e => {console.log(e); disconnectDevice(device.guid);});
 }
 
+function handleColorChange(device) {
+  var picker = device.element.getElementsByClassName("lightPicker")[0];
+  var color = hexToRgb(picker.value);
+  setDeviceColor(device, color.r, color.g, color.b);
+}
+
+
 function setElementDeviceInfo(e, text) {
   e.getElementsByClassName("lightTitle")[0].innerText = text;
 }
@@ -143,6 +147,7 @@ function setElementColor(e, color) {
     e.getElementsByClassName("lightStatus")[0].innerText = color;
 }
 
+var BRIGHTNESS = 64;
 function connectDevice(device) {
   var eTemplate = document.getElementById("lightCardTemplate");
   var e = eTemplate.cloneNode(true);
@@ -156,6 +161,23 @@ function connectDevice(device) {
   picker.addEventListener("change",
                           handleColorChange.bind(this, device),
                           false);
+
+  e.getElementsByClassName("lightRed")[0].addEventListener(
+    "click",
+    setDeviceColor.bind(this, device, BRIGHTNESS, 0, 0)
+  );
+  e.getElementsByClassName("lightGreen")[0].addEventListener(
+    "click",
+    setDeviceColor.bind(this, device, 0, BRIGHTNESS, 0)
+  );
+  e.getElementsByClassName("lightBlue")[0].addEventListener(
+    "click",
+    setDeviceColor.bind(this, device, 0, 0, BRIGHTNESS)
+  );
+  e.getElementsByClassName("lightOff")[0].addEventListener(
+    "click",
+    setDeviceColor.bind(this, device, 0, 0, 0)
+  );
 
   device.element = e;
   var s = device.device_.productName + "\n" +
