@@ -73,7 +73,7 @@ function ensureHTTPS() {
   if (window.location.protocol != "https:" &&
       window.location.host == "sowbug.github.io") {
     window.location.href = "https:" +
-        window.location.href.substring(window.location.protocol.length);
+      window.location.href.substring(window.location.protocol.length);
   }
 }
 
@@ -82,16 +82,16 @@ function installServiceWorker() {
     // Override the default scope of '/' with './', so that the registration
     // applies to the current directory and everything underneath it.
     navigator.serviceWorker.register('service-worker.js', {scope: './'})
-	.then(function(registration) {
-	  // At this point, registration has taken place. The service worker
-	  // will not handle requests until this page and any other instances
-	  // of this page (in other tabs, etc.) have been closed/reloaded.
-	  console.log("document.querySelector('#status').textContent = 'success';");
-	}).catch(function(error) {
-	  // Something went wrong during registration. The service-worker.js
-	  // file might be unavailable or contain a syntax error.
-	  console.log("document.querySelector('#status').textContent = error;");
-	});
+	    .then(function(registration) {
+	      // At this point, registration has taken place. The service worker
+	      // will not handle requests until this page and any other instances
+	      // of this page (in other tabs, etc.) have been closed/reloaded.
+	      console.log("document.querySelector('#status').textContent = 'success';");
+	    }).catch(function(error) {
+	      // Something went wrong during registration. The service-worker.js
+	      // file might be unavailable or contain a syntax error.
+	      console.log("document.querySelector('#status').textContent = error;");
+	    });
   } else {
     // The current browser doesn't support service workers.
     var aElement = document.createElement('a');
@@ -103,9 +103,35 @@ function installServiceWorker() {
 
 function logDeviceStrings(device) {
   console.log("Connection:",
-	      device.device_.manufacturerName,
-	      device.device_.productName,
-	      device.device_.serialNumber);
+	            device.device_.manufacturerName,
+	            device.device_.productName,
+	            device.device_.serialNumber);
+}
+
+function hexToRgb(hex) {
+  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+}
+
+function handleColorChange(e) {
+  var color = hexToRgb(e.value);
+
+  var rgb = new Uint8Array(3);
+  rgb[0] = color.r;
+  rgb[1] = color.g;
+  rgb[2] = color.b;
+
+  device.controlTransferOut({
+    'requestType': 'vendor',
+    'recipient': 'device',
+    'request': 0x01,
+    'value': 0x00,
+    'index': 0x00}, rgb)
+	  .then(o => {}, e => {console.log(e); disconnectDevice(device.guid);});
 }
 
 function blinkLights(device) {
@@ -114,36 +140,38 @@ function blinkLights(device) {
   var brightness = 0x20;
   var name = '';
   switch (device.cycle) {
-    case 0:
+  case 0:
     rgb[0] = brightness;
     rgb[1] = 0x00;
     rgb[2] = 0x00;
     name = 'red';
     break;
-    case 1:
-      rgb[0] = 0x00;
-      rgb[1] = brightness;
-      rgb[2] = 0x00;
-      name = 'green';
-      break;
-      case 2:
-      rgb[0] = 0x00;
-      rgb[1] = 0x00;
-      rgb[2] = brightness;
-      name = 'blue';
-      break;
+  case 1:
+    rgb[0] = 0x00;
+    rgb[1] = brightness;
+    rgb[2] = 0x00;
+    name = 'green';
+    break;
+  case 2:
+    rgb[0] = 0x00;
+    rgb[1] = 0x00;
+    rgb[2] = brightness;
+    name = 'blue';
+    break;
   }
   setElementColor(device.element, name);
   if (++device.cycle > 2) {
     device.cycle = 0;
   }
-  device.controlTransferOut({
-    'requestType': 'vendor',
-    'recipient': 'device',
-    'request': 0x01,
-    'value': 0x00,
-    'index': 0x00}, rgb)
-	.then(o => {}, e => {console.log(e); disconnectDevice(device.guid);});
+  if (false) {
+    device.controlTransferOut({
+      'requestType': 'vendor',
+      'recipient': 'device',
+      'request': 0x01,
+      'value': 0x00,
+      'index': 0x00}, rgb)
+	    .then(o => {}, e => {console.log(e); disconnectDevice(device.guid);});
+  }
 }
 
 function startBlinkLights(device) {
@@ -166,21 +194,29 @@ function setElementColor(e, color) {
 function connectDevice(device) {
   var e = document.createElement("div");
   e.className = "card-square mdl-card mdl-shadow--2dp centered";
+
   var eId = document.createElement("div");
   eId.className = "mdl-card__title mdl-card--expand";
+
   var eColor = document.createElement("div");
   eColor.className = "mdl-card__supporting-text";
+
+  var ePicker = document.createElement("input");
+  ePicker.type = "color";
+  ePicker.addEventListener("change", handleColorChange.bind(device), false);
+
   e.appendChild(eId);
   e.appendChild(eColor);
+  e.appendChild(ePicker);
   lightsParent.appendChild(e);
   device.element = e;
   var s = device.device_.productName + "\n" +
-      device.device_.serialNumber;
+    device.device_.serialNumber;
   setElementDeviceInfo(device.element, s);
   device.connect()
-      .then(logDeviceStrings(device))
-      .then(startBlinkLights(device))
-      .then(function() { console.log("connected", device) });
+    .then(logDeviceStrings(device))
+    .then(startBlinkLights(device))
+    .then(function() { console.log("connected", device) });
 }
 
 function handleConnectEvent(event) {
@@ -207,13 +243,13 @@ function disconnectDevice(guid) {
     console.log("removing!");
     lightsParent.removeChild(device.element);
     device.disconnect()
-	.then(s => {
-	  console.log("disconnected", device);
-	  cleanUpDevice(device);
-	}, e => {
-	  console.log("nothing to disconnect", device);
-	  cleanUpDevice(device);
-	});
+	    .then(s => {
+	      console.log("disconnected", device);
+	      cleanUpDevice(device);
+	    }, e => {
+	      console.log("nothing to disconnect", device);
+	      cleanUpDevice(device);
+	    });
   }
 }
 
