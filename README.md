@@ -66,7 +66,46 @@ Tips
 will help you when you're developing your own WebUSB-compatible
 device.
 
-Notable Bugs and Next Steps
+FAQ
 ===
 
-* None at present.
+* *What is WebUSB?* It's a
+  [new web standard](https://reillyeon.github.io/webusb/) that will
+  make it easy to write a USB driver once (in JavaScript) and have it
+  work everywhere that WebUSB is supported.
+
+* *Aren't there already a lot of USB-controlled lights out there?*
+  Yes, it's more or less a rite of passage in hobbyist electronics to
+  make some kind of blinking light. The purpose of this project was to
+  design a very simple WebUSB device that might actually be useful.
+
+* *You said "useful" in the prior answer. Please define that.* A
+  WebUSB-enabled light can alert you of interesting things, like a
+  broken continuous build, a service interruption, yet another crash
+  in the price of bitcoin.
+
+* *Which board should I build?* If you're interested in hacking on the
+  firmware, build
+  [`weblight_developer.brd` for the APA102](https://github.com/sowbug/weblight/blob/master/hardware/apa102/weblight_developer.brd). This
+  one is bigger and has only two lights, but it has more features that
+  you'll need for firmware development, and it uses 0805 SMT
+  components. Otherwise build
+  [`weblight.brd`](https://github.com/sowbug/weblight/blob/master/hardware/apa102/weblight.brd),
+  but beware that it uses 0402 components and was meant to be
+  manufactured by a service.
+
+* *What's the difference between the WS2812 and APA102 versions?* Look
+  at the
+  [LED section in DESIGN.md](https://github.com/sowbug/weblight/blob/master/DESIGN.md#led)
+  for the discussion. In short, WS2812 wasn't compatible with
+  bitbanged USB. It probably could have worked, but the extra firmware
+  development time wasn't worth the tradeoffs (the advantage being
+  slightly wider availability of the WS2812 vs. the APA102).
+
+* *Why does the device have both a male Type A and female micro-USB
+  connector?* That's an old version of the hardware. I was
+  experimenting with both kinds of connector to see which one was more
+  practical. It would be a bad idea to ship a device with both,
+  because someone would try connecting two PCs at the same
+  time. Currently the developer board is Type A, and the production
+  board is micro-USB.
