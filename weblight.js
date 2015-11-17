@@ -118,9 +118,7 @@ function hexToRgb(hex) {
 }
 
 function handleColorChange(device) {
-  console.log("color change", device);
-  var picker = e.getElementsByClassName("lightPicker")[0];
-  console.log("color picker", picker);
+  var picker = device.element.getElementsByClassName("lightPicker")[0];
   var color = hexToRgb(picker.value);
 
   var rgb = new Uint8Array(3);
