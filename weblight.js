@@ -108,6 +108,15 @@ function logDeviceStrings(device) {
 	            device.device_.serialNumber);
 }
 
+function componentToHex(c) {
+  var hex = c.toString(16);
+  return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
 function hexToRgb(hex) {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   return result ? {
@@ -129,7 +138,12 @@ function setDeviceColor(device, r, g, b) {
     'request': 0x01,
     'value': 0x00,
     'index': 0x00}, rgb)
-	  .then(o => {}, e => {console.log(e); disconnectDevice(device.guid);});
+	  .then(o => {
+      device.element.getElementsByClassName(
+        "lightPicker")[0].value = rgbToHex(r, g, b);
+    }, e => {
+      console.log(e); disconnectDevice(device.guid);
+    });
 }
 
 function handleColorChange(device) {
