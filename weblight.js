@@ -197,7 +197,9 @@ function setElementColor(e, color) {
 function connectDevice(device) {
   var eTemplate = document.getElementById("lightCardTemplate");
   var e = eTemplate.cloneNode(true);
+  e.id = undefined;
   e.style.display = "block";
+  console.log("see", e.childNodes);
 
   var pickers = e.getElementsByTagName("input");
   for (var i = 0; i < pickers.count; ++i) {
