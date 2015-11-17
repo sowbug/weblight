@@ -197,7 +197,7 @@ function setElementColor(e, color) {
 function connectDevice(device) {
   var eTemplate = document.getElementById("lightCardTemplate");
   var e = eTemplate.cloneNode(true);
-  e.id = undefined;
+  e.removeAttr("id");
   e.style.display = "block";
   console.log("see", e.childNodes);
 
