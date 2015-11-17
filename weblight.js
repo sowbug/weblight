@@ -206,7 +206,9 @@ function connectDevice(device) {
 
   var ePicker = document.createElement("input");
   ePicker.type = "color";
-  ePicker.addEventListener("change", handleColorChange.bind(device), false);
+  ePicker.addEventListener("change",
+                           handleColorChange.bind(this, device),
+                           false);
 
   e.appendChild(eId);
   e.appendChild(eColor);
