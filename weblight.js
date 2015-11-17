@@ -119,7 +119,7 @@ function hexToRgb(hex) {
 
 function handleColorChange(device) {
   console.log("color change", device);
-  var picker = device.element.childNodes[2];
+  var picker = e.getElementsByClassName("lightPicker")[0];
   console.log("color picker", picker);
   var color = hexToRgb(picker.value);
 
@@ -187,11 +187,11 @@ function startBlinkLights(device) {
 }
 
 function setElementDeviceInfo(e, text) {
-  e.childNodes[0].innerText = text;
+  e.getElementsByClassName("lightTitle")[0].innerText = text;
 }
 
 function setElementColor(e, color) {
-  e.childNodes[1].innerText = color;
+    e.getElementsByClassName("lightStatus")[0].innerText = color;
 }
 
 function connectDevice(device) {
@@ -203,12 +203,10 @@ function connectDevice(device) {
   e.style.display = "block";
   console.log("see", e.childNodes);
 
-  var pickers = e.getElementsByTagName("input");
-  for (var i = 0; i < pickers.count; ++i) {
-    pickers[i].addEventListener("change",
-                                handleColorChange.bind(this, device),
-                                false);
-  }
+  var picker = e.getElementsByClassName("lightPicker")[0];
+  picker.addEventListener("change",
+                          handleColorChange.bind(this, device),
+                          false);
 
   device.element = e;
   var s = device.device_.productName + "\n" +
