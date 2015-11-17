@@ -135,55 +135,6 @@ function handleColorChange(device) {
 	  .then(o => {}, e => {console.log(e); disconnectDevice(device.guid);});
 }
 
-function blinkLights(device) {
-  var rgb = new Uint8Array(3);
-
-  var brightness = 0x20;
-  var name = '';
-  switch (device.cycle) {
-  case 0:
-    rgb[0] = brightness;
-    rgb[1] = 0x00;
-    rgb[2] = 0x00;
-    name = 'red';
-    break;
-  case 1:
-    rgb[0] = 0x00;
-    rgb[1] = brightness;
-    rgb[2] = 0x00;
-    name = 'green';
-    break;
-  case 2:
-    rgb[0] = 0x00;
-    rgb[1] = 0x00;
-    rgb[2] = brightness;
-    name = 'blue';
-    break;
-  }
-  setElementColor(device.element, name);
-  if (++device.cycle > 2) {
-    device.cycle = 0;
-  }
-  if (false) {
-    device.controlTransferOut({
-      'requestType': 'vendor',
-      'recipient': 'device',
-      'request': 0x01,
-      'value': 0x00,
-      'index': 0x00}, rgb)
-	    .then(o => {}, e => {console.log(e); disconnectDevice(device.guid);});
-  }
-}
-
-function startBlinkLights(device) {
-  console.log("startBlinkLights", device);
-
-  device.cycle = 0;
-  blinkLights(device);
-  device.intervalId = window.setInterval(blinkLights.bind(this, device),
-                                         Math.random() * 1750 + 250);
-}
-
 function setElementDeviceInfo(e, text) {
   e.getElementsByClassName("lightTitle")[0].innerText = text;
 }
@@ -212,7 +163,6 @@ function connectDevice(device) {
   setElementDeviceInfo(device.element, s);
   device.connect()
     .then(logDeviceStrings(device))
-    .then(startBlinkLights(device))
     .then(function() { console.log("connected", device) });
 }
 
