@@ -1,7 +1,8 @@
 # Copyright 2015 Mike Tsao
 #
-# weblight
-#
+# WebLight firmware
+# https://github.com/sowbug/weblight
+
 DEVICE  = attiny85
 F_CPU   = 16500000	# in Hz
 HEXFILE = main.hex
@@ -38,6 +39,7 @@ help:
 	@echo "make hex ....... to build $(HEXFILE)"
 	@echo "make flash ..... to flash the firmware (use this on metaboard)"
 	@echo "make clean ..... to delete objects and hex file"
+	@echo "make upload .... to upload the hex file to a micronucleus-ready device"
 
 hex: $(HEXFILE)
 
