@@ -174,6 +174,10 @@ function connectDevice(device) {
     "click",
     setDeviceColor.bind(this, device, 0, 0, BRIGHTNESS)
   );
+  e.getElementsByClassName("lightWhite")[0].addEventListener(
+    "click",
+    setDeviceColor.bind(this, device, 255, 255, 255)
+  );
   e.getElementsByClassName("lightOff")[0].addEventListener(
     "click",
     setDeviceColor.bind(this, device, 0, 0, 0)
