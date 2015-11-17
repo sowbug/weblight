@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
 # sudo pip install pyusb==1.0.0b2
+#
+# Slow on OS X? See https://github.com/libusb/libusb/issues/108
 
 from sys import argv
 import binascii
