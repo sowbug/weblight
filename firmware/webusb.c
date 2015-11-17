@@ -71,14 +71,14 @@ PROGMEM const uchar MS_OS_20_DESCRIPTOR_SET[MS_OS_20_DESCRIPTOR_LENGTH] = {
 };
 
 #define WEBUSB_REQUEST_GET_LANDING_PAGE (0x02)
-const uchar WEBUSB_LANDING_PAGE[] = {
+PROGMEM const uchar WEBUSB_LANDING_PAGE[] = {
   0x23, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/', 's', 'o', 'w', 'b', 'u',
   'g', '.', 'g', 'i', 't', 'h', 'u', 'b', '.', 'i', 'o', '/',
   'w', 'e', 'b', 'l', 'i', 'g', 'h', 't'
 };
 
 #define WEBUSB_REQUEST_GET_ALLOWED_ORIGINS (0x01)
-const uchar WEBUSB_ALLOWED_ORIGINS[] = {
+PROGMEM const uchar WEBUSB_ALLOWED_ORIGINS[] = {
   0x04, 0x00, 0x35, 0x00, 0x1A, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/',
   's', 'o', 'w', 'b', 'u', 'g', '.', 'g', 'i', 't', 'h', 'u', 'b',
   '.', 'i', 'o', 0x17, 0x03, 'h', 't', 't', 'p', ':', '/', '/',
@@ -160,11 +160,13 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
   case WL_REQUEST_WEBUSB: {
     switch (rq->wIndex.word) {
     case WEBUSB_REQUEST_GET_ALLOWED_ORIGINS:
-      usbMsgPtr = (usbMsgPtr_t)(WEBUSB_ALLOWED_ORIGINS);
-      return sizeof(WEBUSB_ALLOWED_ORIGINS);
+      pmResponsePtr = WEBUSB_ALLOWED_ORIGINS;
+      pmResponseBytesRemaining = sizeof(WEBUSB_ALLOWED_ORIGINS);
+      return USB_NO_MSG;
     case WEBUSB_REQUEST_GET_LANDING_PAGE:
-      usbMsgPtr = (usbMsgPtr_t)(WEBUSB_LANDING_PAGE);
-      return sizeof(WEBUSB_LANDING_PAGE);
+      pmResponsePtr = WEBUSB_LANDING_PAGE;
+      pmResponseBytesRemaining = sizeof(WEBUSB_LANDING_PAGE);
+      return USB_NO_MSG;
     }
     break;
   }
