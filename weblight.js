@@ -195,24 +195,17 @@ function setElementColor(e, color) {
 }
 
 function connectDevice(device) {
-  var e = document.createElement("div");
-  e.className = "card-square mdl-card mdl-shadow--2dp centered";
+  var eTemplate = document.getElementById("lightCardTemplate");
+  var e = eTemplate.cloneNode(true);
+  e.style.display = "block";
 
-  var eId = document.createElement("div");
-  eId.className = "mdl-card__title mdl-card--expand";
+  var pickers = e.getElementsByTagName("input");
+  for (var i = 0; i < pickers.count; ++i) {
+    pickers[i].addEventListener("change",
+                                handleColorChange.bind(this, device),
+                                false);
+  }
 
-  var eColor = document.createElement("div");
-  eColor.className = "mdl-card__supporting-text";
-
-  var ePicker = document.createElement("input");
-  ePicker.type = "color";
-  ePicker.addEventListener("change",
-                           handleColorChange.bind(this, device),
-                           false);
-
-  e.appendChild(eId);
-  e.appendChild(eColor);
-  e.appendChild(ePicker);
   lightsParent.appendChild(e);
   device.element = e;
   var s = device.device_.productName + "\n" +
