@@ -166,10 +166,8 @@ function connectDevice(device) {
   var eTemplate = document.getElementById("lightCardTemplate");
   var e = eTemplate.cloneNode(true);
   lightsParent.appendChild(e);
-  console.log("new element", e);
   e.removeAttribute("id");
   e.style.display = "block";
-  console.log("see", e.childNodes);
 
   var picker = e.getElementsByClassName("lightPicker")[0];
   picker.addEventListener("change",
