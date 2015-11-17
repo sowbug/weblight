@@ -27,7 +27,7 @@
 // kick off the service worker update flow and the old cache(s) will be purged
 // as part of the activate event handler when the updated service worker is
 // activated.
-var CACHE_VERSION = 3;
+var CACHE_VERSION = 4;
 var CURRENT_CACHES = {
   'read-through': 'read-through-cache-v' + CACHE_VERSION
 };
