@@ -119,9 +119,9 @@ function hexToRgb(hex) {
 
 function setDeviceColor(device, r, g, b) {
   var rgb = new Uint8Array(3);
-  rgb[0] = color.r;
-  rgb[1] = color.g;
-  rgb[2] = color.b;
+  rgb[0] = r;
+  rgb[1] = g;
+  rgb[2] = b;
 
   device.controlTransferOut({
     'requestType': 'vendor',
