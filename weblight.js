@@ -117,8 +117,11 @@ function hexToRgb(hex) {
   } : null;
 }
 
-function handleColorChange(e) {
-  var color = hexToRgb(e.value);
+function handleColorChange(device) {
+  console.log("color change", device);
+  var picker = device.element.childNodes[2];
+  console.log("color picker", picker);
+  var color = hexToRgb(picker.value);
 
   var rgb = new Uint8Array(3);
   rgb[0] = color.r;
