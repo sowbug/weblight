@@ -197,6 +197,8 @@ function setElementColor(e, color) {
 function connectDevice(device) {
   var eTemplate = document.getElementById("lightCardTemplate");
   var e = eTemplate.cloneNode(true);
+  lightsParent.appendChild(e);
+  console.log("new element", e);
   e.removeAttribute("id");
   e.style.display = "block";
   console.log("see", e.childNodes);
@@ -208,7 +210,6 @@ function connectDevice(device) {
                                 false);
   }
 
-  lightsParent.appendChild(e);
   device.element = e;
   var s = device.device_.productName + "\n" +
     device.device_.serialNumber;
