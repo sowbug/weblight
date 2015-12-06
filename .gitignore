@@ -32,6 +32,8 @@
 *.s#*
 *.l#*
 *.pro
+*.job
+*.lck
 
 # Misc
 *.lock
