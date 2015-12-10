@@ -14,7 +14,7 @@ AVRDUDE = avrdude -c usbtiny -p $(DEVICE)
 WLCTL = ../commandline/wlctl
 MICRONUCLEUS = micronucleus
 
-APP = app
+APP = main
 BOOTLOADER = hex/t85_watchdog_or_ext_reset
 FULL = hex/full-1.0
 EEPROM = eeprom
@@ -28,28 +28,16 @@ FUSEOPT = \
 	-U hfuse:w:0xdd:m \
 	-U efuse:w:0xfe:m
 
-BV_WS2812 = 0
-BV_APA102 = 1
-BOARD_VARIANT ?= $(BV_APA102)
 LED_COUNT = 2
 
 CFLAGS  = -Iusbdrv -I. -DDEBUG_LEVEL=0
 OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o \
           $(APP).o eeprom.c led_control.c osccal.c webusb.c
-
-ifeq ($(BOARD_VARIANT), $(BV_WS2812))
-	OBJECTS += light_ws2812.c
-endif
-ifeq ($(BOARD_VARIANT), $(BV_APA102))
-	OBJECTS += light_apa102.c
-endif
+OBJECTS += light_apa102.c
 
 COMPILE = avr-gcc \
 									-Wall -Os -DF_CPU=$(F_CPU) $(CFLAGS) -mmcu=$(DEVICE) \
-									-DLED_COUNT=$(LED_COUNT) \
-									-DBOARD_VARIANT=$(BOARD_VARIANT) \
-									-DBV_WS2812=$(BV_WS2812) \
-									-DBV_APA102=$(BV_APA102)
+									-DLED_COUNT=$(LED_COUNT)
 
 # symbolic targets:
 help:
@@ -76,15 +64,15 @@ flash_eeprom: $(EEPROM).hex
 	rm -f $(EEPROM).hex
 
 $(EEPROM).hex:
-	./gen_eeprom > $(EEPROM).hex
+	tools/gen_eeprom > $(EEPROM).hex
 
 factory: fuse flash_bootloader flash_eeprom
 
 factory_mp: fuse flash_full flash_eeprom
 
-upload: $(APP)
+upload: $(APP).hex
 	$(WLCTL) --reset
-	$(MICRONUCLEUS) --run $(APP)
+	$(MICRONUCLEUS) --run $(APP).hex
 
 clean:
 	rm -f *.hex *.lst *.obj *.o $(APP).cof $(APP).list \
@@ -107,10 +95,10 @@ clean:
 $(APP).elf: $(OBJECTS)
 	$(COMPILE) -o $(APP).elf $(OBJECTS)
 
-$(APP): $(APP).elf
-	rm -f $(APP) $(APP).eep.hex
-	avr-objcopy -j .text -j .data -O ihex $(APP).elf $(APP)
-	avr-size $(APP)
+$(APP).hex: $(APP).elf
+	rm -f $(APP).hex $(APP).eep.hex
+	avr-objcopy -j .text -j .data -O ihex $(APP).elf $(APP).hex
+	avr-size $(APP).hex
 
 disasm:	$(APP).elf
 	avr-objdump -d $(APP).elf

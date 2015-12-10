@@ -1,9 +1,5 @@
 #include "led_control.h"
-#if BOARD_VARIANT == BV_WS2812
-#include "light_ws2812.h"
-#else
 #include "light_apa102.h"
-#endif
 #include <util/delay.h>  // for _delay_ms()
 
 struct cRGB led[LED_COUNT];
@@ -16,11 +12,7 @@ static unsigned char leds_need_update = 0;
 void UpdateLEDs() {
   if (leds_need_update) {
     leds_need_update = 0;
-#if BOARD_VARIANT == BV_WS2812
-    ws2812_setleds(led, LED_COUNT);
-#else
     apa102_setleds(led, LED_COUNT);
-#endif
   }
 }
 
@@ -46,10 +38,6 @@ void LEDsOff() {
   UpdateLEDs();
 }
 
-// Note that this is an invasive method for gross debugging only. It
-// will interfere with V-USB interrupts.
-//
-// TODO(miket): make it more polite.
 void StatusBlink(uint8_t count) {
   uint8_t i;
   LEDsOff();

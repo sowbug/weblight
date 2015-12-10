@@ -1,6 +1,6 @@
 # WebLight
 
-![WebLight](https://sowbug.github.io/weblight/img/IMG_20151111_091258_sq.jpg)
+![WebLight](https://sowbug.github.io/weblight/img/IMG_20151206_175501_sq.jpg)
 
 A USB-controlled LED designed for the
 [WebUSB API](https://reillyeon.github.io/webusb/).
@@ -112,21 +112,3 @@ FAQ
   [`weblight.brd`](https://github.com/sowbug/weblight/blob/master/hardware/apa102/weblight.brd),
   but beware that it uses 0402 components and was meant to be
   manufactured by a service.
-
-* **What's the difference between the WS2812 and APA102 versions?**
-  Look at the [LED section in
-  DESIGN.md](https://github.com/sowbug/weblight/blob/master/DESIGN.md#led)
-  for the discussion. In short, WS2812 wasn't compatible with
-  bitbanged USB. It probably could have worked, but the extra firmware
-  development time wasn't worth the tradeoffs (the advantage being
-  slightly wider availability of the WS2812 vs. the APA102). Consider
-  the WS2812 references to be historical only; that version of the
-  board is obsolete and unsupported.
-
-* **Why does the device have both a male Type A and female micro-USB
-  connector?** That's an old version of the hardware. I was
-  experimenting with both kinds of connector to see which one was more
-  practical. It would be a bad idea to ship a device with both,
-  because someone would try to use it to connect two PCs at the same
-  time. Currently the developer board is Type A, and the production
-  board is micro-USB.
