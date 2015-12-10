@@ -135,8 +135,9 @@ keeping it because we aren't bumping up against program-space limits.
 
 * [light_ws2812](https://github.com/cpldcpu/light_ws2812) is a much
 lighterweight WS2812 library compared to
-[Adafruit NeoPixel](https://github.com/adafruit/Adafruit_NeoPixel). As
-noted above, WS2812 is not the long-term choice for this project.
+[Adafruit NeoPixel](https://github.com/adafruit/Adafruit_NeoPixel). (As
+noted above, WS2812 is not the long-term choice for this project.)
+This library also includes support for the APA102 chipset.
 
 * As shown in the
 [Adafruit DotStar](https://github.com/adafruit/Adafruit_DotStar)
