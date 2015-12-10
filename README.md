@@ -33,10 +33,29 @@ Programming a newly built board
   adapter. [This is the project I ordered](https://oshpark.com/shared_projects/fqvxyzoH)
   from OSH Park, and you'll want [0.68mm diameter, 16mm length pogo
   pins](http://www.ebay.com/sch/i.html?_trksid=p3984.m570.l1313.TR0.TRC0&_nkw=%09+10pcs+P50-J1+Dia+0.68mm+Length+16mm+75g+Spring+Test.&_sacat=0&_from=R40), probably from eBay.
-* `cd bootloader`
+* `cd firmware`
 * Configure the makefile to talk to your type of programmer (default
-  usbtiny).
-* `make factory`
+usbtiny).
+* `make factory` Now you have a bootloader-ready board with no firmware.
+* Disconnect the programmer and plug it into a USB port.
+* `make clean upload`
+
+Mass-producing boards
+===
+
+This clones the complete firmware from an existing device. For
+convenience, a relatively stable version of that complete firmware
+image is already here in the repository (full-[version].hex). If you
+overwrite it, we'll assume you know what you're doing.
+
+1. Make one device using the instructions from the previous section.
+1. Unplug from USB and attach to programmer.
+1. `cd firmware`
+1. `make create_full` This clones the firmware of the board you just
+built.
+1. Attach your next board to the programmer.
+1. `make factory_mp`
+1. Repeat last two steps for all remaining boards.
 
 Development
 ===

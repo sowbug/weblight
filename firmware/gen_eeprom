@@ -2,8 +2,9 @@
 
 import binascii
 import uuid
+import sys
 
-f = open("eeprom.tmp", "wb")
+f = sys.stdout
 
 # 0-3: signature
 f.write('WebL')
@@ -19,4 +20,5 @@ f.write(serial_str)
 # 22: nothing (was LED count; default = 2 lights)
 f.write(binascii.unhexlify('00'))
 
-f.close()
+# not needed if f is sys.stdout
+#f.close()
