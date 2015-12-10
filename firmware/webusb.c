@@ -79,10 +79,10 @@ const uchar WEBUSB_LANDING_PAGE[] = {
 
 #define WEBUSB_REQUEST_GET_ALLOWED_ORIGINS (0x01)
 const uchar WEBUSB_ALLOWED_ORIGINS[] = {
-  0x04, 0x00, 0x39, 0x00, 0x1A, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/',
+  0x04, 0x00, 0x35, 0x00, 0x1A, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/',
   's', 'o', 'w', 'b', 'u', 'g', '.', 'g', 'i', 't', 'h', 'u', 'b',
-  '.', 'i', 'o', 0x1b, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/',
-  'z', '.', 's', 'o', 'w', 'b', 'u', 'g', '.', 'c', 'o', 'm', ':', '8', '4', '4', '3'
+  '.', 'i', 'o', 0x17, 0x03, 'h', 't', 't', 'p', ':', '/', '/',
+  'l', 'o', 'c', 'a', 'l', 'h', 'o', 's', 't', ':', '8', '0', '0', '0'
 };
 
 PROGMEM const char usbDescriptorDevice[] = {  // USB device descriptor
