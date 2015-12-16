@@ -4,7 +4,7 @@
 # https://github.com/sowbug/weblight
 #
 # NB: avrdude crashes at the end of flashing on Windows machines. If
-# this happens to you, do a separate `make eeprom` to complete the
+# this happens to you, do a separate `make flash_eeprom` to complete the
 # factory setup process.
 
 DEVICE  = attiny85
