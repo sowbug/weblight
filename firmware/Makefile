@@ -28,7 +28,7 @@ FUSEOPT = \
 	-U hfuse:w:0xdd:m \
 	-U efuse:w:0xfe:m
 
-LED_COUNT = 2
+LED_COUNT ?= 2
 
 CFLAGS  = -Iusbdrv -I. -DDEBUG_LEVEL=0
 OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o \
@@ -64,7 +64,7 @@ flash_eeprom: $(EEPROM).hex
 	rm -f $(EEPROM).hex
 
 $(EEPROM).hex:
-	tools/gen_eeprom > $(EEPROM).hex
+	python tools/gen_eeprom > $(EEPROM).hex
 
 factory: fuse flash_bootloader flash_eeprom
 
