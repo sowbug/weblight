@@ -104,11 +104,11 @@ FAQ
   crash in the price of bitcoin.
 
 * **Which board should I build?** If you're interested in hacking on
-  the firmware, build [`weblight_developer.brd` for the
-  APA102](https://github.com/sowbug/weblight/blob/master/hardware/apa102/weblight_developer.brd). This
+  the firmware, build
+  [`weblight_developer.brd`](https://github.com/sowbug/weblight/blob/master/hardware/weblight_developer.brd). This
   one is bigger and has only two lights, but it has more features that
   you'll need for firmware development, and it uses 0805 SMT
-  components. Otherwise build
+  components that aren't too hard to solder yourself. Otherwise build
   [`weblight.brd`](https://github.com/sowbug/weblight/blob/master/hardware/apa102/weblight.brd),
   but beware that it uses 0402 components and was meant to be
   manufactured by a service.
