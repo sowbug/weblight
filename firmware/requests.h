@@ -34,6 +34,21 @@
 // first byte is hue, the second saturation, and the third brightness.
 #define WL_REQUEST_SET_HSV (2)
 
+// Set RGB sequence: 3
+//
+// Sets a repeating sequence for all LEDs. Control-OUT.
+//
+// Format:
+//
+// ticks (dwValue): number of ticks (each about one-sixtieth of a
+// second) that should elapse per frame of sequence.
+//
+// frame_count (dwIndex): the number of 3-byte frames. Max 16.
+//
+// RGB (OUT: 3 bytes x number of frames): each frame's RGB color. Max
+// 16 frames.
+#define WL_REQUEST_SET_RGB_SEQUENCE (3)
+
 // WinUSB: 252
 //
 // WinUSB descriptor.

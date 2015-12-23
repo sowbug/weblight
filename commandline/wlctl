@@ -7,6 +7,7 @@
 WL_REQUEST_ECHO = 0
 WL_REQUEST_SET_RGB = 1
 WL_REQUEST_SET_HSV = 2
+WL_REQUEST_SET_RGB_SEQUENCE = 3
 WL_REQUEST_RESET_DEVICE = 253
 WL_REQUEST_WEBUSB = 254
 
@@ -18,10 +19,12 @@ import sys
 import usb.core
 import usb.util
 
-usage = "usage: %prog [options] rgbcolor"
+usage = "usage: %prog [options] rgbcolor [up to 15 more rgbcolor]"
 parser = OptionParser(usage)
 parser.add_option("--hsv", action="store_true", default=False,
                   help="set color using HSV instead of RGB")
+parser.add_option("-c", "--ticks", default=60,
+                  help="number of ticks between sequence frames")
 parser.add_option("-l", "--list", action="store_true", default=False,
                   help="list attached devices")
 parser.add_option("-t", "--test", action="store_true", default=False,
@@ -119,14 +122,25 @@ if options.stress:
   sys.exit(0)
 
 if len(args) == 0:
-    parser.print_usage()
-    sys.exit(1)
+  parser.print_usage()
+  sys.exit(1)
 
-color_arg = args[0]
-bytes = binascii.unhexlify(('000000' + color_arg)[-6:])
-command = WL_REQUEST_SET_RGB
-if options.hsv:
-  command = WL_REQUEST_SET_HSV
-result = dev.ctrl_transfer(0x40, command, 0, 0, bytes)
-if result != len(bytes):
+ticks = int(options.ticks)
+
+if len(args) == 1:
+  command = WL_REQUEST_SET_RGB
+  if options.hsv:
+    command = WL_REQUEST_SET_HSV
+  result = dev.ctrl_transfer(0x40, command, 0, 0, bytes)
+  if result != len(bytes):
     raise IOError('Error', result)
+else:
+  frames = []
+  for arg in args:
+    bytes = binascii.unhexlify(('000000' + arg)[-6:])
+    frames.append(bytes)
+  payload = ''.join(frames)
+  result = dev.ctrl_transfer(0x40, WL_REQUEST_SET_RGB_SEQUENCE, ticks,
+                             len(args), payload)
+  if result != len(payload):
+    raise IOError('Error: expected %d but got %d' % (len(payload), result))

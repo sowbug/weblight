@@ -135,15 +135,18 @@ void forceReset() {
     ;
 }
 
-static uchar buffer[8];
+static uchar buffer[64];
+static uint16_t currentValue, currentIndex;
 static uchar currentPosition, bytesRemaining;
 const uchar *pmResponsePtr;
 uchar pmResponseBytesRemaining;
 uchar currentRequest;
 usbMsgLen_t usbFunctionSetup(uchar data[8]) {
-  usbRequest_t    *rq = (void *)data;
-  static uchar    dataBuffer[4];
+  usbRequest_t *rq = (void *)data;
+  static uchar dataBuffer[4];
   currentRequest = rq->bRequest;
+  currentValue = rq->wValue.word;
+  currentIndex = rq->wIndex.word;
 
   usbMsgPtr = (int)dataBuffer;
   switch (rq->bRequest) {
@@ -154,12 +157,7 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
     dataBuffer[3] = rq->wIndex.bytes[1];
     return 4;
   case WL_REQUEST_SET_RGB:
-    currentPosition = 0;
-    bytesRemaining = rq->wLength.word;
-    if (bytesRemaining > sizeof(buffer)) {
-      bytesRemaining = sizeof(buffer);
-    }
-    return USB_NO_MSG;
+  case WL_REQUEST_SET_RGB_SEQUENCE:
   case WL_REQUEST_SET_HSV:
     currentPosition = 0;
     bytesRemaining = rq->wLength.word;
@@ -226,6 +224,24 @@ USB_PUBLIC uchar usbFunctionWrite(uchar *data, uchar len) {
       RgbColor rgb = HsvToRgb(hsv);
       SetLEDs(rgb.r, rgb.g, rgb.b);
       break;
+    }
+    case WL_REQUEST_SET_RGB_SEQUENCE: {
+      uint16_t tick_count = currentValue;
+      uint8_t frame_count = currentIndex;
+      uint8_t i;
+      if (frame_count > 16) {
+        frame_count = 16;
+      }
+      ClearSequence();
+      for (i = 0; i < frame_count; i++) {
+        uint8_t *p = &buffer[i * 3];
+        SetSequenceFrame(i, *(RgbColor*)p);
+      }
+      SetSequenceCount(i);
+      SetLEDsToCurrentFrame();
+      AdvanceToNextFrame();
+      SetTickCount(tick_count);
+      ResetTicks();
     }
     }
   }

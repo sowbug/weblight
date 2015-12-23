@@ -42,26 +42,6 @@ void initReady() {
   state = STATE_READY;
 }
 
-void doGratuitousBlinking() {
-  static uchar blinkie = 0;
-  if (blinkie) {
-    SetLEDs(4, 0, 0);
-  } else {
-    SetLEDs(0, 0, 4);
-  }
-  blinkie = !blinkie;
-}
-
-void doAnimation() {
-#if BOARD_VARIANT == BV_APA102
-  // This is where we do any animation of the lights that isn't
-  // initiated by a direct host request.
-  if (FALSE) {
-    doGratuitousBlinking();
-  }
-#endif
-}
-
 void doReady() {
   usbPoll();
   UpdateLEDs();
@@ -71,7 +51,7 @@ void doReady() {
   if (TIFR & _BV(OCF1A)) {
     TIFR |= _BV(OCF1A);
     TCNT1 = 0;
-    doAnimation();
+    DoAnimation();
   }
 }
 
@@ -174,10 +154,11 @@ void doMCUInit() {
   LEDsOff();
 
   // Set the timer we use for our animation frames: CK / 16384
-  // CTC compare value: 16500000 / 16384 / 32 = match at ~32Hz
-  // 2^14 = 16384; 2^5 = 32
-  TCCR1 = _BV(CS13) | _BV(CS12) | _BV(CS11) | _BV(CS10);
-  OCR1A = (F_CPU >> (14 + 5));
+  // CTC compare value: 16500000 / 8192 / 60 = match at ~60Hz
+  //
+  // So each match happens about 60x/second (actually about 61.03x)
+  TCCR1 = _BV(CS13) | _BV(CS12) | _BV(CS11);
+  OCR1A = (F_CPU / 8192) / 60;
 
   // If this fires, it will (probably) cause the startup sequence to
   // repeat, which will give us an indication that something's wrong.
