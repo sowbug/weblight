@@ -6,6 +6,7 @@
 
 WL_REQUEST_ECHO = 0
 WL_REQUEST_SET_RGB = 1
+WL_REQUEST_SET_HSV = 2
 WL_REQUEST_RESET_DEVICE = 253
 WL_REQUEST_WEBUSB = 254
 
@@ -19,6 +20,8 @@ import usb.util
 
 usage = "usage: %prog [options] rgbcolor"
 parser = OptionParser(usage)
+parser.add_option("--hsv", action="store_true", default=False,
+                  help="set color using HSV instead of RGB")
 parser.add_option("-l", "--list", action="store_true", default=False,
                   help="list attached devices")
 parser.add_option("-t", "--test", action="store_true", default=False,
@@ -121,6 +124,9 @@ if len(args) == 0:
 
 color_arg = args[0]
 bytes = binascii.unhexlify(('000000' + color_arg)[-6:])
-result = dev.ctrl_transfer(0x40, WL_REQUEST_SET_RGB, 0, 0, bytes)
+command = WL_REQUEST_SET_RGB
+if options.hsv:
+  command = WL_REQUEST_SET_HSV
+result = dev.ctrl_transfer(0x40, command, 0, 0, bytes)
 if result != len(bytes):
     raise IOError('Error', result)

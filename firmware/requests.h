@@ -23,6 +23,17 @@
 // Pass three bytes as OUT data to indicate the desired RGB color.
 #define WL_REQUEST_SET_RGB (1)
 
+// Set HSV: 2
+//
+// Sets the HSV color of all LEDs. Control-OUT.
+//
+// Note that HSV is the same as HSB: Hue, Saturation,
+// Value/Brightness.
+//
+// Pass three bytes as OUT data to indicate the desired HSV color. The
+// first byte is hue, the second saturation, and the third brightness.
+#define WL_REQUEST_SET_HSV (2)
+
 // WinUSB: 252
 //
 // WinUSB descriptor.

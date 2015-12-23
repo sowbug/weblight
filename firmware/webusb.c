@@ -1,4 +1,5 @@
 #include "eeprom.h"
+#include "led_control.h"
 #include "requests.h"
 #include "webusb.h"
 
@@ -138,9 +139,11 @@ static uchar buffer[8];
 static uchar currentPosition, bytesRemaining;
 const uchar *pmResponsePtr;
 uchar pmResponseBytesRemaining;
+uchar currentRequest;
 usbMsgLen_t usbFunctionSetup(uchar data[8]) {
   usbRequest_t    *rq = (void *)data;
   static uchar    dataBuffer[4];
+  currentRequest = rq->bRequest;
 
   usbMsgPtr = (int)dataBuffer;
   switch (rq->bRequest) {
@@ -151,6 +154,13 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
     dataBuffer[3] = rq->wIndex.bytes[1];
     return 4;
   case WL_REQUEST_SET_RGB:
+    currentPosition = 0;
+    bytesRemaining = rq->wLength.word;
+    if (bytesRemaining > sizeof(buffer)) {
+      bytesRemaining = sizeof(buffer);
+    }
+    return USB_NO_MSG;
+  case WL_REQUEST_SET_HSV:
     currentPosition = 0;
     bytesRemaining = rq->wLength.word;
     if (bytesRemaining > sizeof(buffer)) {
@@ -207,7 +217,17 @@ USB_PUBLIC uchar usbFunctionWrite(uchar *data, uchar len) {
   }
 
   if (bytesRemaining == 0) {
-    SetLEDs(buffer[0], buffer[1], buffer[2]);
+    switch (currentRequest) {
+    case WL_REQUEST_SET_RGB:
+      SetLEDs(buffer[0], buffer[1], buffer[2]);
+      break;
+    case WL_REQUEST_SET_HSV: {
+      HsvColor hsv = {buffer[0], buffer[1], buffer[2]};
+      RgbColor rgb = HsvToRgb(hsv);
+      SetLEDs(rgb.r, rgb.g, rgb.b);
+      break;
+    }
+    }
   }
 
   return bytesRemaining == 0;             // return 1 if we have all data
