@@ -20,6 +20,7 @@
 #define FALSE (!TRUE)
 
 #define TICKS_PER_SECOND (60)
+#define CLOCK_DIVISOR (8192)
 
 enum {
   // Everything we need to start up the microcontroller.
@@ -53,7 +54,7 @@ void doReady() {
   // and do an animation frame.
   if (TIFR & _BV(OCF1A)) {
     TIFR |= _BV(OCF1A);
-    uint16_t msec_elapsed = TCNT1 * 8192 / 1000;
+    uint16_t msec_elapsed = TCNT1 * CLOCK_DIVISOR / 1000;
     TCNT1 = 0;
 
     // Give the sequencer a slice.
@@ -159,12 +160,12 @@ void doMCUInit() {
   // an undocumented side effect.
   LEDsOff();
 
-  // Set the timer we use for our animation frames: CK / 16384
-  // CTC compare value: 16500000 / 8192 / 60 = match at ~60Hz
+  // Set the timer we use for our animation frames: CK / 8192 (CLOCK_DIVISOR)
+  // CTC compare value: 16500000 / CLOCK_DIVISOR / 60 = match at ~60Hz
   //
   // So each match happens about 60x/second (actually about 61.03x)
   TCCR1 = _BV(CS13) | _BV(CS12) | _BV(CS11);
-  OCR1A = (F_CPU / 8192) / TICKS_PER_SECOND;
+  OCR1A = (F_CPU / CLOCK_DIVISOR) / TICKS_PER_SECOND;
 
   // If this fires, it will (probably) cause the startup sequence to
   // repeat, which will give us an indication that something's wrong.
