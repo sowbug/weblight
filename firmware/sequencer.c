@@ -3,6 +3,8 @@
 // weblight
 
 #include "sequencer.h"
+
+#include "eeprom.h"
 #include "led_control.h"
 
 #define TRUE (1==1)
@@ -153,9 +155,9 @@ void Run(uint16_t msec_since_last) {
 }
 
 void Save() {
-  // TODO
+  WriteLightProgram(opcodes, opcode_count);
 }
 
 void Load() {
-  // TODO
+  opcode_count = ReadLightProgram(opcodes, PROGRAM_SIZE_MAX);
 }

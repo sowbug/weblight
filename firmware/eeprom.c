@@ -18,3 +18,28 @@ void ReadEEPROM() {
     webUsbDescriptorStringSerialNumber[1 + i] = serial_bytes[i];
   }
 }
+
+uint8_t ReadLightProgram(uint8_t *opcode_buf, uint8_t opcode_buf_len) {
+  uint8_t program_length =
+    eeprom_read_byte((const uint8_t*)EEPROM_PROGRAM_SIZE);
+  if (program_length == 0 || program_length == 255) {
+    return 0;
+  }
+  if (program_length > opcode_buf_len) {
+    program_length = opcode_buf_len;
+  }
+  eeprom_read_block((void*)opcode_buf,
+                    (void*)EEPROM_PROGRAM_START,
+                    program_length);
+  return program_length;
+}
+
+void WriteLightProgram(const uint8_t *opcode_buf, uint8_t opcode_buf_len) {
+  eeprom_write_byte((uint8_t*)EEPROM_PROGRAM_SIZE, opcode_buf_len);
+  if (opcode_buf_len == 0 || opcode_buf_len == 0xff) {
+    return;
+  }
+  eeprom_write_block((const void*)opcode_buf,
+                     (void*)EEPROM_PROGRAM_START,
+                     opcode_buf_len);
+}

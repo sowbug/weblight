@@ -41,6 +41,8 @@ parser.add_option("-r", "--reset", action="store_true", default=False,
                   help="reset device")
 parser.add_option("-s", "--serial",
                   help="specify the serial number of the device to address")
+parser.add_option("--save", action="store_true", default=False,
+                  help="save the current program to EEPROM")
 parser.add_option("--vid", default="0x1209",
                   help="USB VID")
 parser.add_option("--pid", default="0xa800", help="USB PID")
@@ -106,6 +108,13 @@ if options.test:
     else:
         print "Test failed:", result
         sys.exit(1)
+
+if options.save:
+  result = dev.ctrl_transfer(0x40, WL_REQUEST_SAVE, 0, 0, None)
+  if result != 0:
+    raise IOError('Error', result)
+    sys.exit(1)
+  sys.exit(0)
 
 if options.stress:
   import os

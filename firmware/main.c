@@ -29,10 +29,6 @@ enum {
   // Disconnect USB to force device re-enumeration (see discussion below).
   STATE_DISCONNECT_USB,
 
-  // Display lights to let the developer know that the hardware is
-  // probably working. Also serves as a 250ms+ delay for re-enumeration.
-  STATE_STARTUP_SEQUENCE,
-
   // Reconnect USB for device re-enumeration.
   STATE_CONNECT_USB,
 
@@ -44,11 +40,13 @@ static uint8_t state;
 
 void initReady() {
   state = STATE_READY;
+
+  Load();
+  Play();
 }
 
 void doReady() {
   usbPoll();
-  UpdateLEDs();
 
   // If Timer 1 matched the output-compare register A, then clear it
   // and do an animation frame.
@@ -60,6 +58,7 @@ void doReady() {
     // Give the sequencer a slice.
     Run(msec_elapsed);
   }
+  UpdateLEDs();
 }
 
 void initConnectUSB() {
@@ -70,59 +69,6 @@ void doConnectUSB() {
   sei();
   usbDeviceConnect();
   initReady();
-}
-
-static uint8_t startup_color;
-static uint8_t remaining_disconnect_delay_ms;
-void initStartupSequence() {
-  state = STATE_STARTUP_SEQUENCE;
-  startup_color = 0;
-  remaining_disconnect_delay_ms = 250;
-}
-
-void doStartupSequence() {
-#define STARTUP_BRIGHTNESS (16)
-#define STARTUP_FRAME_LENGTH_MS (40)
-  uint8_t r = 0, g = 0, b = 0, done = 0;
-  switch (startup_color++) {
-    case 0:
-      b = STARTUP_BRIGHTNESS;
-      break;
-    case 1:
-      r = STARTUP_BRIGHTNESS;
-      break;
-    case 2:
-      r = STARTUP_BRIGHTNESS;
-      g = STARTUP_BRIGHTNESS;
-      break;
-    case 3:
-      b = STARTUP_BRIGHTNESS;
-      break;
-    case 4:
-      g = STARTUP_BRIGHTNESS;
-      break;
-    case 5:
-      r = STARTUP_BRIGHTNESS;
-      break;
-    default:
-      done = 1;
-      break;
-  }
-  SetLEDs(r, g, b);
-  UpdateLEDs();
-
-  _delay_ms(STARTUP_FRAME_LENGTH_MS);
-  if (remaining_disconnect_delay_ms >= STARTUP_FRAME_LENGTH_MS) {
-    remaining_disconnect_delay_ms -= STARTUP_FRAME_LENGTH_MS;
-  }
-
-  if (done) {
-    LEDsOff();
-    while (remaining_disconnect_delay_ms-- > 0) {
-      _delay_ms(1);
-    }
-    initConnectUSB();
-  }
 }
 
 void initDisconnectUSB() {
@@ -146,9 +92,15 @@ void doDisconnectUSB() {
   // disconnect state):
   usbDeviceDisconnect();
 
-  // Now let the startup sequence run, which also serves as a delay to
-  // ensure the host notices that the device was unplugged.
-  initStartupSequence();
+  // Now delay to ensure the host notices that the device was
+  // unplugged.
+  uint8_t disconnect_delay_ms = 250;
+  while (disconnect_delay_ms-- > 0) {
+    _delay_ms(1);
+  }
+
+  // And reconnect USB.
+  initConnectUSB();
 }
 
 void initMCUInit() {
@@ -189,9 +141,6 @@ int __attribute__((noreturn)) main(void) {
       break;
     case STATE_DISCONNECT_USB:
       doDisconnectUSB();
-      break;
-    case STATE_STARTUP_SEQUENCE:
-      doStartupSequence();
       break;
     case STATE_CONNECT_USB:
       doConnectUSB();

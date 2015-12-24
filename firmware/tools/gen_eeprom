@@ -20,5 +20,29 @@ f.write(serial_str)
 # 22: nothing (was LED count; default = 2 lights)
 f.write(binascii.unhexlify('00'))
 
+# Write the built-in light program
+prog_parts = [
+    '00200000', # color red
+    '020200',   # pause 512 msec
+    '00002000', # green
+    '020200',
+    '00000020', # blue
+    '020200',
+    '00202000', # yellow
+    '020200',
+    '00200020', # magenta
+    '020200',
+    '00002020', # cyan
+    '020200',
+    ]
+program = binascii.unhexlify(''.join(prog_parts))
+
+# 255: program length
+f.seek(255, 0)
+f.write(bytearray([len(program)]))
+
+# 256-511: program
+f.write(program)
+
 # not needed if f is sys.stdout
 #f.close()
