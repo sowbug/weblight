@@ -34,14 +34,4 @@ void UpdateLEDs();
 RgbColor HsvToRgb(HsvColor hsv);
 HsvColor RgbToHsv(RgbColor rgb);
 
-void ClearSequence();
-void SetSequenceFrame(uint8_t i, RgbColor c);
-void SetSequenceCount(uint8_t n);
-void SetLEDsToCurrentFrame();
-void AdvanceToNextFrame();
-
-
-void ResetTicks();
-void SetTickCount(uint16_t count);
-
 #endif  // #if !defined(__LED_CONTROL_H__)
