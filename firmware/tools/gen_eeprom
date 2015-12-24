@@ -17,9 +17,6 @@ uuid_str = str(uuid.uuid4())
 serial_str = uuid_str[-16:]
 f.write(serial_str)
 
-# 22: nothing (was LED count; default = 2 lights)
-f.write(binascii.unhexlify('00'))
-
 # Write the built-in light program
 prog_parts = [
     '00200000', # color red
@@ -37,11 +34,10 @@ prog_parts = [
     ]
 program = binascii.unhexlify(''.join(prog_parts))
 
-# 255: program length
-f.seek(255, 0)
+# 22: program length
 f.write(bytearray([len(program)]))
 
-# 256-511: program
+# 23-71: program (up to 48 bytes)
 f.write(program)
 
 # not needed if f is sys.stdout

@@ -26,8 +26,8 @@
 
 #define EEPROM_NEXT_ITEM_START (22)
 
-#define EEPROM_PROGRAM_SIZE (255)
-#define EEPROM_PROGRAM_START (256)
+#define EEPROM_PROGRAM_SIZE (22)
+#define EEPROM_PROGRAM_START (23)
 
 void ReadEEPROM();
 void WriteLEDCount();
