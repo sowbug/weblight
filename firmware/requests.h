@@ -10,44 +10,53 @@
 #ifndef __REQUESTS_H_INCLUDED__
 #define __REQUESTS_H_INCLUDED__
 
-// Echo: 0
-//
 // Requests that the device sends back wValue and wIndex. This is used
 // with random data to test the reliability of the communication.
 #define WL_REQUEST_ECHO (0)
 
-// Set RGB: 1
-//
 // Sets the RGB color of all LEDs. Control-OUT.
 //
-// Pass three bytes as OUT data to indicate the desired RGB color.
-#define WL_REQUEST_SET_RGB (1)
+// uint8 red
+// uint8 green
+// uint8 blue
+#define WL_REQUEST_COLOR (1)
 
-// Set HSV: 2
+// During a recorded sequence, pauses for the given number of
+// milliseconds. Control-OUT.
 //
-// Sets the HSV color of all LEDs. Control-OUT.
-//
-// Note that HSV is the same as HSB: Hue, Saturation,
-// Value/Brightness.
-//
-// Pass three bytes as OUT data to indicate the desired HSV color. The
-// first byte is hue, the second saturation, and the third brightness.
-#define WL_REQUEST_SET_HSV (2)
+// uint16 duration_msec
+#define WL_REQUEST_PAUSE (2)
 
-// Set RGB sequence: 3
+// Sets the transition for future COLOR requests. Control-OUT.
 //
-// Sets a repeating sequence for all LEDs. Control-OUT.
+// uint8 transition_type
+// uint16 duration_msec
+#define WL_REQUEST_TRANSITION (3)
+
+// During a recorded sequence, pauses forever. Stops loops. Control-OUT.
 //
-// Format:
+#define WL_REQUEST_HALT (4)
+
+// Starts recording a sequence. Control-OUT.
 //
-// ticks (dwValue): number of ticks (each about one-sixtieth of a
-// second) that should elapse per frame of sequence.
+#define WL_REQUEST_RECORD (5)
+
+// Plays a sequence. Control-OUT.
 //
-// frame_count (dwIndex): the number of 3-byte frames. Max 16.
+#define WL_REQUEST_PLAY (6)
+
+// Stops playing or recording a sequence. Control-OUT.
 //
-// RGB (OUT: 3 bytes x number of frames): each frame's RGB color. Max
-// 16 frames.
-#define WL_REQUEST_SET_RGB_SEQUENCE (3)
+#define WL_REQUEST_STOP (7)
+
+// Saves the current sequence to EEPROM. Control-OUT.
+//
+#define WL_REQUEST_SAVE (8)
+
+// Replaces the current sequence with contents from
+// EEPROM. Control-OUT.
+//
+#define WL_REQUEST_LOAD (9)
 
 // WinUSB: 252
 //

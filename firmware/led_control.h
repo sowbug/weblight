@@ -8,15 +8,15 @@
 // [0, 360) range for hue, and [0, 1] or percentage range for
 // saturation and brightness all need to be scaled.
 typedef struct RgbColor {
-  unsigned char r;
-  unsigned char g;
-  unsigned char b;
+  uint8_t r;
+  uint8_t g;
+  uint8_t b;
 } RgbColor;
 
 typedef struct HsvColor {
-  unsigned char h;
-  unsigned char s;
-  unsigned char v;
+  uint8_t h;
+  uint8_t s;
+  uint8_t v;
 } HsvColor;
 
 uint8_t GetLEDCount();
@@ -26,6 +26,7 @@ void SetLEDsToRgbColor(RgbColor rgb);
 void LEDsOff();
 
 void StatusBlink(uint8_t count);
+void StatusBlinkRed(uint8_t count);
 
 // None of the other functions talk over the wire. This one does.
 void UpdateLEDs();
@@ -42,6 +43,5 @@ void AdvanceToNextFrame();
 
 void ResetTicks();
 void SetTickCount(uint16_t count);
-void DoAnimation();
 
 #endif  // #if !defined(__LED_CONTROL_H__)

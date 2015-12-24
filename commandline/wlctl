@@ -5,9 +5,15 @@
 # Slow on OS X? See https://github.com/libusb/libusb/issues/108
 
 WL_REQUEST_ECHO = 0
-WL_REQUEST_SET_RGB = 1
-WL_REQUEST_SET_HSV = 2
-WL_REQUEST_SET_RGB_SEQUENCE = 3
+WL_REQUEST_COLOR = 1
+WL_REQUEST_PAUSE = 2
+WL_REQUEST_TRANSITION = 3
+WL_REQUEST_HALT = 4
+WL_REQUEST_RECORD = 5
+WL_REQUEST_PLAY = 6
+WL_REQUEST_STOP = 7
+WL_REQUEST_SAVE = 8
+WL_REQUEST_LOAD = 9
 WL_REQUEST_RESET_DEVICE = 253
 WL_REQUEST_WEBUSB = 254
 
@@ -128,19 +134,27 @@ if len(args) == 0:
 ticks = int(options.ticks)
 
 if len(args) == 1:
-  command = WL_REQUEST_SET_RGB
+  command = WL_REQUEST_COLOR
   if options.hsv:
-    command = WL_REQUEST_SET_HSV
+      pass # TODO
   result = dev.ctrl_transfer(0x40, command, 0, 0, bytes)
   if result != len(bytes):
     raise IOError('Error', result)
 else:
-  frames = []
+  result = dev.ctrl_transfer(0x40, WL_REQUEST_RECORD, 0, 0, None)
+  if result != 0:
+    raise IOError('Error', result)
+
   for arg in args:
     bytes = binascii.unhexlify(('000000' + arg)[-6:])
-    frames.append(bytes)
-  payload = ''.join(frames)
-  result = dev.ctrl_transfer(0x40, WL_REQUEST_SET_RGB_SEQUENCE, ticks,
-                             len(args), payload)
-  if result != len(payload):
-    raise IOError('Error: expected %d but got %d' % (len(payload), result))
+    result = dev.ctrl_transfer(0x40, WL_REQUEST_COLOR, 0, 0, bytes)
+    if result != len(bytes):
+      raise IOError('Error: expected %d but got %d' % (len(bytes), result))
+    bytes = bytearray([(ticks >> 8) & 0xff, ticks & 0xff])
+    result = dev.ctrl_transfer(0x40, WL_REQUEST_PAUSE, 0, 0, bytes)
+    if result != len(bytes):
+      raise IOError('Error', result)
+
+  result = dev.ctrl_transfer(0x40, WL_REQUEST_PLAY, 0, 0, None)
+  if result != 0:
+    raise IOError('Error', result)

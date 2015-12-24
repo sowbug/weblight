@@ -4,10 +4,6 @@
 
 struct cRGB led[LED_COUNT];
 
-static uint8_t frame_count = 0;
-static uint8_t current_frame = 0;
-static RgbColor frames[16];
-
 uint8_t GetLEDCount() {
   return LED_COUNT;
 }
@@ -51,6 +47,19 @@ void StatusBlink(uint8_t count) {
   LEDsOff();
   for (i = 0; i < count; i++) {
     SetLED(0, 0, 0, 32);
+    UpdateLEDs();
+    _delay_ms(10);
+    SetLED(0, 0, 0, 0);
+    UpdateLEDs();
+    _delay_ms(30);
+  }
+}
+
+void StatusBlinkRed(uint8_t count) {
+  uint8_t i;
+  LEDsOff();
+  for (i = 0; i < count; i++) {
+    SetLED(0, 128, 0, 0);
     UpdateLEDs();
     _delay_ms(10);
     SetLED(0, 0, 0, 0);
@@ -150,54 +159,4 @@ HsvColor RgbToHsv(RgbColor rgb) {
     hsv.h = 171 + 43 * (rgb.r - rgb.g) / (rgbMax - rgbMin);
 
   return hsv;
-}
-
-void ClearSequence() {
-  frame_count = 0;
-}
-
-void SetSequenceFrame(uint8_t i, RgbColor c) {
-  if (i < 16) {
-    frames[i] = c;
-  }
-}
-
-void SetSequenceCount(uint8_t n) {
-  if (n < 16) {
-    frame_count = n;
-  } else {
-    frame_count = 0;
-  }
-  current_frame = 0;
-}
-
-void SetLEDsToCurrentFrame() {
-  SetLEDsToRgbColor(frames[current_frame]);
-}
-
-void AdvanceToNextFrame() {
-  if (++current_frame >= frame_count) {
-    current_frame = 0;
-  }
-}
-
-static uint16_t tick_count = 0;
-static uint16_t ticks_remaining = 0;
-
-void ResetTicks() {
-  ticks_remaining = tick_count;
-}
-
-void SetTickCount(uint16_t count) {
-  tick_count = count;
-}
-
-void DoAnimation() {
-  if (tick_count != 0) {
-    if (--ticks_remaining == 0) {
-      SetLEDsToCurrentFrame();
-      AdvanceToNextFrame();
-      ResetTicks();
-    }
-  }
 }

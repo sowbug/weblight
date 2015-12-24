@@ -1,5 +1,9 @@
+// Copyright 2015 Mike Tsao
+//
+// weblight
+
 #include "eeprom.h"
-#include "led_control.h"
+#include "sequencer.h"
 #include "requests.h"
 #include "webusb.h"
 
@@ -156,15 +160,33 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
     dataBuffer[2] = rq->wIndex.bytes[0];
     dataBuffer[3] = rq->wIndex.bytes[1];
     return 4;
-  case WL_REQUEST_SET_RGB:
-  case WL_REQUEST_SET_RGB_SEQUENCE:
-  case WL_REQUEST_SET_HSV:
+  case WL_REQUEST_COLOR:
+  case WL_REQUEST_TRANSITION:
+  case WL_REQUEST_PAUSE:
     currentPosition = 0;
     bytesRemaining = rq->wLength.word;
     if (bytesRemaining > sizeof(buffer)) {
       bytesRemaining = sizeof(buffer);
     }
     return USB_NO_MSG;
+  case WL_REQUEST_HALT:
+    HandleHALT();
+    break;
+  case WL_REQUEST_RECORD:
+    Record();
+    break;
+  case WL_REQUEST_PLAY:
+    Play();
+    break;
+  case WL_REQUEST_STOP:
+    Stop();
+    break;
+  case WL_REQUEST_SAVE:
+    Save();
+    break;
+  case WL_REQUEST_LOAD:
+    Load();
+    break;
   case WL_REQUEST_WEBUSB: {
     switch (rq->wIndex.word) {
     case WEBUSB_REQUEST_GET_ALLOWED_ORIGINS:
@@ -216,33 +238,25 @@ USB_PUBLIC uchar usbFunctionWrite(uchar *data, uchar len) {
 
   if (bytesRemaining == 0) {
     switch (currentRequest) {
-    case WL_REQUEST_SET_RGB:
-      SetLEDs(buffer[0], buffer[1], buffer[2]);
-      break;
-    case WL_REQUEST_SET_HSV: {
-      HsvColor hsv = {buffer[0], buffer[1], buffer[2]};
-      RgbColor rgb = HsvToRgb(hsv);
-      SetLEDs(rgb.r, rgb.g, rgb.b);
-      break;
-    }
-    case WL_REQUEST_SET_RGB_SEQUENCE: {
-      uint16_t tick_count = currentValue;
-      uint8_t frame_count = currentIndex;
-      uint8_t i;
-      if (frame_count > 16) {
-        frame_count = 16;
+    case WL_REQUEST_COLOR:
+      if (!IsRecording()) {
+        Stop();
       }
-      ClearSequence();
-      for (i = 0; i < frame_count; i++) {
-        uint8_t *p = &buffer[i * 3];
-        SetSequenceFrame(i, *(RgbColor*)p);
+      HandleCOLOR(buffer[0], buffer[1], buffer[2]);
+      break;
+    case WL_REQUEST_PAUSE:
+      if (IsRecording()) {
+        HandlePAUSE((buffer[0] << 8) | buffer[1]);
+      } else {
+        // This doesn't make sense interactively. Ignore.
       }
-      SetSequenceCount(i);
-      SetLEDsToCurrentFrame();
-      AdvanceToNextFrame();
-      SetTickCount(tick_count);
-      ResetTicks();
-    }
+      break;
+    case WL_REQUEST_TRANSITION:
+      if (!IsRecording()) {
+        Stop();
+      }
+      HandleTRANSITION(buffer[0], (buffer[1] << 8) | buffer[2]);
+      break;
     }
   }
 
