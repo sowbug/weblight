@@ -137,6 +137,7 @@ if len(args) == 1:
   command = WL_REQUEST_COLOR
   if options.hsv:
       pass # TODO
+  bytes = binascii.unhexlify(('000000' + args[0])[-6:])
   result = dev.ctrl_transfer(0x40, command, 0, 0, bytes)
   if result != len(bytes):
     raise IOError('Error', result)
