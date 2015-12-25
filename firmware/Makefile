@@ -37,7 +37,8 @@ OBJECTS += candle.c light_apa102.c sequencer.c
 
 COMPILE = avr-gcc \
 									-Wall -Os -DF_CPU=$(F_CPU) $(CFLAGS) -mmcu=$(DEVICE) \
-									-DLED_COUNT=$(LED_COUNT)
+									-ffunction-sections -Wl,-gc-sections \
+									-DLED_COUNT=$(LED_COUNT) \
 
 # symbolic targets:
 help:
