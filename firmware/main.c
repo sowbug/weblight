@@ -23,30 +23,7 @@
 #define TICKS_PER_SECOND (60)
 #define CLOCK_DIVISOR (8192)
 
-enum {
-  // Everything we need to start up the microcontroller.
-  STATE_MCU_INIT = 0,
-
-  // Disconnect USB to force device re-enumeration (see discussion below).
-  STATE_DISCONNECT_USB,
-
-  // Reconnect USB for device re-enumeration.
-  STATE_CONNECT_USB,
-
-  // Normal loop after all initialization is complete.
-  STATE_READY
-};
-
-static uint8_t state;
-
-void initReady() {
-  state = STATE_READY;
-
-  Load();
-  Play();
-}
-
-void doReady() {
+void loop() {
   usbPoll();
 
   // If Timer 1 matched the output-compare register A, then clear it
@@ -72,21 +49,23 @@ void doReady() {
   UpdateLEDs();
 }
 
-void initConnectUSB() {
-  state = STATE_CONNECT_USB;
-}
+int __attribute__((noreturn)) main(void) {
+  LEDsOff();
 
-void doConnectUSB() {
-  sei();
-  usbDeviceConnect();
-  initReady();
-}
+  // Set the timer we use for our animation frames: CK / 8192 (CLOCK_DIVISOR)
+  // CTC compare value: 16500000 / CLOCK_DIVISOR / 60 = match at ~60Hz
+  //
+  // So each match happens about 60x/second (actually about 61.03x)
+  TCCR1 = _BV(CS13) | _BV(CS12) | _BV(CS11);
+  OCR1A = (F_CPU / CLOCK_DIVISOR) / TICKS_PER_SECOND;
 
-void initDisconnectUSB() {
-  state = STATE_DISCONNECT_USB;
-}
+  // If this fires, it will (probably) cause the startup sequence to
+  // repeat, which will give us an indication that something's wrong.
+  wdt_enable(WDTO_1S);
 
-void doDisconnectUSB() {
+  ReadEEPROM();
+  usbInit();
+
   // From http://vusb.wikidot.com/examples:
   //
   // Enumeration is performed only when the device is connected to the
@@ -110,56 +89,14 @@ void doDisconnectUSB() {
     _delay_ms(1);
   }
 
-  // And reconnect USB.
-  initConnectUSB();
-}
+  sei();
+  usbDeviceConnect();
 
-void initMCUInit() {
-  state = STATE_MCU_INIT;
-}
-
-void doMCUInit() {
-  // ReadEEPROM() turns off the LEDs, but let's be sure because that's
-  // an undocumented side effect.
-  LEDsOff();
-
-  // Set the timer we use for our animation frames: CK / 8192 (CLOCK_DIVISOR)
-  // CTC compare value: 16500000 / CLOCK_DIVISOR / 60 = match at ~60Hz
-  //
-  // So each match happens about 60x/second (actually about 61.03x)
-  TCCR1 = _BV(CS13) | _BV(CS12) | _BV(CS11);
-  OCR1A = (F_CPU / CLOCK_DIVISOR) / TICKS_PER_SECOND;
-
-  // If this fires, it will (probably) cause the startup sequence to
-  // repeat, which will give us an indication that something's wrong.
-  wdt_enable(WDTO_1S);
-
-  ReadEEPROM();
-
-  usbInit();
-
-  // We're done with this state. Go to next.
-  initDisconnectUSB();
-}
-
-int __attribute__((noreturn)) main(void) {
-  initMCUInit();
+  Load();
+  Play();
 
   while (TRUE) {
-    switch (state) {
-    case STATE_MCU_INIT:
-      doMCUInit();
-      break;
-    case STATE_DISCONNECT_USB:
-      doDisconnectUSB();
-      break;
-    case STATE_CONNECT_USB:
-      doConnectUSB();
-      break;
-    case STATE_READY:
-      doReady();
-      break;
-    }
+    loop();
     wdt_reset();
   }
 }
