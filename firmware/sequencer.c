@@ -23,6 +23,8 @@ uint8_t is_transition_in_progress = FALSE;
 uint16_t remaining_transition_duration_msec = 0;
 uint16_t pause_duration_msec = 0;
 
+// See http://goo.gl/dj7Glt for more than you ever wanted to know
+// about division on the AVR.
 uint8_t current_r, current_g, current_b;
 uint16_t delta_r, delta_g, delta_b;
 uint8_t end_r, end_g, end_b;
@@ -123,6 +125,7 @@ void Record() {
   Stop();
   opcode_count = 0;
   is_recording = TRUE;
+  SetProgramMode(SEQUENCER);
 }
 
 void Play() {
@@ -131,12 +134,14 @@ void Play() {
   is_transition_in_progress = FALSE;
   current_transition = NONE;
   current_transition_duration_msec = 0;
+  SetProgramMode(SEQUENCER);
 }
 
 void Stop() {
   oi = 0;
   is_playing = FALSE;
   is_recording = FALSE;
+  SetProgramMode(AD_HOC);
 }
 
 static void AdvanceSequencePointer(uint8_t opcodes) {

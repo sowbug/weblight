@@ -8,6 +8,7 @@
 #include <avr/wdt.h>
 #include <util/delay.h>  // for _delay_ms()
 
+#include "candle.h"
 #include "eeprom.h"
 #include "led_control.h"
 #include "requests.h"  // The custom request numbers we use
@@ -55,8 +56,18 @@ void doReady() {
     uint16_t msec_elapsed = TCNT1 * CLOCK_DIVISOR / 1000;
     TCNT1 = 0;
 
-    // Give the sequencer a slice.
-    Run(msec_elapsed);
+    switch (GetProgramMode()) {
+    case AD_HOC:
+      break;
+    case SEQUENCER:
+      Run(msec_elapsed);
+      break;
+    case CANDLE:
+      CandleRun(msec_elapsed);
+      break;
+    default:
+      break;
+    }
   }
   UpdateLEDs();
 }

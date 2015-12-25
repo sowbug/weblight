@@ -166,3 +166,7 @@ HsvColor RgbToHsv(RgbColor rgb) {
 
   return hsv;
 }
+
+static ProgramMode program_mode = AD_HOC;
+ProgramMode GetProgramMode() { return program_mode; }
+void SetProgramMode(ProgramMode mode) { program_mode = mode; }

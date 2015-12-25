@@ -32,8 +32,8 @@ LED_COUNT ?= 2
 
 CFLAGS  = -Iusbdrv -I. -DDEBUG_LEVEL=0
 OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o \
-          $(APP).o eeprom.c led_control.c osccal.c sequencer.c webusb.c
-OBJECTS += light_apa102.c
+          $(APP).o eeprom.c led_control.c osccal.c webusb.c
+OBJECTS += candle.c light_apa102.c sequencer.c
 
 COMPILE = avr-gcc \
 									-Wall -Os -DF_CPU=$(F_CPU) $(CFLAGS) -mmcu=$(DEVICE) \

@@ -14,6 +14,7 @@ WL_REQUEST_PLAY = 6
 WL_REQUEST_STOP = 7
 WL_REQUEST_SAVE = 8
 WL_REQUEST_LOAD = 9
+WL_REQUEST_EFFECT = 10
 WL_REQUEST_RESET_DEVICE = 253
 WL_REQUEST_WEBUSB = 254
 
@@ -29,8 +30,10 @@ usage = "usage: %prog [options] rgbcolor [up to 15 more rgbcolor]"
 parser = OptionParser(usage)
 parser.add_option("--hsv", action="store_true", default=False,
                   help="set color using HSV instead of RGB")
-parser.add_option("-c", "--ticks", default=60,
-                  help="number of ticks between sequence frames")
+parser.add_option("-m", "--msec", default=500,
+                  help="milliseconds between sequence steps")
+parser.add_option("-e", "--effect", default=-1,
+                  help="start an effect")
 parser.add_option("-l", "--list", action="store_true", default=False,
                   help="list attached devices")
 parser.add_option("-t", "--test", action="store_true", default=False,
@@ -116,6 +119,14 @@ if options.save:
     sys.exit(1)
   sys.exit(0)
 
+effect = int(options.effect)
+if effect >= 0:
+  result = dev.ctrl_transfer(0x40, WL_REQUEST_EFFECT, effect, 0, None)
+  if result != 0:
+    raise IOError('Error', result)
+    sys.exit(1)
+  sys.exit(0)
+
 if options.stress:
   import os
   import time
@@ -140,7 +151,7 @@ if len(args) == 0:
   parser.print_usage()
   sys.exit(1)
 
-ticks = int(options.ticks)
+msec = int(options.msec)
 
 if len(args) == 1:
   command = WL_REQUEST_COLOR
@@ -160,7 +171,7 @@ else:
     result = dev.ctrl_transfer(0x40, WL_REQUEST_COLOR, 0, 0, bytes)
     if result != len(bytes):
       raise IOError('Error: expected %d but got %d' % (len(bytes), result))
-    bytes = bytearray([(ticks >> 8) & 0xff, ticks & 0xff])
+    bytes = bytearray([(msec >> 8) & 0xff, msec & 0xff])
     result = dev.ctrl_transfer(0x40, WL_REQUEST_PAUSE, 0, 0, bytes)
     if result != len(bytes):
       raise IOError('Error', result)

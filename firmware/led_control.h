@@ -19,6 +19,15 @@ typedef struct HsvColor {
   uint8_t v;
 } HsvColor;
 
+typedef enum {
+  AD_HOC,
+  SEQUENCER,
+  CANDLE
+} ProgramMode;
+
+ProgramMode GetProgramMode();
+void SetProgramMode(ProgramMode mode);
+
 uint8_t GetLEDCount();
 void GetLED(uint8_t i, uint8_t *r, uint8_t *g, uint8_t *b);
 void SetLED(uint8_t i, uint8_t r, uint8_t g, uint8_t b);

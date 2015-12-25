@@ -58,6 +58,13 @@
 //
 #define WL_REQUEST_LOAD (9)
 
+// Plays an effect. Control-OUT.
+//
+// Send the effect number in wValue.
+//
+// 0: candle
+#define WL_REQUEST_EFFECT (10)
+
 // WinUSB: 252
 //
 // WinUSB descriptor.

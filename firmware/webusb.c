@@ -139,6 +139,18 @@ void forceReset() {
     ;
 }
 
+void HandleEffect(uint16_t value) {
+  switch (value) {
+  case 0:
+    Stop();
+    CandleInit();
+    SetProgramMode(CANDLE);
+    break;
+  default:
+    break;
+  }
+}
+
 static uchar buffer[64];
 static uint16_t currentValue, currentIndex;
 static uchar currentPosition, bytesRemaining;
@@ -186,6 +198,9 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
     break;
   case WL_REQUEST_LOAD:
     Load();
+    break;
+  case WL_REQUEST_EFFECT:
+    HandleEffect(rq->wValue.word);
     break;
   case WL_REQUEST_WEBUSB: {
     switch (rq->wIndex.word) {
