@@ -16,6 +16,12 @@ void UpdateLEDs() {
   }
 }
 
+void GetLED(uint8_t i, uint8_t *r, uint8_t *g, uint8_t *b) {
+  *r = led[i].r;
+  *g = led[i].g;
+  *b = led[i].b;
+}
+
 void SetLED(uint8_t i, uint8_t r, uint8_t g, uint8_t b) {
   led[i].r = r;
   led[i].g = g;
