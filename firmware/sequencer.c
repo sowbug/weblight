@@ -52,6 +52,10 @@ static uint8_t ProcessTransition() {
     SetLEDs(end_r >> 8, end_g >> 8, end_b >> 8);
     return FALSE;
   }
+
+  // TODO: in-progress transition should be completely copied to
+  // another space so that we can change the next transition while
+  // it's happening
   switch (current_transition) {
   case NONE:
     break;

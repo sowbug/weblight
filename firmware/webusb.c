@@ -258,6 +258,7 @@ USB_PUBLIC uchar usbFunctionWrite(uchar *data, uchar len) {
       if (!IsRecording()) {
         Stop();
       }
+      HandleTRANSITION(NONE, 0);
       HandleCOLOR(buffer[0], buffer[1], buffer[2]);
       break;
     case WL_REQUEST_PAUSE:
