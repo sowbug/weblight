@@ -58,8 +58,8 @@ void doReady() {
 
     switch (GetProgramMode()) {
     case AD_HOC:
-      break;
     case SEQUENCER:
+      // Sequencer needs to run during AD_HOC because of transitions.
       Run(msec_elapsed);
       break;
     case CANDLE:

@@ -173,22 +173,25 @@ static uint8_t ProcessPause() {
 }
 
 void Run(uint16_t msec_since_last) {
+  elapsed_since_last_cycle_msec = msec_since_last;
   if (is_recording) {
     return;
   }
+
+  // This need to run even if the sequencer isn't playing, because
+  // ad-hoc color changes depend on the transition engine.
+  if (ProcessTransition()) {
+    return;
+  }
+
   if (!is_playing) {
     return;
   }
   if (opcode_count == 0) {
     return;
   }
-  elapsed_since_last_cycle_msec = msec_since_last;
 
   if (ProcessPause()) {
-    return;
-  }
-
-  if (ProcessTransition()) {
     return;
   }
 
