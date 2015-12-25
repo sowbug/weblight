@@ -10,7 +10,7 @@
 DEVICE  = attiny85
 F_CPU   = 16500000	# in Hz
 
-AVRDUDE = avrdude -c usbtiny -p $(DEVICE)
+AVRDUDE = avrdude -c usbtiny -p $(DEVICE) -B 1
 WLCTL = ../commandline/wlctl
 MICRONUCLEUS = micronucleus
 
