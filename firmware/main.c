@@ -92,6 +92,7 @@ int __attribute__((noreturn)) main(void) {
   sei();
   usbDeviceConnect();
 
+  // Start up the sequencer.
   Load();
   Play();
 
