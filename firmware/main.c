@@ -44,6 +44,7 @@ void initReady() {
 
   Load();
   Play();
+  HandleTRANSITION(LINEAR_RGB, 1000);
 }
 
 void doReady() {

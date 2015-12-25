@@ -25,9 +25,9 @@ uint16_t pause_duration_msec = 0;
 
 // See http://goo.gl/dj7Glt for more than you ever wanted to know
 // about division on the AVR.
-uint8_t current_r, current_g, current_b;
-uint16_t delta_r, delta_g, delta_b;
-uint8_t end_r, end_g, end_b;
+int32_t current_r, current_g, current_b;
+int32_t delta_r, delta_g, delta_b;
+int32_t end_r, end_g, end_b;
 
 uint8_t IsRecording() { return is_recording; }
 
@@ -49,17 +49,17 @@ static uint8_t ProcessTransition() {
   }
   if (remaining_transition_duration_msec == 0) {
     is_transition_in_progress = FALSE;
-    SetLEDs(end_r, end_g, end_b);
+    SetLEDs(end_r >> 8, end_g >> 8, end_b >> 8);
     return FALSE;
   }
   switch (current_transition) {
   case NONE:
     break;
   case LINEAR_RGB:
-    current_r += (delta_r * elapsed_since_last_cycle_msec) >> 8;
-    current_g -= (delta_g * elapsed_since_last_cycle_msec) >> 8;
-    current_b += (delta_b * elapsed_since_last_cycle_msec) >> 8;
-    SetLEDs(current_r, current_g, current_b);
+    current_r += delta_r * elapsed_since_last_cycle_msec;
+    current_g += delta_g * elapsed_since_last_cycle_msec;
+    current_b += delta_b * elapsed_since_last_cycle_msec;
+    SetLEDs(current_r >> 8, current_g >> 8, current_b >> 8);
     break;
   }
   return TRUE;
@@ -75,12 +75,16 @@ void HandleCOLOR(uint8_t r, uint8_t g, uint8_t b) {
   } else {
     is_transition_in_progress = TRUE;
     remaining_transition_duration_msec = current_transition_duration_msec;
-    GetLED(0, &current_r, &current_g, &current_b);
-    end_r = r; end_g = g; end_b = b;
+    uint8_t cr, cg, cb;
+    GetLED(0, &cr, &cg, &cb);
+    current_r = cr << 8;
+    current_g = cg << 8;
+    current_b = cb << 8;
+    end_r = r << 8; end_g = g << 8; end_b = b << 8;
     if (current_transition_duration_msec != 0) {
-      delta_r = (((int16_t)end_r - (int16_t)current_r) << 8) / (int16_t)current_transition_duration_msec;
-      delta_g = (((int16_t)end_g - (int16_t)current_g) << 8) / (int16_t)current_transition_duration_msec;
-      delta_b = (((int16_t)end_b - (int16_t)current_b) << 8) / (int16_t)current_transition_duration_msec;
+      delta_r = (end_r - current_r) / current_transition_duration_msec;
+      delta_g = (end_g - current_g) / current_transition_duration_msec;
+      delta_b = (end_b - current_b) / current_transition_duration_msec;
     } else {
       delta_r = 0;
       delta_g = 0;

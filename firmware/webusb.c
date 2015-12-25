@@ -2,6 +2,7 @@
 //
 // weblight
 
+#include "candle.h"
 #include "eeprom.h"
 #include "sequencer.h"
 #include "requests.h"
