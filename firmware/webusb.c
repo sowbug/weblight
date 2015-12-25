@@ -15,7 +15,7 @@
 
 #define MS_OS_20_DESCRIPTOR_LENGTH (0x1e)
 
-PROGMEM const uchar BOS_DESCRIPTOR[] = {
+const uchar BOS_DESCRIPTOR[] PROGMEM = {
   // BOS descriptor header
   0x05, 0x0F, 0x38, 0x00, 0x02,
 
@@ -62,7 +62,7 @@ PROGMEM const uchar BOS_DESCRIPTOR[] = {
 // Try changing the value to 0 and see if that resolves the issue.
 // Sorry for the confusion."
 #define WINUSB_REQUEST_DESCRIPTOR (0x07)
-PROGMEM const uchar MS_OS_20_DESCRIPTOR_SET[MS_OS_20_DESCRIPTOR_LENGTH] = {
+const uchar MS_OS_20_DESCRIPTOR_SET[MS_OS_20_DESCRIPTOR_LENGTH] PROGMEM = {
   // Microsoft OS 2.0 descriptor set header (table 10)
   0x0A, 0x00,  // Descriptor size (10 bytes)
   0x00, 0x00,  // MS OS 2.0 descriptor set header
@@ -77,21 +77,21 @@ PROGMEM const uchar MS_OS_20_DESCRIPTOR_SET[MS_OS_20_DESCRIPTOR_LENGTH] = {
 };
 
 #define WEBUSB_REQUEST_GET_LANDING_PAGE (0x02)
-const uchar WEBUSB_LANDING_PAGE[] = {
+const uchar WEBUSB_LANDING_PAGE[] PROGMEM = {
   0x23, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/', 's', 'o', 'w', 'b', 'u',
   'g', '.', 'g', 'i', 't', 'h', 'u', 'b', '.', 'i', 'o', '/',
   'w', 'e', 'b', 'l', 'i', 'g', 'h', 't'
 };
 
 #define WEBUSB_REQUEST_GET_ALLOWED_ORIGINS (0x01)
-const uchar WEBUSB_ALLOWED_ORIGINS[] = {
+const uchar WEBUSB_ALLOWED_ORIGINS[] PROGMEM = {
   0x04, 0x00, 0x35, 0x00, 0x1A, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/',
   's', 'o', 'w', 'b', 'u', 'g', '.', 'g', 'i', 't', 'h', 'u', 'b',
   '.', 'i', 'o', 0x17, 0x03, 'h', 't', 't', 'p', ':', '/', '/',
   'l', 'o', 'c', 'a', 'l', 'h', 'o', 's', 't', ':', '8', '0', '0', '0'
 };
 
-PROGMEM const char usbDescriptorDevice[] = {  // USB device descriptor
+const char usbDescriptorDevice[] PROGMEM = {  // USB device descriptor
   0x12,  // sizeof(usbDescriptorDevice): length of descriptor in bytes
   USBDESCR_DEVICE,        // descriptor type
   0x10, 0x02,             // USB version supported == 2.1
@@ -111,7 +111,7 @@ PROGMEM const char usbDescriptorDevice[] = {  // USB device descriptor
 };
 
 #define SERIAL_NUMBER_BYTE_COUNT (EEPROM_SERIAL_LENGTH * sizeof(int))
-int webUsbDescriptorStringSerialNumber[EEPROM_SERIAL_LENGTH + 1] = {
+const int webUsbDescriptorStringSerialNumber[EEPROM_SERIAL_LENGTH + 1] = {
   USB_STRING_DESCRIPTOR_HEADER(EEPROM_SERIAL_LENGTH)
 };
 
@@ -206,11 +206,13 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
   case WL_REQUEST_WEBUSB: {
     switch (rq->wIndex.word) {
     case WEBUSB_REQUEST_GET_ALLOWED_ORIGINS:
-      usbMsgPtr = (usbMsgPtr_t)(WEBUSB_ALLOWED_ORIGINS);
-      return sizeof(WEBUSB_ALLOWED_ORIGINS);
-    case WEBUSB_REQUEST_GET_LANDING_PAGE:
-      usbMsgPtr = (usbMsgPtr_t)(WEBUSB_LANDING_PAGE);
-      return sizeof(WEBUSB_LANDING_PAGE);
+      pmResponsePtr = WEBUSB_ALLOWED_ORIGINS;
+      pmResponseBytesRemaining = sizeof(WEBUSB_ALLOWED_ORIGINS);
+      return USB_NO_MSG;
+     case WEBUSB_REQUEST_GET_LANDING_PAGE:
+       pmResponsePtr = WEBUSB_LANDING_PAGE;
+       pmResponseBytesRemaining = sizeof(WEBUSB_LANDING_PAGE);
+       return USB_NO_MSG;
     }
     break;
   }
