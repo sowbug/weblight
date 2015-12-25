@@ -19,6 +19,7 @@ f.write(serial_str)
 
 # Write the built-in light program
 prog_parts = [
+    '010103e8', # Linear RGB transition, 1000 msec
     '00200000', # color red
     '020200',   # pause 512 msec
     '00002000', # green
