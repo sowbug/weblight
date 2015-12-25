@@ -10,6 +10,7 @@
 
 #include <avr/pgmspace.h>
 #include <avr/wdt.h>
+#include <string.h>
 
 #define USB_BOS_DESCRIPTOR_TYPE (15)
 
