@@ -34,8 +34,8 @@ DEVICE_VERSION_MINOR = 0
 
 CFLAGS  = -Iusbdrv -I. -DDEBUG_LEVEL=0
 OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o \
-          $(APP).o eeprom.c led_control.c osccal.c webusb.c
-OBJECTS += candle.c light_apa102.c sequencer.c
+          $(APP).o eeprom.o led_control.o osccal.o webusb.o
+OBJECTS += candle.o light_apa102.o sequencer.o
 
 COMPILE = avr-gcc \
 									-Wall -Os -DF_CPU=$(F_CPU) $(CFLAGS) -mmcu=$(DEVICE) \
