@@ -1,12 +1,7 @@
-/*
- * light_apa102_config.h
- *
- * Created: 30.11.2014
- *
- * User Configuration file for the light_apa102_lib
- *
- */
-
+// Copyright 2015 Mike Tsao
+//
+// WebLight firmware
+// https://github.com/sowbug/weblight
 
 #ifndef APA102_CONFIG_H_
 #define APA102_CONFIG_H_

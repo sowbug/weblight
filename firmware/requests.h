@@ -1,7 +1,7 @@
-// WebLight
-//
 // Copyright 2015 Mike Tsao
-
+//
+// WebLight firmware
+// https://github.com/sowbug/weblight
 
 // This header is (ideally) shared between the firmware and the host
 // software. It defines the USB request numbers (and optionally data
