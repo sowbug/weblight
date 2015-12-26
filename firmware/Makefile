@@ -29,6 +29,8 @@ FUSEOPT = \
 	-U efuse:w:0xfe:m
 
 LED_COUNT ?= 2
+DEVICE_VERSION_MAJOR = 1  # used in usbconfig.h
+DEVICE_VERSION_MINOR = 0
 
 CFLAGS  = -Iusbdrv -I. -DDEBUG_LEVEL=0
 OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o \
@@ -39,6 +41,8 @@ COMPILE = avr-gcc \
 									-Wall -Os -DF_CPU=$(F_CPU) $(CFLAGS) -mmcu=$(DEVICE) \
 									-ffunction-sections -Wl,-gc-sections \
 									-DLED_COUNT=$(LED_COUNT) \
+									-DDEVICE_VERSION_MAJOR=$(DEVICE_VERSION_MAJOR) \
+									-DDEVICE_VERSION_MINOR=$(DEVICE_VERSION_MINOR)
 
 # symbolic targets:
 help:
