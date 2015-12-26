@@ -7,7 +7,7 @@
 #include "light_apa102.h"
 #include <util/delay.h>  // for _delay_ms()
 
-struct cRGB led[LED_COUNT];
+static struct cRGB led[LED_COUNT];
 
 uint8_t GetLEDCount() {
   return LED_COUNT;

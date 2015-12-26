@@ -12,9 +12,6 @@
 #include "sequencer.h"
 #include "webusb.h"
 
-#define TRUE (1==1)
-#define FALSE (!TRUE)
-
 #define TICKS_PER_SECOND (60)
 #define CLOCK_DIVISOR (8192)
 
