@@ -106,9 +106,10 @@ FAQ
 * **Which board should I build?** If you're interested in hacking on
   the firmware, build
   [`weblight_developer.brd`](https://github.com/sowbug/weblight/blob/master/hardware/weblight_developer.brd). This
-  one is bigger and has only two lights, but it has more features that
-  you'll need for firmware development, and it uses 0805 SMT
-  components that aren't too hard to solder yourself. Otherwise build
-  [`weblight.brd`](https://github.com/sowbug/weblight/blob/master/hardware/apa102/weblight.brd),
-  but beware that it uses 0402 components and was meant to be
-  manufactured by a service.
+  one has more features that you'll need for firmware development, and
+  it plugs right into a Type A USB socket (but you'll have to solder
+  the contacts to give them enough thickness to connect). Otherwise if
+  you just want a device to play with, build
+  [`weblight.brd`](https://github.com/sowbug/weblight/blob/master/hardware/apa102/weblight.brd). That
+  one is more compact, but it requires a micro-USB socket. Both
+  designs use 0805 SMT components. Either board can be ordered from [OSH Park](https://oshpark.com/) or [Seeed](https://www.seeedstudio.com/service/).
