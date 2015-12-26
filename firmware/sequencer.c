@@ -10,7 +10,7 @@
 #define TRUE (1==1)
 #define FALSE (!TRUE)
 
-#define PROGRAM_SIZE_MAX (48)
+#define PROGRAM_SIZE_MAX (128)
 uint8_t opcodes[PROGRAM_SIZE_MAX];
 uint8_t oi = 0;
 uint8_t opcode_count = 0;

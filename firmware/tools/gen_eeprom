@@ -19,19 +19,29 @@ f.write(serial_str)
 
 # Write the built-in light program
 prog_parts = [
-    '010103e8', # Linear RGB transition, 1000 msec
-    '00200000', # color red
+    '010101f4', # Linear RGB transition, 500 msec
+    '00100000', # color red
     '020200',   # pause 512 msec
-    '00002000', # green
+    '00001000', # green
     '020200',
-    '00000020', # blue
+    '00000010', # blue
     '020200',
-    '00202000', # yellow
+    '00101000', # yellow
     '020200',
-    '00200020', # magenta
+    '00100010', # magenta
     '020200',
-    '00002020', # cyan
+    '00001010', # cyan
     '020200',
+                # then alternate green/off a couple times
+    '00001000', # green
+    '00000000', # off
+    '020080',
+    '00001000', # green
+    '00000000', # off
+    '020080',
+    '00001000', # green
+    '00000000', # off
+    '020080',
     ]
 program = binascii.unhexlify(''.join(prog_parts))
 
