@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="7.4.0">
+<eagle version="7.5.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -7920,7 +7920,7 @@ by exp-project-lbr.ulp</description>
 </classes>
 <parts>
 <part name="JP-USB-TOP" library="SparkFun-Connectors" deviceset="USB" device="PCB"/>
-<part name="C1" library="rcl" deviceset="C-US" device="C0805" value="10uF"/>
+<part name="C1" library="rcl" deviceset="C-US" device="C0805" value="1uF"/>
 <part name="C2" library="rcl" deviceset="C-US" device="C0805" value="0.1uF"/>
 <part name="R3" library="rcl" deviceset="R-US_" device="R0805" value="68"/>
 <part name="R2" library="rcl" deviceset="R-US_" device="R0805" value="68"/>
@@ -7936,7 +7936,7 @@ by exp-project-lbr.ulp</description>
 <part name="P+4" library="supply1" deviceset="VCC" device=""/>
 <part name="GND4" library="supply1" deviceset="GND" device=""/>
 <part name="P+5" library="supply1" deviceset="VCC" device=""/>
-<part name="R4" library="rcl" deviceset="R-US_" device="R0805" value="4.7K"/>
+<part name="R4" library="rcl" deviceset="R-US_" device="R0805" value="10K"/>
 <part name="ICSP1" library="SparkFun-Connectors" deviceset="AVR_SPI_PRG_6" device="2X3_LOCK"/>
 <part name="LED1" library="weblight" deviceset="APA102" device=""/>
 <part name="LED2" library="weblight" deviceset="APA102" device=""/>
