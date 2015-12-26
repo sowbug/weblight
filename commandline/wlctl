@@ -31,7 +31,7 @@ parser = OptionParser(usage)
 parser.add_option("-m", "--msec", default=500,
                   help="milliseconds between sequence steps")
 parser.add_option("-e", "--effect", default=-1,
-                  help="start an effect")
+                  help="start an effect (0: candle)")
 parser.add_option("-l", "--list", action="store_true", default=False,
                   help="list attached devices")
 parser.add_option("-t", "--test", action="store_true", default=False,
