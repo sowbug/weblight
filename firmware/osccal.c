@@ -1,6 +1,7 @@
 // Copyright 2015 Mike Tsao
 //
-// weblight
+// WebLight firmware
+// https://github.com/sowbug/weblight
 
 #include <avr/io.h>
 #include <usbdrv.h>

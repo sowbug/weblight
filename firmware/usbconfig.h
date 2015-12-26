@@ -1,6 +1,7 @@
 // Copyright 2015 Mike Tsao
 //
-// weblight
+// WebLight firmware
+// https://github.com/sowbug/weblight
 
 #ifndef __usbconfig_h_included__
 #define __usbconfig_h_included__

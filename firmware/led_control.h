@@ -1,3 +1,8 @@
+// Copyright 2015 Mike Tsao
+//
+// WebLight firmware
+// https://github.com/sowbug/weblight
+
 #if !defined(__LED_CONTROL_H__)
 #define __LED_CONTROL_H__
 

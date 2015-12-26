@@ -1,6 +1,12 @@
 // Copyright 2015 Mike Tsao
 //
-// weblight
+// WebLight firmware
+// https://github.com/sowbug/weblight
+
+#if !defined(__EEPROM_H__)
+#define __EEPROM_H_
+
+#include <avr/io.h>
 
 // Memory map
 //
@@ -10,9 +16,7 @@
 //      22: NEXT_ITEM (was LED count) (uint8_t)
 
 //     255: size of saved program
-// 256-511: saved program
-
-#include <avr/io.h>
+// 22-    : saved program
 
 #define EEPROM_SIG 'WebL'
 #define EEPROM_SIG_START (0)
@@ -34,3 +38,5 @@ void WriteLEDCount();
 
 uint8_t ReadLightProgram(uint8_t *opcode_buf, uint8_t opcode_buf_len);
 void WriteLightProgram(const uint8_t *opcode_buf, uint8_t opcode_buf_len);
+
+#endif  // #if !defined(__EEPROM_H__)

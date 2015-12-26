@@ -1,6 +1,10 @@
 // Copyright 2015 Mike Tsao
 //
-// weblight
+// WebLight firmware
+// https://github.com/sowbug/weblight
+
+#if !defined(__SEQUENCER_H__)
+#define __SEQUENCER_H_
 
 #include <avr/io.h>
 
@@ -29,3 +33,5 @@ void Save();
 void Load();
 
 void Run(uint16_t msec_since_last);
+
+#endif  // #if !defined(__SEQUENCER_H__)

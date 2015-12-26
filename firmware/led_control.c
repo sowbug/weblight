@@ -1,3 +1,8 @@
+// Copyright 2015 Mike Tsao
+//
+// WebLight firmware
+// https://github.com/sowbug/weblight
+
 #include "led_control.h"
 #include "light_apa102.h"
 #include <util/delay.h>  // for _delay_ms()

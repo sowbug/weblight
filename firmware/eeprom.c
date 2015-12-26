@@ -1,3 +1,8 @@
+// Copyright 2015 Mike Tsao
+//
+// WebLight firmware
+// https://github.com/sowbug/weblight
+
 #include "eeprom.h"
 #include "led_control.h"
 #include "usbdrv.h"

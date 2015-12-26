@@ -1,7 +1,11 @@
 // Copyright 2015 Mike Tsao
 //
-// weblight
+// WebLight firmware
+// https://github.com/sowbug/weblight
+
+#if !defined(__WEBUSB_H__)
+#define __WEBUSB_H_
 
 #include "usbdrv.h"
 
-uint8_t maybeHandleSetup(usbRequest_t* rq, usbMsgLen_t* msg_len);
+#endif  // #if !defined(__WEBUSB_H__)
