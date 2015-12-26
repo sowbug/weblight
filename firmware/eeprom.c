@@ -35,11 +35,11 @@ uint8_t ReadLightProgram(uint8_t *opcode_buf, uint8_t opcode_buf_len) {
 }
 
 void WriteLightProgram(const uint8_t *opcode_buf, uint8_t opcode_buf_len) {
-  eeprom_write_byte((uint8_t*)EEPROM_PROGRAM_SIZE, opcode_buf_len);
+  eeprom_update_byte((uint8_t*)EEPROM_PROGRAM_SIZE, opcode_buf_len);
   if (opcode_buf_len == 0 || opcode_buf_len == 0xff) {
     return;
   }
-  eeprom_write_block((const void*)opcode_buf,
-                     (void*)EEPROM_PROGRAM_START,
-                     opcode_buf_len);
+  eeprom_update_block((const void*)opcode_buf,
+                      (void*)EEPROM_PROGRAM_START,
+                      opcode_buf_len);
 }
