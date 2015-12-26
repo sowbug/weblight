@@ -28,8 +28,6 @@ import usb.util
 
 usage = "usage: %prog [options] rgbcolor [up to 15 more rgbcolor]"
 parser = OptionParser(usage)
-parser.add_option("--hsv", action="store_true", default=False,
-                  help="set color using HSV instead of RGB")
 parser.add_option("-m", "--msec", default=500,
                   help="milliseconds between sequence steps")
 parser.add_option("-e", "--effect", default=-1,
@@ -45,7 +43,13 @@ parser.add_option("-r", "--reset", action="store_true", default=False,
 parser.add_option("-s", "--serial",
                   help="specify the serial number of the device to address")
 parser.add_option("--save", action="store_true", default=False,
-                  help="save the current program to EEPROM")
+                  help="save the current sequence to EEPROM")
+parser.add_option("--load", action="store_true", default=False,
+                  help="load sequence from EEPROM")
+parser.add_option("--play", action="store_true", default=False,
+                  help="play the current sequence")
+parser.add_option("--stop", action="store_true", default=False,
+                  help="stop playing the current sequence")
 parser.add_option("--vid", default="0x1209",
                   help="USB VID")
 parser.add_option("--pid", default="0xa800", help="USB PID")
@@ -119,6 +123,27 @@ if options.save:
     sys.exit(1)
   sys.exit(0)
 
+if options.load:
+  result = dev.ctrl_transfer(0x40, WL_REQUEST_LOAD, 0, 0, None)
+  if result != 0:
+    raise IOError('Error', result)
+    sys.exit(1)
+  sys.exit(0)
+
+if options.play:
+  result = dev.ctrl_transfer(0x40, WL_REQUEST_PLAY, 0, 0, None)
+  if result != 0:
+    raise IOError('Error', result)
+    sys.exit(1)
+  sys.exit(0)
+
+if options.stop:
+  result = dev.ctrl_transfer(0x40, WL_REQUEST_STOP, 0, 0, None)
+  if result != 0:
+    raise IOError('Error', result)
+    sys.exit(1)
+  sys.exit(0)
+
 effect = int(options.effect)
 if effect >= 0:
   result = dev.ctrl_transfer(0x40, WL_REQUEST_EFFECT, effect, 0, None)
@@ -151,12 +176,8 @@ if len(args) == 0:
   parser.print_usage()
   sys.exit(1)
 
-msec = int(options.msec)
-
 if len(args) == 1:
   command = WL_REQUEST_COLOR
-  if options.hsv:
-      pass # TODO
   bytes = binascii.unhexlify(('000000' + args[0])[-6:])
   result = dev.ctrl_transfer(0x40, command, 0, 0, bytes)
   if result != len(bytes):
@@ -166,6 +187,7 @@ else:
   if result != 0:
     raise IOError('Error', result)
 
+  msec = int(options.msec)
   for arg in args:
     bytes = binascii.unhexlify(('000000' + arg)[-6:])
     result = dev.ctrl_transfer(0x40, WL_REQUEST_COLOR, 0, 0, bytes)
