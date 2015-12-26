@@ -11,10 +11,7 @@
 #include "usbdrv.h"
 
 int __attribute__((noreturn)) main(void) {
-  // If this fires, it will (probably) cause the startup sequence to
-  // repeat, which will give us an indication that something's wrong.
   wdt_enable(WDTO_1S);
-
   usbInit();
 
   // From http://vusb.wikidot.com/examples:
