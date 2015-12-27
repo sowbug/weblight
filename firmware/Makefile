@@ -10,13 +10,18 @@
 DEVICE  = attiny85
 F_CPU   = 16500000	# in Hz
 
+LED_COUNT ?= 2
+# used in usbconfig.h
+DEVICE_VERSION_MAJOR = 0
+DEVICE_VERSION_MINOR = 9
+
 AVRDUDE = avrdude -c usbtiny -p $(DEVICE) -B 1
 WLCTL = ../commandline/wlctl
 MICRONUCLEUS = micronucleus
 
 APP = main
 BOOTLOADER = hex/t85_watchdog_or_ext_reset
-FULL = hex/full-1.0
+FULL = hex/full-$(DEVICE_VERSION_MAJOR).$(DEVICE_VERSION_MINOR)
 EEPROM = eeprom
 
 # http://eleccelerator.com/fusecalc/fusecalc.php?chip=attiny85&LOW=E1&HIGH=DD&EXTENDED=FE&LOCKBIT=FF
@@ -27,10 +32,6 @@ FUSEOPT = \
 	-U lfuse:w:0xe1:m \
 	-U hfuse:w:0xdd:m \
 	-U efuse:w:0xfe:m
-
-LED_COUNT ?= 2
-DEVICE_VERSION_MAJOR = 1  # used in usbconfig.h
-DEVICE_VERSION_MINOR = 0
 
 CFLAGS  = -Iusbdrv -I. -DDEBUG_LEVEL=0
 OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o \
