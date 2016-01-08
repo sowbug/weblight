@@ -164,7 +164,7 @@ if options.stress:
     count += 1
     elapsed = 10 * (time.clock() - start_time)
     try:
-      result = dev.ctrl_transfer(0x40, WL_REQUEST_SET_RGB, 0, 0, bytes)
+      result = dev.ctrl_transfer(0x40, WL_REQUEST_COLOR, 0, 0, bytes)
     except usb.core.USBError, e:
       print "\n\nFailed @ %d, %0.1f with %s" % (count, elapsed, e)
       break
