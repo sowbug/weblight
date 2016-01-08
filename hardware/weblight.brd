@@ -178,6 +178,7 @@
 <wire x1="1.27" y1="12.7" x2="0" y2="11.43" width="0" layer="20" curve="90"/>
 <text x="21.59" y="6.35" size="2.54" layer="26" font="vector" rot="MR0" align="center">WebLight 0.9.1</text>
 <text x="21.59" y="3.175" size="1.016" layer="26" font="vector" rot="MR0" align="center">github.com/sowbug/weblight</text>
+<rectangle x1="34.29" y1="0" x2="43.18" y2="12.7" layer="43"/>
 </plain>
 <libraries>
 <library name="rcl">
@@ -1664,15 +1665,15 @@ Please make sure your boards conform to these design rules.</description>
 <contactref element="ISP" pad="6"/>
 <contactref element="D4" pad="C"/>
 <contactref element="D3" pad="C"/>
-<wire x1="30.48" y1="5.08" x2="30.48" y2="2.54" width="0" layer="19" extent="1-1"/>
-<wire x1="1.905" y1="9.525" x2="30.48" y2="5.08" width="0" layer="19" extent="1-1"/>
-<wire x1="8.35" y1="7.571" x2="1.905" y2="9.525" width="0" layer="19" extent="1-1"/>
-<wire x1="12.5222" y1="7.366" x2="8.35" y2="7.571" width="0" layer="19" extent="1-1"/>
-<wire x1="14.92" y1="5.08" x2="12.5222" y2="7.366" width="0" layer="19" extent="1-1"/>
-<wire x1="14.92" y1="2.54" x2="14.92" y2="5.08" width="0" layer="19" extent="1-1"/>
-<wire x1="8.35" y1="1.729" x2="14.92" y2="2.54" width="0" layer="19" extent="1-1"/>
-<wire x1="25.715" y1="5.08" x2="14.92" y2="5.08" width="0" layer="19" extent="1-1"/>
+<wire x1="30.48" y1="2.54" x2="30.48" y2="5.08" width="0" layer="19" extent="1-1"/>
+<wire x1="25.715" y1="5.08" x2="30.48" y2="5.08" width="0" layer="19" extent="1-1"/>
 <wire x1="25.715" y1="2.54" x2="25.715" y2="5.08" width="0" layer="19" extent="1-1"/>
+<wire x1="14.92" y1="5.08" x2="25.715" y2="5.08" width="0" layer="19" extent="1-1"/>
+<wire x1="14.92" y1="2.54" x2="14.92" y2="5.08" width="0" layer="19" extent="1-1"/>
+<wire x1="12.5222" y1="7.366" x2="14.92" y2="5.08" width="0" layer="19" extent="1-1"/>
+<wire x1="8.35" y1="7.571" x2="12.5222" y2="7.366" width="0" layer="19" extent="1-1"/>
+<wire x1="8.35" y1="1.729" x2="8.35" y2="7.571" width="0" layer="19" extent="1-1"/>
+<wire x1="1.905" y1="9.525" x2="8.35" y2="7.571" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="GND">
 <contactref element="D2" pad="A"/>
@@ -1697,15 +1698,7 @@ Please make sure your boards conform to these design rules.</description>
 <vertex x="-1.27" y="-1.27"/>
 </polygon>
 <contactref element="J-BOT" pad="GND"/>
-<wire x1="33.02" y1="7.62" x2="33.02" y2="10.16" width="0" layer="19" extent="1-1"/>
-<wire x1="38.3" y1="2.85" x2="33.02" y2="7.62" width="0" layer="19" extent="1-1"/>
-<wire x1="19.2532" y1="11.176" x2="33.02" y2="10.16" width="0" layer="19" extent="1-1"/>
-<wire x1="13.02" y1="5.08" x2="19.2532" y2="11.176" width="0" layer="19" extent="1-1"/>
-<wire x1="13.02" y1="2.54" x2="13.02" y2="5.08" width="0" layer="19" extent="1-1"/>
-<wire x1="4.35" y1="1.729" x2="13.02" y2="2.54" width="0" layer="19" extent="1-1"/>
-<wire x1="4.35" y1="7.571" x2="4.35" y2="1.729" width="0" layer="19" extent="1-1"/>
-<wire x1="1.905" y1="8.255" x2="4.35" y2="7.571" width="0" layer="19" extent="1-1"/>
-<wire x1="38.3" y1="9.85" x2="1.905" y2="8.255" width="0" layer="19" extent="1-1"/>
+<via x="17.145" y="10.795" extent="1-16" drill="0.381"/>
 </signal>
 <signal name="USB_D_MINUS">
 <contactref element="R3" pad="2"/>
@@ -1718,19 +1711,19 @@ Please make sure your boards conform to these design rules.</description>
 <contactref element="D2" pad="C"/>
 <contactref element="J-TOP" pad="USB_M"/>
 <contactref element="J-BOT" pad="USB_M"/>
+<wire x1="37.8" y1="5.35" x2="37.8" y2="7.35" width="0" layer="19" extent="1-16"/>
 <wire x1="30.48" y1="7.62" x2="37.8" y2="7.35" width="0" layer="19" extent="1-1"/>
 <wire x1="25.715" y1="7.62" x2="30.48" y2="7.62" width="0" layer="19" extent="1-1"/>
 <wire x1="23.815" y1="5.08" x2="25.715" y2="7.62" width="0" layer="19" extent="1-1"/>
-<wire x1="37.8" y1="5.35" x2="23.815" y2="5.08" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="USB_D_PLUS_RAW">
 <contactref element="R2" pad="2"/>
 <contactref element="D1" pad="C"/>
 <contactref element="J-TOP" pad="USB_P"/>
 <contactref element="J-BOT" pad="USB_P"/>
-<wire x1="30.48" y1="10.16" x2="37.8" y2="5.35" width="0" layer="19" extent="1-1"/>
 <wire x1="25.715" y1="10.16" x2="30.48" y2="10.16" width="0" layer="19" extent="1-1"/>
-<wire x1="37.8" y1="7.35" x2="25.715" y2="10.16" width="0" layer="19" extent="1-1"/>
+<wire x1="37.8" y1="7.35" x2="30.48" y2="10.16" width="0" layer="19" extent="1-16"/>
+<wire x1="37.8" y1="5.35" x2="37.8" y2="7.35" width="0" layer="19" extent="1-16"/>
 </signal>
 <signal name="USB_D_PLUS">
 <contactref element="R2" pad="1"/>
@@ -1779,8 +1772,8 @@ Please make sure your boards conform to these design rules.</description>
 <contactref element="J-BOT" pad="5V"/>
 <contactref element="D4" pad="A"/>
 <wire x1="38.3" y1="2.85" x2="38.3" y2="9.85" width="0" layer="19" extent="1-16"/>
-<wire x1="33.02" y1="5.08" x2="38.3" y2="2.85" width="0" layer="19" extent="1-16"/>
-<wire x1="33.02" y1="2.54" x2="33.02" y2="5.08" width="0" layer="19" extent="1-1"/>
+<wire x1="33.02" y1="2.54" x2="38.3" y2="2.85" width="0" layer="19" extent="1-16"/>
+<wire x1="33.02" y1="5.08" x2="33.02" y2="2.54" width="0" layer="19" extent="1-1"/>
 </signal>
 </signals>
 </board>
