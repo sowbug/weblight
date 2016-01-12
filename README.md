@@ -115,3 +115,8 @@ FAQ
   designs use 0805 SMT components. Either board can be ordered from [OSH Park](https://oshpark.com/) or [Seeed](https://www.seeedstudio.com/service/).
 
 * **I don't want to build a board, but I'd like one. Will you sell me one?** I don't have plans to mass-produce boards for sale. But if you're interested in getting one, [subscribe to notifications for this issue](https://github.com/sowbug/weblight/issues/31).
+
+Acknowledgments
+===
+
+* bobhackmelb on freenode for advice on PCB manufacturing, specifically thickness
