@@ -82,12 +82,6 @@ const uchar MS_OS_20_DESCRIPTOR_SET[MS_OS_20_DESCRIPTOR_LENGTH] PROGMEM = {
 
 #define WEBUSB_REQUEST_GET_LANDING_PAGE (0x02)
 #define WEBUSB_REQUEST_GET_ALLOWED_ORIGINS (0x01)
-const uchar WEBUSB_ALLOWED_ORIGINS[] PROGMEM = {
-  0x04, 0x00, 0x35, 0x00, 0x1A, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/',
-  's', 'o', 'w', 'b', 'u', 'g', '.', 'g', 'i', 't', 'h', 'u', 'b',
-  '.', 'i', 'o', 0x17, 0x03, 'h', 't', 't', 'p', ':', '/', '/',
-  'l', 'o', 'c', 'a', 'l', 'h', 'o', 's', 't', ':', '8', '0', '0', '0'
-};
 
 const char usbDescriptorDevice[] PROGMEM = {  // USB device descriptor
   0x12,  // sizeof(usbDescriptorDevice): length of descriptor in bytes
@@ -204,17 +198,19 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
     break;
   case WL_REQUEST_WEBUSB: {
     switch (rq->wIndex.word) {
-    case WEBUSB_REQUEST_GET_ALLOWED_ORIGINS:
-      pmResponsePtr = WEBUSB_ALLOWED_ORIGINS;
-      pmResponseBytesRemaining = sizeof(WEBUSB_ALLOWED_ORIGINS);
-      pmResponseIsEEPROM = false;
+    case WEBUSB_REQUEST_GET_LANDING_PAGE:
+      pmResponsePtr = (void*)EEPROM_WEBUSB_URLS_START;
+      pmResponseBytesRemaining =
+        eeprom_read_byte((void*)EEPROM_WEBUSB_URLS_START);
+      pmResponseIsEEPROM = true;
       return USB_NO_MSG;
-     case WEBUSB_REQUEST_GET_LANDING_PAGE:
-       pmResponsePtr = (void*)EEPROM_WEBUSB_URLS_START;
-       pmResponseBytesRemaining =
-         eeprom_read_byte((void*)EEPROM_WEBUSB_URLS_START);
-       pmResponseIsEEPROM = true;
-       return USB_NO_MSG;
+    case WEBUSB_REQUEST_GET_ALLOWED_ORIGINS:
+      pmResponsePtr = (void*)EEPROM_WEBUSB_URLS_START +
+        eeprom_read_byte((void*)EEPROM_WEBUSB_URLS_START);
+      pmResponseBytesRemaining =
+        eeprom_read_byte(pmResponsePtr + 2);  // Note: discarding high byte
+      pmResponseIsEEPROM = true;
+      return USB_NO_MSG;
     }
     break;
   }

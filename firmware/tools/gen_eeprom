@@ -5,6 +5,10 @@ import sys
 import tempfile
 import uuid
 
+# For these, the shorter the better
+LANDING_PAGE='https://sowbug.github.io/weblight'
+ALLOWED_ORIGINS=['https://sowbug.github.io', 'http://localhost:8000']
+
 f = tempfile.TemporaryFile()
 
 # 0-3: signature
@@ -33,7 +37,7 @@ prog_parts = [
     '020200',
     '00001010', # cyan
     '020200',
-                # then alternate green/off a couple times
+    # then alternate green/off a couple times
     '00001000', # green
     '00000000', # off
     '020080',
@@ -43,7 +47,7 @@ prog_parts = [
     '00001000', # green
     '00000000', # off
     '020080',
-    ]
+]
 program = binascii.unhexlify(''.join(prog_parts))
 
 # 22: program length
@@ -55,10 +59,33 @@ f.write(program)
 # 128-: WebUSB URLs (landing page followed by allowed origins, all in
 # raw descriptor format)
 f.seek(128)
-LANDING_PAGE='https://sowbug.github.io/weblight/'
-f.write(bytearray([len(LANDING_PAGE) + 1, 3]))
+
+f.write(bytearray([len(LANDING_PAGE) + 2, 3]))
 f.write(LANDING_PAGE)
 
+ORIGIN_DESCRIPTORS = []
+
+# start with size of descriptor set header itself
+total_origin_string_length = 4
+
+for o in ALLOWED_ORIGINS:
+    descriptor_length = len(o) + 2
+    descriptor = bytearray([descriptor_length, 3]) + o
+    ORIGIN_DESCRIPTORS.append(descriptor)
+    total_origin_string_length += descriptor_length
+
+if total_origin_string_length > 128:
+    print "Allowed origin lengths too big"
+    sys.exit(1)
+
+# https://reillyeon.github.io/webusb/#dfn-descriptor-set-header
+# 4 = length of descriptor set header
+# 0 = WEBUSB_DESCRIPTOR_SET_HEADER
+# xxyy = total size of this and all following descriptors (big-endian)
+f.write(bytearray([4, 0, total_origin_string_length, 0]))
+for o in ORIGIN_DESCRIPTORS:
+    f.write(o)
+
 f.seek(0)
-print f.read()
+sys.stdout.write(f.read())
 f.close()
