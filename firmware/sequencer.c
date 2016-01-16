@@ -7,20 +7,18 @@
 
 #include "eeprom.h"
 #include "led_control.h"
-
-#define TRUE (1==1)
-#define FALSE (!TRUE)
+#include <stdbool.h>
 
 #define PROGRAM_SIZE_MAX (128)
 uint8_t opcodes[PROGRAM_SIZE_MAX];
 uint8_t oi = 0;
 uint8_t opcode_count = 0;
-uint8_t is_playing = FALSE;
-uint8_t is_recording = FALSE;
+uint8_t is_playing = false;
+uint8_t is_recording = false;
 uint16_t elapsed_since_last_cycle_msec = 0;
 Transition current_transition = NONE;
 uint16_t current_transition_duration_msec = 0;
-uint8_t is_transition_in_progress = FALSE;
+uint8_t is_transition_in_progress = false;
 uint16_t remaining_transition_duration_msec = 0;
 uint16_t pause_duration_msec = 0;
 
@@ -41,7 +39,7 @@ static void VerifySequenceCapacity(uint8_t opcodes) {
 
 static uint8_t ProcessTransition() {
   if (!is_transition_in_progress) {
-    return FALSE;
+    return false;
   }
   if (remaining_transition_duration_msec > elapsed_since_last_cycle_msec) {
     remaining_transition_duration_msec -= elapsed_since_last_cycle_msec;
@@ -49,9 +47,9 @@ static uint8_t ProcessTransition() {
     remaining_transition_duration_msec = 0;
   }
   if (remaining_transition_duration_msec == 0) {
-    is_transition_in_progress = FALSE;
+    is_transition_in_progress = false;
     SetLEDs(end_r >> 8, end_g >> 8, end_b >> 8);
-    return FALSE;
+    return false;
   }
 
   // TODO: in-progress transition should be completely copied to
@@ -67,7 +65,7 @@ static uint8_t ProcessTransition() {
     SetLEDs(current_r >> 8, current_g >> 8, current_b >> 8);
     break;
   }
-  return TRUE;
+  return true;
 }
 
 void HandleCOLOR(uint8_t r, uint8_t g, uint8_t b) {
@@ -78,7 +76,7 @@ void HandleCOLOR(uint8_t r, uint8_t g, uint8_t b) {
     opcodes[opcode_count++] = g;
     opcodes[opcode_count++] = b;
   } else {
-    is_transition_in_progress = TRUE;
+    is_transition_in_progress = true;
     remaining_transition_duration_msec = current_transition_duration_msec;
     uint8_t cr, cg, cb;
     GetLED(0, &cr, &cg, &cb);
@@ -133,14 +131,14 @@ void HandleHALT() {
 void Record() {
   Stop();
   opcode_count = 0;
-  is_recording = TRUE;
+  is_recording = true;
   SetProgramMode(SEQUENCER);
 }
 
 void Play() {
   Stop();
-  is_playing = TRUE;
-  is_transition_in_progress = FALSE;
+  is_playing = true;
+  is_transition_in_progress = false;
   current_transition = NONE;
   current_transition_duration_msec = 0;
   SetProgramMode(SEQUENCER);
@@ -148,8 +146,8 @@ void Play() {
 
 void Stop() {
   oi = 0;
-  is_playing = FALSE;
-  is_recording = FALSE;
+  is_playing = false;
+  is_recording = false;
   SetProgramMode(AD_HOC);
 }
 
@@ -162,7 +160,7 @@ static void AdvanceSequencePointer(uint8_t opcodes) {
 
 static uint8_t ProcessPause() {
   if (pause_duration_msec == 0) {
-    return FALSE;
+    return false;
   }
   if (pause_duration_msec > elapsed_since_last_cycle_msec) {
     pause_duration_msec -= elapsed_since_last_cycle_msec;
@@ -171,10 +169,10 @@ static uint8_t ProcessPause() {
   }
   if (pause_duration_msec == 0) {
     // Pause is done. Go ahead and do more work.
-    return FALSE;
+    return false;
   }
   // Pause is still happening
-  return TRUE;
+  return true;
 }
 
 void Run(uint16_t msec_since_last) {

@@ -1,10 +1,11 @@
 #! /usr/bin/python
 
 import binascii
-import uuid
 import sys
+import tempfile
+import uuid
 
-f = sys.stdout
+f = tempfile.TemporaryFile()
 
 # 0-3: signature
 f.write('WebL')
@@ -51,5 +52,13 @@ f.write(bytearray([len(program)]))
 # 23-71: program (up to 48 bytes)
 f.write(program)
 
-# not needed if f is sys.stdout
-#f.close()
+# 128-: WebUSB URLs (landing page followed by allowed origins, all in
+# raw descriptor format)
+f.seek(128)
+LANDING_PAGE='https://sowbug.github.io/weblight/'
+f.write(bytearray([len(LANDING_PAGE) + 1, 3]))
+f.write(LANDING_PAGE)
+
+f.seek(0)
+print f.read()
+f.close()

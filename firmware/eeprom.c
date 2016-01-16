@@ -27,7 +27,7 @@ void ReadEEPROM() {
 uint8_t ReadLightProgram(uint8_t *opcode_buf, uint8_t opcode_buf_len) {
   uint8_t program_length =
     eeprom_read_byte((const uint8_t*)EEPROM_PROGRAM_SIZE);
-  if (program_length == 0 || program_length == 255) {
+  if (program_length == 0 || program_length > EEPROM_PROGRAM_MAX_SIZE) {
     return 0;
   }
   if (program_length > opcode_buf_len) {
@@ -41,7 +41,7 @@ uint8_t ReadLightProgram(uint8_t *opcode_buf, uint8_t opcode_buf_len) {
 
 void WriteLightProgram(const uint8_t *opcode_buf, uint8_t opcode_buf_len) {
   eeprom_update_byte((uint8_t*)EEPROM_PROGRAM_SIZE, opcode_buf_len);
-  if (opcode_buf_len == 0 || opcode_buf_len == 0xff) {
+  if (opcode_buf_len == 0 || opcode_buf_len > EEPROM_PROGRAM_MAX_SIZE) {
     return;
   }
   eeprom_update_block((const void*)opcode_buf,

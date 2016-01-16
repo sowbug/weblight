@@ -9,9 +9,11 @@
 #include "requests.h"
 #include "webusb.h"
 
+#include <avr/eeprom.h>
 #include <avr/pgmspace.h>
 #include <avr/wdt.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define USB_BOS_DESCRIPTOR_TYPE (15)
 
@@ -79,12 +81,6 @@ const uchar MS_OS_20_DESCRIPTOR_SET[MS_OS_20_DESCRIPTOR_LENGTH] PROGMEM = {
 };
 
 #define WEBUSB_REQUEST_GET_LANDING_PAGE (0x02)
-const uchar WEBUSB_LANDING_PAGE[] PROGMEM = {
-  0x23, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/', 's', 'o', 'w', 'b', 'u',
-  'g', '.', 'g', 'i', 't', 'h', 'u', 'b', '.', 'i', 'o', '/',
-  'w', 'e', 'b', 'l', 'i', 'g', 'h', 't'
-};
-
 #define WEBUSB_REQUEST_GET_ALLOWED_ORIGINS (0x01)
 const uchar WEBUSB_ALLOWED_ORIGINS[] PROGMEM = {
   0x04, 0x00, 0x35, 0x00, 0x1A, 0x03, 'h', 't', 't', 'p', 's', ':', '/', '/',
@@ -159,6 +155,7 @@ static uint16_t currentValue, currentIndex;
 static uchar currentPosition, bytesRemaining;
 const uchar *pmResponsePtr;
 uchar pmResponseBytesRemaining;
+uchar pmResponseIsEEPROM;
 uchar currentRequest;
 usbMsgLen_t usbFunctionSetup(uchar data[8]) {
   usbRequest_t *rq = (void *)data;
@@ -210,10 +207,13 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
     case WEBUSB_REQUEST_GET_ALLOWED_ORIGINS:
       pmResponsePtr = WEBUSB_ALLOWED_ORIGINS;
       pmResponseBytesRemaining = sizeof(WEBUSB_ALLOWED_ORIGINS);
+      pmResponseIsEEPROM = false;
       return USB_NO_MSG;
      case WEBUSB_REQUEST_GET_LANDING_PAGE:
-       pmResponsePtr = WEBUSB_LANDING_PAGE;
-       pmResponseBytesRemaining = sizeof(WEBUSB_LANDING_PAGE);
+       pmResponsePtr = (void*)EEPROM_WEBUSB_URLS_START;
+       pmResponseBytesRemaining =
+         eeprom_read_byte((void*)EEPROM_WEBUSB_URLS_START);
+       pmResponseIsEEPROM = true;
        return USB_NO_MSG;
     }
     break;
@@ -239,7 +239,11 @@ USB_PUBLIC uchar usbFunctionRead(uchar *data, uchar len) {
   if (len > pmResponseBytesRemaining) {
     len = pmResponseBytesRemaining;
   }
-  memcpy_P(data, pmResponsePtr, len);
+  if (pmResponseIsEEPROM) {
+    eeprom_read_block(data, pmResponsePtr, len);
+  } else {
+    memcpy_P(data, pmResponsePtr, len);
+  }
   pmResponsePtr += len;
   pmResponseBytesRemaining -= len;
   return len;
