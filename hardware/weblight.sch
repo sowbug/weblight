@@ -7805,21 +7805,20 @@ For boards designed to be plugged directly into a USB slot. If possible, ensure 
 <segment>
 <pinref part="J-TOP" gate="G$1" pin="VBUS"/>
 <pinref part="D3" gate="G$1" pin="A"/>
-<wire x1="-86.36" y1="58.42" x2="-73.66" y2="58.42" width="0.1524" layer="91"/>
-</segment>
-<segment>
+<wire x1="-86.36" y1="58.42" x2="-76.2" y2="58.42" width="0.1524" layer="91"/>
 <pinref part="J-BOT" gate="G$1" pin="VBUS"/>
 <pinref part="D4" gate="G$1" pin="A"/>
-<wire x1="-86.36" y1="40.64" x2="-73.66" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="-76.2" y1="58.42" x2="-73.66" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="-86.36" y1="40.64" x2="-76.2" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="-76.2" y1="40.64" x2="-73.66" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="-76.2" y1="58.42" x2="-76.2" y2="40.64" width="0.1524" layer="91"/>
+<junction x="-76.2" y="58.42"/>
+<junction x="-76.2" y="40.64"/>
 </segment>
 </net>
 </nets>
 </sheet>
 </sheets>
-<errors>
-<approved hash="104,1,-66.04,58.42,JP-USB-MICRO,5V,VCC,,,"/>
-<approved hash="204,1,-66.04,45.72,JP-USB-MICRO,SLD,,,,"/>
-</errors>
 </schematic>
 </drawing>
 </eagle>
