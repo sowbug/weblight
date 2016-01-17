@@ -176,7 +176,7 @@
 <wire x1="43.18" y1="11.43" x2="41.91" y2="12.7" width="0" layer="20" curve="90"/>
 <wire x1="41.91" y1="12.7" x2="1.27" y2="12.7" width="0" layer="20"/>
 <wire x1="1.27" y1="12.7" x2="0" y2="11.43" width="0" layer="20" curve="90"/>
-<text x="21.59" y="6.35" size="2.54" layer="26" font="vector" rot="MR0" align="center">WebLight 0.9.1</text>
+<text x="21.59" y="6.35" size="2.54" layer="26" font="vector" rot="MR0" align="center">WebLight 0.9.2</text>
 <text x="21.59" y="3.175" size="1.016" layer="26" font="vector" rot="MR0" align="center">github.com/sowbug/weblight</text>
 <rectangle x1="34.29" y1="0" x2="43.18" y2="12.7" layer="43"/>
 </plain>
