@@ -41,6 +41,9 @@ parser.add_option("-9", "--stress", action="store_true", default=False,
                   help="stress-test device")
 parser.add_option("-r", "--reset", action="store_true", default=False,
                   help="reset device")
+parser.add_option("-u", "--urls", action="store_true", default=False,
+                  help="set WebUSB urls (first landing page, then " +
+                  "one or more allowed origins)")
 parser.add_option("-s", "--serial",
                   help="specify the serial number of the device to address")
 parser.add_option("--save", action="store_true", default=False,
@@ -151,6 +154,48 @@ if effect >= 0:
   if result != 0:
     raise IOError('Error', result)
     sys.exit(1)
+  sys.exit(0)
+
+def set_urls(urls):
+  b = bytearray()
+  b.extend(bytearray([len(urls[0]) + 2, 3]))
+  b.extend(urls[0])
+
+  # start with size of descriptor set header itself
+  total_origin_string_length = 4
+  origins = []
+
+  for o in urls[1:]:
+    descriptor_length = len(o) + 2
+    descriptor = bytearray([descriptor_length, 3]) + o
+    origins.append(descriptor)
+    total_origin_string_length += descriptor_length
+
+  if total_origin_string_length > 128:
+    print "Allowed origin lengths too big"
+    sys.exit(1)
+
+  # https://reillyeon.github.io/webusb/#dfn-descriptor-set-header
+  # 4 = length of descriptor set header
+  # 0 = WEBUSB_DESCRIPTOR_SET_HEADER
+  # xxyy = total size of this and all following descriptors (big-endian)
+  b.extend(bytearray([4, 0, total_origin_string_length, 0]))
+  for o in origins:
+    b.extend(o)
+  try:
+    result = dev.ctrl_transfer(0x40, WL_REQUEST_SET_WEBUSB_URLS, 0, 0, b)
+  except usb.core.USBError, e:
+    print "Failed to set URLs", e
+    sys.exit(1)
+  if result != len(b):
+    print "Unexpected result while setting URLs", result
+    sys.exit(1)
+
+if options.urls:
+  if len(args) < 2:
+    parser.print_usage()
+    sys.exit(1)
+  set_urls(args)
   sys.exit(0)
 
 if options.stress:

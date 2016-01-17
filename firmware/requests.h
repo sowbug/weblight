@@ -68,7 +68,7 @@
 // Sets the WebUSB landing page and allowed origins, all as a set of
 // concatenated descriptors. Control-OUT.
 //
-#define WL_REQUEST_SET_WINUSB_URLS (251)
+#define WL_REQUEST_SET_WEBUSB_URLS (251)
 
 // WinUSB: 252
 //

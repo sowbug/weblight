@@ -175,6 +175,10 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
       bytesRemaining = sizeof(buffer);
     }
     return USB_NO_MSG;
+  case WL_REQUEST_SET_WEBUSB_URLS:
+    currentPosition = 0;
+    bytesRemaining = rq->wLength.word;
+    return USB_NO_MSG;
   case WL_REQUEST_HALT:
     HandleHALT();
     break;
@@ -231,6 +235,8 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
   return 0;
 }
 
+// Reading is from the perspective of the host: this method supplies
+// data for the host to read.
 USB_PUBLIC uchar usbFunctionRead(uchar *data, uchar len) {
   if (len > pmResponseBytesRemaining) {
     len = pmResponseBytesRemaining;
@@ -245,8 +251,18 @@ USB_PUBLIC uchar usbFunctionRead(uchar *data, uchar len) {
   return len;
 }
 
+// Writing is from the perspective of the host: this method handles
+// incoming data from the host.
 USB_PUBLIC uchar usbFunctionWrite(uchar *data, uchar len) {
   uchar i;
+
+  if (currentRequest == WL_REQUEST_SET_WEBUSB_URLS) {
+    eeprom_update_block(data,
+                        EEPROM_WEBUSB_URLS_START + currentPosition, len);
+    currentPosition += len;
+    bytesRemaining -= len;
+    return bytesRemaining == 0;
+  }
 
   if (len > bytesRemaining) {
     len = bytesRemaining;
