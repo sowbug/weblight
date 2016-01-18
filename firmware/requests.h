@@ -65,6 +65,13 @@
 // 0: candle
 #define WL_REQUEST_EFFECT (10)
 
+// Resets the watchdog, activating it if not already. Control-OUT.
+//
+// Send the number of seconds in wValue. If the watchdog isn't reset
+// again within that number of seconds, the device switches to a
+// visual alert.
+#define WL_REQUEST_RESET_WATCHDOG (11)
+
 // Sets the WebUSB landing page and allowed origins, all as a set of
 // concatenated descriptors. Control-OUT.
 //

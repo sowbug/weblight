@@ -5,6 +5,7 @@
 
 #include "led_control.h"
 #include "light_apa102.h"
+#include <stdbool.h>
 #include <util/delay.h>  // for _delay_ms()
 
 static struct cRGB led[LED_COUNT];
@@ -73,6 +74,24 @@ void StatusBlinkRed(uint8_t count) {
     UpdateLEDs();
     _delay_ms(30);
   }
+}
+
+static int16_t app_watchdog_msec = 0;
+void ResetAppWatchdog(int16_t new_msec) {
+  app_watchdog_msec = new_msec;
+}
+
+uint8_t CountDownAppWatchdog(uint16_t msec_elapsed) {
+  if (app_watchdog_msec == 0) {
+    return false;
+  }
+
+  app_watchdog_msec -= msec_elapsed;
+  if (app_watchdog_msec > 0) {
+    return false;
+  }
+
+  return true;
 }
 
 static ProgramMode program_mode = AD_HOC;

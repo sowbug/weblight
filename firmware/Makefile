@@ -15,6 +15,8 @@ LED_COUNT ?= 2
 DEVICE_VERSION_MAJOR = 0
 DEVICE_VERSION_MINOR = 9
 
+USE_CANDLE = 0
+
 AVRDUDE = avrdude -c usbtiny -p $(DEVICE) -B 1
 WLCTL = ../commandline/wlctl
 MICRONUCLEUS = micronucleus
@@ -37,7 +39,10 @@ CFLAGS  = -Iusbdrv -I. -DDEBUG_LEVEL=0
 OBJECTS = usbdrv/usbdrv.o usbdrv/usbdrvasm.o \
           $(APP).o osccal.o \
           app.o eeprom.o led_control.o webusb.o \
-          candle.o light_apa102.o sequencer.o
+          light_apa102.o sequencer.o
+ifeq ($USE_CANDLE, 1)
+OBJECTS += candle.o
+endif
 
 COMPILE = avr-gcc \
 									-Wall -Os -DF_CPU=$(F_CPU) $(CFLAGS) -mmcu=$(DEVICE) \

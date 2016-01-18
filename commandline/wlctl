@@ -15,6 +15,7 @@ WL_REQUEST_STOP = 7
 WL_REQUEST_SAVE = 8
 WL_REQUEST_LOAD = 9
 WL_REQUEST_EFFECT = 10
+WL_REQUEST_RESET_WATCHDOG = 11
 WL_REQUEST_SET_WEBUSB_URLS = 251
 WL_REQUEST_RESET_DEVICE = 253
 WL_REQUEST_WEBUSB = 254
@@ -33,6 +34,8 @@ parser.add_option("-m", "--msec", default=500,
                   help="milliseconds between sequence steps")
 parser.add_option("-e", "--effect", default=-1,
                   help="start an effect (0: candle)")
+parser.add_option("-w", "--watchdog", default=0,
+                  help="reset the watchdog to the given number of seconds")
 parser.add_option("-l", "--list", action="store_true", default=False,
                   help="list attached devices")
 parser.add_option("-t", "--test", action="store_true", default=False,
@@ -151,6 +154,15 @@ if options.stop:
 effect = int(options.effect)
 if effect >= 0:
   result = dev.ctrl_transfer(0x40, WL_REQUEST_EFFECT, effect, 0, None)
+  if result != 0:
+    raise IOError('Error', result)
+    sys.exit(1)
+  sys.exit(0)
+
+watchdog = int(options.watchdog)
+if watchdog >= 0:
+  result = dev.ctrl_transfer(0x40, WL_REQUEST_RESET_WATCHDOG,
+                             watchdog, 0, None)
   if result != 0:
     raise IOError('Error', result)
     sys.exit(1)

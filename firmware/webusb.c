@@ -3,7 +3,10 @@
 // WebLight firmware
 // https://github.com/sowbug/weblight
 
+#if USE_CANDLE
 #include "candle.h"
+#endif
+
 #include "eeprom.h"
 #include "sequencer.h"
 #include "requests.h"
@@ -134,11 +137,13 @@ void forceReset() {
 
 void HandleEffect(uint16_t value) {
   switch (value) {
+#if USE_CANDLE
   case 0:
     Stop();
     CandleInit();
     SetProgramMode(CANDLE);
     break;
+#endif
   default:
     break;
   }
@@ -199,6 +204,9 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
     break;
   case WL_REQUEST_EFFECT:
     HandleEffect(rq->wValue.word);
+    break;
+  case WL_REQUEST_RESET_WATCHDOG:
+    ResetAppWatchdog(rq->wValue.word * 1000);
     break;
   case WL_REQUEST_WEBUSB: {
     switch (rq->wIndex.word) {
