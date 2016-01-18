@@ -7801,19 +7801,20 @@ For boards designed to be plugged directly into a USB slot. If possible, ensure 
 <junction x="20.32" y="91.44"/>
 </segment>
 </net>
-<net name="5V" class="0">
+<net name="5V-BOT" class="0">
 <segment>
-<pinref part="J-TOP" gate="G$1" pin="VBUS"/>
-<pinref part="D3" gate="G$1" pin="A"/>
-<wire x1="-86.36" y1="58.42" x2="-76.2" y2="58.42" width="0.1524" layer="91"/>
 <pinref part="J-BOT" gate="G$1" pin="VBUS"/>
 <pinref part="D4" gate="G$1" pin="A"/>
-<wire x1="-76.2" y1="58.42" x2="-73.66" y2="58.42" width="0.1524" layer="91"/>
 <wire x1="-86.36" y1="40.64" x2="-76.2" y2="40.64" width="0.1524" layer="91"/>
 <wire x1="-76.2" y1="40.64" x2="-73.66" y2="40.64" width="0.1524" layer="91"/>
-<wire x1="-76.2" y1="58.42" x2="-76.2" y2="40.64" width="0.1524" layer="91"/>
-<junction x="-76.2" y="58.42"/>
-<junction x="-76.2" y="40.64"/>
+</segment>
+</net>
+<net name="5V-TOP" class="0">
+<segment>
+<pinref part="D3" gate="G$1" pin="A"/>
+<pinref part="J-TOP" gate="G$1" pin="VBUS"/>
+<wire x1="-86.36" y1="58.42" x2="-76.2" y2="58.42" width="0.1524" layer="91"/>
+<wire x1="-76.2" y1="58.42" x2="-73.66" y2="58.42" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
