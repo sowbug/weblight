@@ -8,20 +8,20 @@
 </settings>
 <grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
-<layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
-<layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
-<layer number="17" name="Pads" color="2" fill="1" visible="no" active="no"/>
-<layer number="18" name="Vias" color="2" fill="1" visible="no" active="no"/>
-<layer number="19" name="Unrouted" color="6" fill="1" visible="no" active="no"/>
-<layer number="20" name="Dimension" color="15" fill="1" visible="no" active="no"/>
-<layer number="21" name="tPlace" color="7" fill="1" visible="no" active="no"/>
-<layer number="22" name="bPlace" color="7" fill="1" visible="no" active="no"/>
-<layer number="23" name="tOrigins" color="15" fill="1" visible="no" active="no"/>
-<layer number="24" name="bOrigins" color="15" fill="1" visible="no" active="no"/>
-<layer number="25" name="tNames" color="7" fill="1" visible="no" active="no"/>
-<layer number="26" name="bNames" color="7" fill="1" visible="no" active="no"/>
-<layer number="27" name="tValues" color="7" fill="1" visible="no" active="no"/>
-<layer number="28" name="bValues" color="7" fill="1" visible="no" active="no"/>
+<layer number="1" name="Top" color="4" fill="1" visible="yes" active="no"/>
+<layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="no"/>
+<layer number="17" name="Pads" color="2" fill="1" visible="yes" active="no"/>
+<layer number="18" name="Vias" color="2" fill="1" visible="yes" active="no"/>
+<layer number="19" name="Unrouted" color="6" fill="1" visible="yes" active="no"/>
+<layer number="20" name="Dimension" color="15" fill="1" visible="yes" active="no"/>
+<layer number="21" name="tPlace" color="7" fill="1" visible="yes" active="no"/>
+<layer number="22" name="bPlace" color="7" fill="1" visible="yes" active="no"/>
+<layer number="23" name="tOrigins" color="15" fill="1" visible="yes" active="no"/>
+<layer number="24" name="bOrigins" color="15" fill="1" visible="yes" active="no"/>
+<layer number="25" name="tNames" color="7" fill="1" visible="yes" active="no"/>
+<layer number="26" name="bNames" color="7" fill="1" visible="yes" active="no"/>
+<layer number="27" name="tValues" color="7" fill="1" visible="yes" active="no"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="no"/>
 <layer number="29" name="tStop" color="7" fill="3" visible="no" active="no"/>
 <layer number="30" name="bStop" color="7" fill="6" visible="no" active="no"/>
 <layer number="31" name="tCream" color="7" fill="4" visible="no" active="no"/>
@@ -30,8 +30,8 @@
 <layer number="34" name="bFinish" color="6" fill="6" visible="no" active="no"/>
 <layer number="35" name="tGlue" color="7" fill="4" visible="no" active="no"/>
 <layer number="36" name="bGlue" color="7" fill="5" visible="no" active="no"/>
-<layer number="37" name="tTest" color="7" fill="1" visible="no" active="no"/>
-<layer number="38" name="bTest" color="7" fill="1" visible="no" active="no"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="yes" active="no"/>
+<layer number="38" name="bTest" color="7" fill="1" visible="yes" active="no"/>
 <layer number="39" name="tKeepout" color="4" fill="11" visible="no" active="no"/>
 <layer number="40" name="bKeepout" color="1" fill="11" visible="no" active="no"/>
 <layer number="41" name="tRestrict" color="4" fill="10" visible="no" active="no"/>
@@ -39,19 +39,19 @@
 <layer number="43" name="vRestrict" color="2" fill="10" visible="no" active="no"/>
 <layer number="44" name="Drills" color="7" fill="1" visible="no" active="no"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="no" active="no"/>
-<layer number="46" name="Milling" color="3" fill="1" visible="no" active="no"/>
-<layer number="47" name="Measures" color="7" fill="1" visible="no" active="no"/>
-<layer number="48" name="Document" color="7" fill="1" visible="no" active="no"/>
-<layer number="49" name="Reference" color="7" fill="1" visible="no" active="no"/>
-<layer number="50" name="dxf" color="7" fill="1" visible="no" active="no"/>
-<layer number="51" name="tDocu" color="7" fill="1" visible="no" active="no"/>
-<layer number="52" name="bDocu" color="7" fill="1" visible="no" active="no"/>
-<layer number="53" name="tGND_GNDA" color="7" fill="9" visible="no" active="no"/>
-<layer number="54" name="bGND_GNDA" color="1" fill="9" visible="no" active="no"/>
-<layer number="56" name="wert" color="7" fill="1" visible="no" active="no"/>
-<layer number="57" name="tCAD" color="7" fill="1" visible="no" active="no"/>
-<layer number="59" name="tCarbon" color="7" fill="1" visible="no" active="no"/>
-<layer number="60" name="bCarbon" color="7" fill="1" visible="no" active="no"/>
+<layer number="46" name="Milling" color="3" fill="1" visible="yes" active="no"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="yes" active="no"/>
+<layer number="48" name="Document" color="7" fill="1" visible="yes" active="no"/>
+<layer number="49" name="Reference" color="7" fill="1" visible="yes" active="no"/>
+<layer number="50" name="dxf" color="7" fill="1" visible="yes" active="no"/>
+<layer number="51" name="tDocu" color="7" fill="1" visible="yes" active="no"/>
+<layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="no"/>
+<layer number="53" name="tGND_GNDA" color="7" fill="9" visible="yes" active="no"/>
+<layer number="54" name="bGND_GNDA" color="1" fill="9" visible="yes" active="no"/>
+<layer number="56" name="wert" color="7" fill="1" visible="yes" active="no"/>
+<layer number="57" name="tCAD" color="7" fill="1" visible="yes" active="no"/>
+<layer number="59" name="tCarbon" color="7" fill="1" visible="yes" active="no"/>
+<layer number="60" name="bCarbon" color="7" fill="1" visible="yes" active="no"/>
 <layer number="90" name="Modules" color="5" fill="1" visible="yes" active="yes"/>
 <layer number="91" name="Nets" color="2" fill="1" visible="yes" active="yes"/>
 <layer number="92" name="Busses" color="1" fill="1" visible="yes" active="yes"/>
@@ -6642,6 +6642,27 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <pad name="1" x="0" y="2.54" drill="0.4572"/>
 <smd name="6" x="0" y="-3.81" dx="0.889" dy="0.8128" layer="1"/>
 </package>
+<package name="POGOPROG-CONN-OH-SMALLERVIAS-NOCREAM">
+<description>No holes, 2 vias, pogo pin programming header. With smaller vias.</description>
+<smd name="3" x="0" y="0" dx="0.889" dy="0.8128" layer="1" cream="no"/>
+<smd name="2" x="0" y="1.27" dx="0.889" dy="0.8128" layer="1" cream="no"/>
+<smd name="4" x="0" y="-1.27" dx="0.889" dy="0.8128" layer="1" cream="no"/>
+<smd name="5" x="0" y="-2.54" dx="0.889" dy="0.8128" layer="1" cream="no"/>
+<wire x1="-0.635" y1="3.175" x2="0.635" y2="3.175" width="0.127" layer="21"/>
+<wire x1="0.635" y1="3.175" x2="0.635" y2="-4.445" width="0.127" layer="21"/>
+<wire x1="0.635" y1="-4.445" x2="-0.635" y2="-4.445" width="0.127" layer="21"/>
+<wire x1="-0.635" y1="-4.445" x2="-0.635" y2="3.175" width="0.127" layer="21"/>
+<polygon width="0.127" layer="21">
+<vertex x="-0.635" y="0.635"/>
+<vertex x="0.635" y="0.635"/>
+<vertex x="0.635" y="3.175"/>
+<vertex x="-0.635" y="3.175"/>
+</polygon>
+<text x="-1.27" y="3.81" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1.27" y="-6.35" size="1.27" layer="27">&gt;VALUE</text>
+<pad name="1" x="0" y="2.54" drill="0.381"/>
+<pad name="6" x="0" y="-3.81" drill="0.381"/>
+</package>
 </packages>
 <symbols>
 <symbol name="APA102">
@@ -6765,6 +6786,19 @@ You are welcome to use this library for commercial purposes. For attribution, we
 </technologies>
 </device>
 <device name="WITHVIAS-1V" package="POGOPROG-CONN-OH-1V">
+<connects>
+<connect gate="J" pin="GND" pad="5"/>
+<connect gate="J" pin="MISO" pad="3"/>
+<connect gate="J" pin="MOSI" pad="2"/>
+<connect gate="J" pin="SCK" pad="4"/>
+<connect gate="J" pin="VCC" pad="6"/>
+<connect gate="J" pin="\RST" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="" package="POGOPROG-CONN-OH-SMALLERVIAS-NOCREAM">
 <connects>
 <connect gate="J" pin="GND" pad="5"/>
 <connect gate="J" pin="MISO" pad="3"/>
@@ -7516,7 +7550,7 @@ For boards designed to be plugged directly into a USB slot. If possible, ensure 
 <part name="R4" library="rcl" deviceset="R-US_" device="R0805" value="10K"/>
 <part name="LED1" library="weblight" deviceset="APA102" device=""/>
 <part name="LED2" library="weblight" deviceset="APA102" device=""/>
-<part name="ISP" library="weblight" deviceset="POGOPIN-CONN" device="WITHVIAS-SMV" value="POGOPIN-CONNWITHVIAS-SMV"/>
+<part name="ISP" library="weblight" deviceset="POGOPIN-CONN" device="" value="POGOPIN-CONN"/>
 <part name="J-TOP" library="SparkFun-Connectors" deviceset="USB" device="PCB_NOPASTE"/>
 <part name="J-BOT" library="SparkFun-Connectors" deviceset="USB" device="PCB_NOPASTE"/>
 <part name="D3" library="microbuilder" deviceset="DIODE" device="SOD-323"/>

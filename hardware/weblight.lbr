@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="7.4.0">
+<eagle version="7.5.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -408,6 +408,27 @@
 <pad name="1" x="0" y="2.54" drill="0.4572"/>
 <smd name="6" x="0" y="-3.81" dx="0.889" dy="0.8128" layer="1"/>
 </package>
+<package name="POGOPROG-CONN-OH-SMALLERVIAS-NOCREAM">
+<description>No holes, 2 vias, pogo pin programming header. With smaller vias.</description>
+<smd name="3" x="0" y="0" dx="0.889" dy="0.8128" layer="1" cream="no"/>
+<smd name="2" x="0" y="1.27" dx="0.889" dy="0.8128" layer="1" cream="no"/>
+<smd name="4" x="0" y="-1.27" dx="0.889" dy="0.8128" layer="1" cream="no"/>
+<smd name="5" x="0" y="-2.54" dx="0.889" dy="0.8128" layer="1" cream="no"/>
+<wire x1="-0.635" y1="3.175" x2="0.635" y2="3.175" width="0.127" layer="21"/>
+<wire x1="0.635" y1="3.175" x2="0.635" y2="-4.445" width="0.127" layer="21"/>
+<wire x1="0.635" y1="-4.445" x2="-0.635" y2="-4.445" width="0.127" layer="21"/>
+<wire x1="-0.635" y1="-4.445" x2="-0.635" y2="3.175" width="0.127" layer="21"/>
+<polygon width="0.127" layer="21">
+<vertex x="-0.635" y="0.635"/>
+<vertex x="0.635" y="0.635"/>
+<vertex x="0.635" y="3.175"/>
+<vertex x="-0.635" y="3.175"/>
+</polygon>
+<text x="-1.27" y="3.81" size="1.27" layer="25">&gt;NAME</text>
+<text x="-1.27" y="-6.35" size="1.27" layer="27">&gt;VALUE</text>
+<pad name="1" x="0" y="2.54" drill="0.381"/>
+<pad name="6" x="0" y="-3.81" drill="0.381"/>
+</package>
 </packages>
 <symbols>
 <symbol name="APA102">
@@ -727,6 +748,19 @@
 </technologies>
 </device>
 <device name="WITHVIAS-1V" package="POGOPROG-CONN-OH-1V">
+<connects>
+<connect gate="J" pin="GND" pad="5"/>
+<connect gate="J" pin="MISO" pad="3"/>
+<connect gate="J" pin="MOSI" pad="2"/>
+<connect gate="J" pin="SCK" pad="4"/>
+<connect gate="J" pin="VCC" pad="6"/>
+<connect gate="J" pin="\RST" pad="1"/>
+</connects>
+<technologies>
+<technology name=""/>
+</technologies>
+</device>
+<device name="" package="POGOPROG-CONN-OH-SMALLERVIAS-NOCREAM">
 <connects>
 <connect gate="J" pin="GND" pad="5"/>
 <connect gate="J" pin="MISO" pad="3"/>

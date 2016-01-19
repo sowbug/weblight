@@ -1358,12 +1358,12 @@ You are welcome to use this library for commercial purposes. For attribution, we
 <text x="-1.7" y="2.9" size="0.8128" layer="25" font="vector">&gt;NAME</text>
 <text x="-2" y="-2.83" size="0.8128" layer="27" font="vector" align="top-left">&gt;VALUE</text>
 </package>
-<package name="POGOPROG-CONN-OH-SMALLERVIAS">
+<package name="POGOPROG-CONN-OH-SMALLERVIAS-NOCREAM">
 <description>No holes, 2 vias, pogo pin programming header. With smaller vias.</description>
-<smd name="3" x="0" y="0" dx="0.889" dy="0.8128" layer="1"/>
-<smd name="2" x="0" y="1.27" dx="0.889" dy="0.8128" layer="1"/>
-<smd name="4" x="0" y="-1.27" dx="0.889" dy="0.8128" layer="1"/>
-<smd name="5" x="0" y="-2.54" dx="0.889" dy="0.8128" layer="1"/>
+<smd name="3" x="0" y="0" dx="0.889" dy="0.8128" layer="1" cream="no"/>
+<smd name="2" x="0" y="1.27" dx="0.889" dy="0.8128" layer="1" cream="no"/>
+<smd name="4" x="0" y="-1.27" dx="0.889" dy="0.8128" layer="1" cream="no"/>
+<smd name="5" x="0" y="-2.54" dx="0.889" dy="0.8128" layer="1" cream="no"/>
 <wire x1="-0.635" y1="3.175" x2="0.635" y2="3.175" width="0.127" layer="21"/>
 <wire x1="0.635" y1="3.175" x2="0.635" y2="-4.445" width="0.127" layer="21"/>
 <wire x1="0.635" y1="-4.445" x2="-0.635" y2="-4.445" width="0.127" layer="21"/>
@@ -1641,7 +1641,7 @@ design rules under a new name.</description>
 <attribute name="NAME" x="6.35" y="3.4036" size="1.016" layer="25" font="vector" rot="R270" align="center"/>
 <attribute name="VALUE" x="8.35" y="6.2336" size="0.8128" layer="27" font="vector" rot="R180" align="top-left"/>
 </element>
-<element name="ISP" library="weblight" package="POGOPROG-CONN-OH-SMALLERVIAS" value="POGOPIN-CONNWITHVIAS-SMV" x="1.143" y="6.35" smashed="yes">
+<element name="ISP" library="weblight" package="POGOPROG-CONN-OH-SMALLERVIAS-NOCREAM" value="POGOPIN-CONN" x="1.143" y="6.35" smashed="yes">
 <attribute name="NAME" x="1.143" y="10.795" size="0.8128" layer="25" font="vector" ratio="20" rot="SR270" align="center"/>
 <attribute name="VALUE" x="-0.127" y="0" size="1.27" layer="27"/>
 </element>
