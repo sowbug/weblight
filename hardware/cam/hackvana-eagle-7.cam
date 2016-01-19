@@ -1,0 +1,269 @@
+[CAM Processor Job]
+Description[en]="<b>Hackvana RS-274X Gerber/Excellon format CAM script for Eagle 2-layer boards</b><br>\n<br>\nThis CAM job consists of 12 sections.  Each section generates a Gerber/Excellon file.<br>\n<br>\nThere are 12 sections, which creates 12 files:<br>\n<br>\n.gm1     Board Outline/unplated slots<br>\n-Vcut.gbr V-score Lines<br>\n.txt      Plated Holes<br>\n_NPTH.txt Non-plated Holes<br>\n.gto      Top Silkscreen<br>\n.gtp      Top Solder Paste<br>\n.gts      Top Soldermask<br>\n.gtl      Top Copper<br>\n.gbo      Bottom Silkscreen<br>\n.gbp      Bottom Solder Paste<br>\n.gbs      Bottom Soldermask<br>\n.gbl      Bottom Copper<br>"
+Description[de]="<b>Erzeugt Ausgabe im Extended Gerber-Format</b><p>\nDiese CAM-Datei besteht aus fünf Schritten, die die Dateien für eine zweilagige Platine erzeugen.<p><p>\nMan erhält fünf Gerber-Dateien mit den Daten für die folgenden Teile:<br>\nBestückungsseite *.cmp<br>\nLötseite  *.sol<br>\nBedruckung auf der Bestückungsseite  *.plc<br>\nLötstoppmaske auf der Bestückungsseite  *.stc<br>\nLötstoppmaske auf der Lötseite  *.sts<br>"
+Section=Sec_1
+Section=Sec_2
+Section=Sec_3
+Section=Sec_4
+Section=Sec_5
+Section=Sec_6
+Section=Sec_7
+Section=Sec_8
+Section=Sec_9
+Section=Sec_10
+Section=Sec_11
+Section=Sec_12
+
+[Sec_1]
+Name[C]="Board Outline / unplated holes/slots"
+Name[de]="Platinenrand / unplated holes/slots"
+Name[en]="Board Outline / unplated holes/slots"
+Name[nl]="Board Outline / unplated holes/slots"
+Prompt[C]=""
+Device="GERBER_RS274X_24"
+Wheel=""
+Rack=""
+Scale=1
+Output="%N_board_outline.gm1"
+Flags="0 0 0 1 0 1 1"
+Emulate="0"
+Offset="0.0mil 0.0mil"
+Sheet=1
+Tolerance="0 0 0 0 0 0"
+Pen="0.0mil 0"
+Page="12000.0mil 8000.0mil"
+Layers=" 20"
+Colors=" 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 6 6 4 8 8 8 8 8 8 8 8 8 8 8 8 8 4 4 1 1 1 1 3 3 1 2 6 8 8 5 8 8 8 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 4 2 4 3 6 6 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0"
+
+[Sec_2]
+Name[C]="V-score Lines"
+Name[de]="V-Kerbe Nut (V-score Lines)"
+Name[en]="V-score Lines"
+Name[nl]="V-score Lines"
+Prompt[C]=""
+Device="GERBER_RS274X_24"
+Wheel=""
+Rack=""
+Scale=1
+Output="%N-Vcut.gbr"
+Flags="0 0 0 1 0 1 1"
+Emulate="0"
+Offset="0.0mil 0.0mil"
+Sheet=1
+Tolerance="0 0 0 0 0 0"
+Pen="0.0mil 0"
+Page="12000.0mil 8000.0mil"
+Layers=" 102"
+Colors=" 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 6 6 4 8 8 8 8 8 8 8 8 8 8 8 8 8 4 4 1 1 1 1 3 3 1 2 6 8 8 5 8 8 8 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 4 2 4 3 6 6 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0"
+
+[Sec_3]
+Name[C]="Plated Holes"
+Name[de]="Durchkontaktierungen"
+Name[en]="Plated Holes"
+Name[nl]="Plated Holes"
+Prompt[C]=""
+Device="EXCELLON_24"
+Wheel=""
+Rack=""
+Scale=1
+Output="%N_drills.txt"
+Flags="0 0 0 1 0 1 1"
+Emulate="0"
+Offset="0.0mil 0.0mil"
+Sheet=1
+Tolerance="0 0 0 0 0 0"
+Pen="0.0mil 0"
+Page="12000.0mil 8000.0mil"
+Layers=" 44"
+Colors=" 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 6 6 4 8 8 8 8 8 8 8 8 8 8 8 8 8 4 4 1 1 1 1 3 3 1 2 6 8 8 5 8 8 8 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 4 2 4 3 6 6 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0"
+
+[Sec_4]
+Name[C]="Non-plated Holes"
+Name[de]="Bohrung"
+Name[en]="Non-plated Holes"
+Name[nl]="Non-plated Holes"
+Prompt[C]=""
+Device="EXCELLON_24"
+Wheel=""
+Rack=""
+Scale=1
+Output="%N_drills-NPTH.txt"
+Flags="0 0 0 1 0 1 1"
+Emulate="0"
+Offset="0.0mil 0.0mil"
+Sheet=1
+Tolerance="0 0 0 0 0 0"
+Pen="0.0mil 0"
+Page="12000.0mil 8000.0mil"
+Layers=" 45"
+Colors=" 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 6 6 4 8 8 8 8 8 8 8 8 8 8 8 8 8 4 4 1 1 1 1 3 3 1 2 6 8 8 5 8 8 8 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 4 2 4 3 6 6 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0"
+
+[Sec_5]
+Name[C]="Top Silkscreen"
+Name[de]="Bestückungsdruck oben (Top Silkscreen)"
+Name[en]="Top Silkscreen"
+Name[nl]="Top Silkscreen"
+Prompt[C]=""
+Device="GERBER_RS274X_24"
+Wheel=".whl"
+Rack=""
+Scale=1
+Output="%N_top_silk.gto"
+Flags="0 0 0 1 0 1 1"
+Emulate="0"
+Offset="0.0mil 0.0mil"
+Sheet=1
+Tolerance="0 0 0 0 0 0"
+Pen="0.0mil 0"
+Page="12000.0mil 8000.0mil"
+Layers=" 21 25"
+Colors=" 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 6 6 4 8 8 8 8 8 8 8 8 8 8 8 8 8 4 4 1 1 1 1 3 3 1 2 6 8 8 5 8 8 8 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 4 2 4 3 6 6 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0"
+
+[Sec_6]
+Name[C]="Top Solder Paste"
+Name[de]="Lötpaste oben (Top Solder Paste)"
+Name[en]="Top Solder Paste"
+Name[nl]="Top Solder Paste"
+Prompt[C]=""
+Device="GERBER_RS274X_24"
+Wheel=".whl"
+Rack=""
+Scale=1
+Output="%N_top_paste.gtp"
+Flags="0 0 0 1 0 1 1"
+Emulate="0"
+Offset="0.0mil 0.0mil"
+Sheet=1
+Tolerance="0 0 0 0 0 0"
+Pen="0.0mil 0"
+Page="12000.0mil 8000.0mil"
+Layers=" 31"
+Colors=" 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 6 6 4 8 8 8 8 8 8 8 8 8 8 8 8 8 4 4 1 1 1 1 3 3 1 2 6 8 8 5 8 8 8 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 4 2 4 3 6 6 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0"
+
+[Sec_7]
+Name[C]="Top Soldermask"
+Name[de]="Lötstoppmaske oben (Top Soldermask)"
+Name[en]="Top Soldermask"
+Name[nl]="Top Soldermask"
+Prompt[C]=""
+Device="GERBER_RS274X_24"
+Wheel=".whl"
+Rack=""
+Scale=1
+Output="%N_top_soldermask.gts"
+Flags="0 0 0 1 0 1 1"
+Emulate="0"
+Offset="0.0mil 0.0mil"
+Sheet=1
+Tolerance="0 0 0 0 0 0"
+Pen="0.0mil 0"
+Page="12000.0mil 8000.0mil"
+Layers=" 29"
+Colors=" 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 6 6 4 8 8 8 8 8 8 8 8 8 8 8 8 8 4 4 1 1 1 1 3 3 1 2 6 8 8 5 8 8 8 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 4 2 4 3 6 6 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0"
+
+[Sec_8]
+Name[C]="Top Copper"
+Name[de]="Kupferschicht oben (Top Copper)"
+Name[en]="Top Copper"
+Name[nl]="Top Copper"
+Prompt[C]=""
+Device="GERBER_RS274X_24"
+Wheel=""
+Rack=""
+Scale=1
+Output="%N_top_copper.gtl"
+Flags="0 0 0 1 0 1 1"
+Emulate="0"
+Offset="0.0mil 0.0mil"
+Sheet=1
+Tolerance="0 0 0 0 0 0"
+Pen="0.0mil 0"
+Page="12000.0mil 8000.0mil"
+Layers=" 1 17 18"
+Colors=" 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 6 6 4 8 8 8 8 8 8 8 8 8 8 8 8 8 4 4 1 1 1 1 3 3 1 2 6 8 8 5 8 8 8 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 4 2 4 3 6 6 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0"
+
+[Sec_9]
+Name[C]="Bottom Silkscreen"
+Name[de]="Bestückungsdruck unten (Bottom Silkscreen)"
+Name[en]="Bottom Silkscreen"
+Name[nl]="Bottom Silkscreen"
+Prompt[C]=""
+Device="GERBER_RS274X_24"
+Wheel=".whl"
+Rack=""
+Scale=1
+Output="%N_bottom_silk.gbo"
+Flags="0 0 0 1 0 1 1"
+Emulate="0"
+Offset="0.0mil 0.0mil"
+Sheet=1
+Tolerance="0 0 0 0 0 0"
+Pen="0.0mil 0"
+Page="12000.0mil 8000.0mil"
+Layers=" 22 26"
+Colors=" 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 6 6 4 8 8 8 8 8 8 8 8 8 8 8 8 8 4 4 1 1 1 1 3 3 1 2 6 8 8 5 8 8 8 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 4 2 4 3 6 6 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0"
+
+[Sec_10]
+Name[C]="Bottom Solder Paste"
+Name[de]="Lötpaste unten (Bottom Solder Paste)"
+Name[en]="Bottom Solder Paste"
+Name[nl]="Bottom Solder Paste"
+Prompt[C]=""
+Device="GERBER_RS274X_24"
+Wheel=".whl"
+Rack=""
+Scale=1
+Output="%N_bottom_paste.gbp"
+Flags="0 0 0 1 0 1 1"
+Emulate="0"
+Offset="0.0mil 0.0mil"
+Sheet=1
+Tolerance="0 0 0 0 0 0"
+Pen="0.0mil 0"
+Page="12000.0mil 8000.0mil"
+Layers=" 32"
+Colors=" 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 6 6 4 8 8 8 8 8 8 8 8 8 8 8 8 8 4 4 1 1 1 1 3 3 1 2 6 8 8 5 8 8 8 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 4 2 4 3 6 6 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0"
+
+[Sec_11]
+Name[C]="Bottom Soldermask"
+Name[de]="Lötstoppmaske unten (Bottom Soldermask)"
+Name[en]="Bottom Soldermask"
+Name[nl]="Bottom Soldermask"
+Prompt[C]=""
+Device="GERBER_RS274X_24"
+Wheel=".whl"
+Rack=""
+Scale=1
+Output="%N_bottom_soldermask.gbs"
+Flags="0 0 0 1 0 1 1"
+Emulate="0"
+Offset="0.0mil 0.0mil"
+Sheet=1
+Tolerance="0 0 0 0 0 0"
+Pen="0.0mil 0"
+Page="12000.0mil 8000.0mil"
+Layers=" 30"
+Colors=" 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 6 6 4 8 8 8 8 8 8 8 8 8 8 8 8 8 4 4 1 1 1 1 3 3 1 2 6 8 8 5 8 8 8 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 4 2 4 3 6 6 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0"
+
+[Sec_12]
+Name[C]="Bottom Copper"
+Name[de]="Kupferschicht unten (Bottom Copper)"
+Name[en]="Bottom Copper"
+Name[nl]="Bottom Copper"
+Prompt[C]=""
+Device="GERBER_RS274X_24"
+Wheel=".whl"
+Rack=""
+Scale=1
+Output="%N_bottom_copper.gbl"
+Flags="0 0 0 1 0 1 1"
+Emulate="0"
+Offset="0.0mil 0.0mil"
+Sheet=1
+Tolerance="0 0 0 0 0 0"
+Pen="0.0mil 0"
+Page="12000.0mil 8000.0mil"
+Layers=" 16 17 18"
+Colors=" 1 2 1 2 1 2 1 2 1 2 1 2 1 2 1 2 6 6 4 8 8 8 8 8 8 8 8 8 8 8 8 8 4 4 1 1 1 1 3 3 1 2 6 8 8 5 8 8 8 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 4 2 4 3 6 6 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0"
+
+
