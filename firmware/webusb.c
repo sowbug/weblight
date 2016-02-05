@@ -24,18 +24,24 @@
 
 const uchar BOS_DESCRIPTOR[] PROGMEM = {
   // BOS descriptor header
-  0x05, 0x0F, 0x38, 0x00, 0x02,
+  0x05, 0x0F, 0x39, 0x00, 0x02,
 
   // WebUSB Platform Capability descriptor
-  0x17, 0x10, 0x05, 0x00,
+  0x18,  // Descriptor size (24 bytes)
+  0x10,  // Descriptor type (Device Capability)
+  0x05,  // Capability type (Platform)
+  0x00,  // Reserved
 
+  // WebUSB Platform Capability ID (3408b638-09a9-47a0-8bfd-a0768815b665)
   0x38, 0xB6, 0x08, 0x34,
   0xA9, 0x09,
   0xA0, 0x47,
   0x8B, 0xFD,
   0xA0, 0x76, 0x88, 0x15, 0xB6, 0x65,
-  0x00, 0x01,
-  WL_REQUEST_WEBUSB,
+
+  0x00, 0x01,         // WebUSB version 1.0
+  WL_REQUEST_WEBUSB,  // Vendor-assigned WebUSB request code
+  0x01,               // Landing page: https://sowbug.github.io/webusb
 
   // Microsoft OS 2.0 Platform Capability Descriptor
   // Thanks http://janaxelson.com/files/ms_os_20_descriptors.c
@@ -83,8 +89,36 @@ const uchar MS_OS_20_DESCRIPTOR_SET[MS_OS_20_DESCRIPTOR_LENGTH] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 };
 
-#define WEBUSB_REQUEST_GET_LANDING_PAGE (0x02)
 #define WEBUSB_REQUEST_GET_ALLOWED_ORIGINS (0x01)
+const uchar WEBUSB_ALLOWED_ORIGINS[] PROGMEM = {
+  // WebUSB allowed origins header
+  0x07,  // Descriptor size (7 bytes)
+  0x00,  // WebUSB allowed origins header
+  0x07, 0x00,  // Size, WebUSB allowed origins
+  0x00,  // Number of configuration subsets
+  0x01,  // Origin: https://sowbug.github.io
+  0x02,  // Origin: http://localhost:8000
+};
+
+#define WEBUSB_REQUEST_GET_URL (0x02)
+// URL descriptor 0x01 doubles as the first allowed origin and the
+// landing page.
+const uchar WEBUSB_ORIGIN_1[] PROGMEM = {
+  // WebUSB URL descriptor
+  0x1c,  // Descriptor size (? bytes)
+  0x03,  // WebUSB URL descriptor
+  0x01,  // URL prefix: https://
+  's', 'o', 'w', 'b', 'u', 'g', '.', 'g', 'i', 't', 'h', 'u', 'b', '.',
+  'i', 'o', '/', 'w', 'e', 'b', 'l', 'i', 'g', 'h', 't'
+};
+// URL descriptor 0x02 is for debugging purposes.
+const uchar WEBUSB_ORIGIN_2[] PROGMEM = {
+  // WebUSB URL descriptor
+  0x11,  // Descriptor size (? bytes)
+  0x03,  // WebUSB URL descriptor
+  0x00,  // URL prefix: http://
+  'l', 'o', 'c', 'a', 'l', 'h', 'o', 's', 't', ':', '8', '0', '0', '0'
+};
 
 const char usbDescriptorDevice[] PROGMEM = {  // USB device descriptor
   0x12,  // sizeof(usbDescriptorDevice): length of descriptor in bytes
@@ -210,19 +244,21 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
     break;
   case WL_REQUEST_WEBUSB: {
     switch (rq->wIndex.word) {
-    case WEBUSB_REQUEST_GET_LANDING_PAGE:
-      pmResponsePtr = (void*)EEPROM_WEBUSB_URLS_START;
-      pmResponseBytesRemaining =
-        eeprom_read_byte((void*)EEPROM_WEBUSB_URLS_START);
-      pmResponseIsEEPROM = true;
-      return USB_NO_MSG;
     case WEBUSB_REQUEST_GET_ALLOWED_ORIGINS:
-      pmResponsePtr = (void*)EEPROM_WEBUSB_URLS_START +
-        eeprom_read_byte((void*)EEPROM_WEBUSB_URLS_START);
-      pmResponseBytesRemaining =
-        eeprom_read_byte(pmResponsePtr + 2);  // Note: discarding high byte
-      pmResponseIsEEPROM = true;
+      pmResponsePtr = WEBUSB_ALLOWED_ORIGINS;
+      pmResponseBytesRemaining = sizeof(WEBUSB_ALLOWED_ORIGINS);
       return USB_NO_MSG;
+    case WEBUSB_REQUEST_GET_URL:
+      switch (rq->wValue.word) {
+        case 1:
+          pmResponsePtr = WEBUSB_ORIGIN_1;
+          pmResponseBytesRemaining = sizeof(WEBUSB_ORIGIN_1);
+          return USB_NO_MSG;
+        case 2:
+          pmResponsePtr = WEBUSB_ORIGIN_2;
+          pmResponseBytesRemaining = sizeof(WEBUSB_ORIGIN_2);
+          return USB_NO_MSG;
+      }
     }
     break;
   }
