@@ -16,6 +16,12 @@ function ab2str(buf) {
     });
   };
 
+  webusb.requestDevice = function() {
+    return navigator.usb.requestDevice({filters: []}).then(device => {
+      return new webusb.Device(device);
+    });
+  };
+
   webusb.Device = function(device) {
     this.device_ = device;
     webusb.devices[device.guid] = this;
@@ -262,10 +268,20 @@ function startInitialConnections() {
   });
 }
 
+function requestConnection() {
+  webusb.requestDevice().then(device => {
+    console.log(device);
+    connectDevice(device);
+  });
+}
+
 function start() {
   ensureHTTPS();
   installServiceWorker();
   registerEventListeners();
+
+  var lightsConnect = document.getElementById("lightConnect");
+  lightsConnect.addEventListener("click", requestConnection);
 
   lightsParent = document.getElementById("lightsParent");
 
