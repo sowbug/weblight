@@ -17,7 +17,10 @@ function ab2str(buf) {
   };
 
   webusb.requestDevice = function() {
-    return navigator.usb.requestDevice({filters: []}).then(device => {
+    var filters = [
+      { vendorId: 0x1209, productId: 0xa800 }
+    ];
+    return navigator.usb.requestDevice({filters: filters}).then(device => {
       return new webusb.Device(device);
     });
   };
