@@ -119,13 +119,13 @@ FAQ
 * **Which board should I build?** If you're interested in hacking on
   the firmware, build
   [`weblight_developer.brd`](https://github.com/sowbug/weblight/blob/master/hardware/weblight_developer.brd). This
-  one has more features that you'll need for firmware development, and
-  it plugs right into a Type A USB socket (but you'll have to solder
-  the contacts to give them enough thickness to connect). Otherwise if
+  one has a few more features that make firmware development more convenient. Otherwise if
   you just want a device to play with, build
   [`weblight.brd`](https://github.com/sowbug/weblight/blob/master/hardware/apa102/weblight.brd). That
-  one is more compact, but it requires a micro-USB socket. Both
-  designs use 0805 SMT components. Either board can be ordered from [OSH Park](https://oshpark.com/) or [Seeed](https://www.seeedstudio.com/service/).
+  one is more compact, but it requires the ProtoProg ISP adapter, rather than the more common
+  AVRISP 6-pin adapter. Both designs use 0805 SMT components. Either board can be ordered from [OSH Park](https://oshpark.com/) or [Seeed](https://www.seeedstudio.com/service/). Note that if you manufacture with a
+  standard 1.6mm PCB, you'll have to solder the contacts to give them enough thickness to connect. For end-user
+  boards, 2.0mm or 2.4mm will fit better in USB sockets, and ENIG finish will last longer without tarnishing.
 
 * **I don't want to build a board, but I'd like one. Will you sell me one?** I don't have plans to mass-produce boards for sale. But if you're interested in getting one, [subscribe to notifications for this issue](https://github.com/sowbug/weblight/issues/31).
 
