@@ -132,6 +132,7 @@ FAQ
 Acknowledgments
 ===
 
-* bobhackmelb on freenode for advice on PCB manufacturing, specifically thickness
+* cpldcpu and bluebie for micronucleus advice.
+* bobhackmelb on freenode for advice on PCB manufacturing, specifically thickness.
 * [Passerby](http://electronics.stackexchange.com/users/17178/passerby) for help [reverse-engineering](http://electronics.stackexchange.com/questions/209941/two-sided-connectorless-usb-on-a-pcb) the double-sided USB connector.
 * [gerblook.org](http://gerblook.org/) for an awesome Gerber visualizer.
