@@ -85,7 +85,7 @@ BOM for production (not developer) circuit
 * C1: 1uF 0805 capacitor
 * C2: 0.1uF 0805 capacitor
 * D1, D2: 3.6V SOD-323 Zener diode. I successfully used BZT52C3V6S-7-F and MM3Z3V6T1G. According to [V-USB Hardware Considerations](http://vusb.wikidot.com/hardware), they should be "those that look like 1N4148 (usually 500 mW or less)"
-* D3, D4: low forward-voltage SOD-323 diode (0.4-volt or less forward voltage so that the supply to the LEDs is higher than 4.5 volts). I am ordering Toshiba 1SS367 (forward voltage about 0.3V) but haven't yet tried it.
+* D3, D4: low forward-voltage SOD-323 diode (0.4-volt or less forward voltage so that the supply to the LEDs is higher than 4.5 volts). I have successfully used Toshiba 1SS367 (forward voltage about 0.3V).
 * R1: 1.5K 0805 resistor
 * R2, R3: 68 0805 resistor
 * R4: 10K 0805 resistor
