@@ -1,0 +1,285 @@
+//
+// Export the EAGLE cream layers to DXF for the Craft-ROBO cutting plotter.
+//
+// Copyright (c) 2010 SWITCHSCIENCE, Inc.
+// Copyright (c) 2012 Yoshihiro TSUBOI
+// Copyright (c) 2013 Yuuki Uno, NYAMFG.
+// Copyright (c) 2015 Junichi Akita (akita11), added board outline cut
+
+// Configuration
+real SHRINK_WIDTH = 0.00;		// unit: mm
+real MIN_CORNERRADIUS = 0.05;		// unit: mm
+real E6_SCALE = 32; // The internal resolution of EAGLE 6 has been increased by a factor of 32. For detail, see UPDATE_en.txt
+
+// Flags
+int CORNERCUT = 0;			// boolean
+int CUTTIMES = 1;
+int EAGLE6 = 0;
+int IGNORESTOP = 1;
+int OUTLINE = 0;
+
+string HEADER =
+"  0\n"
+"SECTION\n"
+"  2\n"
+"HEADER\n"
+"  9\n"
+"$ACADVER\n"
+"  1\n"
+"AC1009\n"
+"  9\n"
+"$MEASUREMENT\n"
+" 70\n"
+"     1\n"				// unit: mm
+"  0\n"
+"ENDSEC\n"
+"  0\n"
+"SECTION\n"
+"  2\n"
+"ENTITIES\n";
+
+string POLYLINE =
+"  0\n"
+"LWPOLYLINE\n"
+"  8\n"
+"0\n"					// layer
+" 62\n"
+"7\n"					// color
+" 90\n"
+"%d\n"					// number of points
+" 70\n"
+"%d\n";					// 0=open 1=close
+
+string POLYLINE_POINT =
+" 10\n"
+"%f\n"
+" 20\n"
+"%f\n";
+
+string LINE =
+"  0\n"
+"LINE\n"
+"  8\n"
+"0\n"					// layer
+" 10\n"
+"%f\n"					// start x
+" 20\n"
+"%f\n"					// start y
+" 11\n"
+"%f\n"					// end x
+" 21\n"
+"%f\n";					// end y
+
+string ARC =
+"  0\n"
+"ARC\n"
+"  8\n"
+"0\n"					// layer
+" 10\n"
+"%f\n"					// center x
+" 20\n"
+"%f\n"					// center y
+" 40\n"
+"%f\n"					// radius
+" 50\n"
+"%f\n"					// start angle
+" 51"
+"%f\n";					// end angle
+
+string CIRCLE =
+"  0\n"
+"CIRCLE\n"
+"  8\n"
+"0\n"					// layer
+" 10\n"
+"%f\n"					// center x
+" 20\n"
+"%f\n"					// center y
+" 40\n"
+"%f\n";					// radius
+
+string TRAILER =
+"  0\n"
+"ENDSEC\n"
+"  0\n"
+"EOF\n";
+
+int
+processLayer(UL_BOARD B, int layer) {
+  int count = 0;
+  int cream = (layer == LAYER_TOP ? LAYER_TCREAM : LAYER_BCREAM);
+  printf("%s", HEADER);
+  B.elements(E) {
+    E.package.contacts(C) {
+      if (!C.smd)
+	continue;
+      if (C.smd.layer != layer)
+	continue;
+      if  (!((C.smd.flags & SMD_FLAG_STOP) || !IGNORESTOP))
+	continue;
+      if (!(C.smd.flags & SMD_FLAG_CREAM))
+	continue;
+      if (C.smd.dx[cream] == 0 || C.smd.dy[cream] == 0)
+	continue;
+
+      real x = C.smd.x / 10000.0;
+      real y = C.smd.y / 10000.0;
+      real w = C.smd.dx[cream] / 10000.0 / 2 - SHRINK_WIDTH;
+      real h = C.smd.dy[cream] / 10000.0 / 2 - SHRINK_WIDTH;
+    if (EAGLE6 == 1) {
+      x = x / E6_SCALE;
+      y = y / E6_SCALE;
+      w = w / E6_SCALE;
+      h = h / E6_SCALE;
+    }
+      real a = C.smd.angle / 180 * PI;
+      real wc = w * cos(a);
+      real hs = h * sin(a);
+      real ws = w * sin(a);
+      real hc = h * cos(a);
+
+      real r = max(min(w, h) * C.smd.roundness / 100, MIN_CORNERRADIUS);
+      if (CORNERCUT && h > r && w > r) {
+	real rc = r * cos(a);
+	real rs = r * sin(a);
+	printf(POLYLINE, 8 * CUTTIMES + 1, 1);				// 1: closed
+	printf(POLYLINE_POINT, x + wc, y + ws);				// ( w,    0)
+	for (int i = 0; i < CUTTIMES; i++) {
+	  printf(POLYLINE_POINT, x + wc - hs + rs, y + ws + hc - rc);	// ( w,    h-r)
+	  printf(POLYLINE_POINT, x + wc - rc - hs, y + ws - rs + hc);	// ( w-r,  h)
+	  printf(POLYLINE_POINT, x - wc + rc - hs, y - ws + rs + hc);	// (-w+r,  h)
+	  printf(POLYLINE_POINT, x - wc - hs + rs, y - ws + hc - rc);	// (-w,    h-r)
+	  printf(POLYLINE_POINT, x - wc + hs - rs, y - ws - hc + rc);	// (-w,   -h+r)
+	  printf(POLYLINE_POINT, x - wc + rc + hs, y - ws + rs - hc);	// (-w+r, -h)
+	  printf(POLYLINE_POINT, x + wc - rc + hs, y + ws - rs - hc);	// ( w-r, -h)
+	  printf(POLYLINE_POINT, x + wc + hs - rs, y + ws - hc + rc);	// ( w,   -h+r)
+	}
+      } else {
+	printf(POLYLINE, 4 * CUTTIMES + 1, 1);			// 1: closed
+	printf(POLYLINE_POINT, x + wc, y + ws);			// ( w,  0)
+	for (int i = 0; i < CUTTIMES; i++) {
+	  printf(POLYLINE_POINT, x + wc - hs, y + ws + hc);	// ( w,  h)
+	  printf(POLYLINE_POINT, x - wc - hs, y - ws + hc);	// (-w,  h)
+	  printf(POLYLINE_POINT, x - wc + hs, y - ws - hc);	// (-w, -h)
+	  printf(POLYLINE_POINT, x + wc + hs, y + ws - hc);	// ( w, -h)
+	}
+      }
+      count++;
+    }
+    
+    E.package.rectangles(R) {
+      if (layer==LAYER_TOP && R.layer == 31) {
+      	printf(POLYLINE, 4 * CUTTIMES + 1, 1);			// 1: closed
+      	
+        real x = (R.x1+R.x2)/2 / 10000.0;
+        real y = (R.y1+R.y2)/2 / 10000.0;
+        real w = (R.x2-R.x1) / 10000.0 / 2 - SHRINK_WIDTH;
+        real h = (R.y2-R.y1) / 10000.0 / 2 - SHRINK_WIDTH;
+      if (EAGLE6 == 1) {
+        x = x / E6_SCALE;
+        y = y / E6_SCALE;
+        w = w / E6_SCALE;
+        h = h / E6_SCALE;
+      }
+        real a = R.angle / 180 * PI;
+        real wc = w * cos(a);
+        real hs = h * sin(a);
+        real ws = w * sin(a);
+        real hc = h * cos(a);
+        
+	printf(POLYLINE, 4 * CUTTIMES + 1, 1);			// 1: closed
+	printf(POLYLINE_POINT, x + wc, y + ws);			// ( w,  0)
+	for (int i = 0; i < CUTTIMES; i++) {
+	  printf(POLYLINE_POINT, x + wc - hs, y + ws + hc);	// ( w,  h)
+	  printf(POLYLINE_POINT, x - wc - hs, y - ws + hc);	// (-w,  h)
+	  printf(POLYLINE_POINT, x - wc + hs, y - ws - hc);	// (-w, -h)
+	  printf(POLYLINE_POINT, x + wc + hs, y + ws - hc);	// ( w, -h)
+	}
+      }
+
+      count++;
+    }
+  }
+  // board outline
+  if (OUTLINE){
+    real x = (B.area.x1+B.area.x2)/2 / 10000.0;
+    real y = (B.area.y1+B.area.y2)/2 / 10000.0;
+    real w = (B.area.x2-B.area.x1) / 10000.0 / 2;
+    real h = (B.area.y2-B.area.y1) / 10000.0 / 2;
+    if (EAGLE6 == 1) {
+      x = x / E6_SCALE;
+      y = y / E6_SCALE;
+      w = w / E6_SCALE;
+      h = h / E6_SCALE;
+    }
+    real wc = w;
+    real hs = 0;
+    real ws = 0;
+    real hc = h;
+    printf(POLYLINE, 4*CUTTIMES + 1, 1);			// 1: closed
+    printf(POLYLINE_POINT, x + wc, y + ws);			// ( w,  0)
+    for (int i = 0; i < CUTTIMES; i++) {
+      printf(POLYLINE_POINT, x + wc - hs, y + ws + hc);	// ( w,  h)
+      printf(POLYLINE_POINT, x - wc - hs, y - ws + hc);	// (-w,  h)
+      printf(POLYLINE_POINT, x - wc + hs, y - ws - hc);	// (-w, -h)
+      printf(POLYLINE_POINT, x + wc + hs, y + ws - hc);	// ( w, -h)
+    }
+    count++;
+  }
+  printf("%s", TRAILER);
+  return count;
+}
+
+board(B) {
+
+  int cut_two = 1;
+  int cut_corner = 0;
+  int e6_mode = 0;
+  int ignore_stop = 1;
+  int outline = 0;
+  if (EAGLE_VERSION >= 6.0) {
+	  e6_mode = 1;
+  };  
+  real cut_width = 0.05;
+  
+  int run = dlgDialog("cream-dxf"){
+    dlgGroup("Orientation") {
+      dlgCheckBox("Cut two times for each lines.", cut_two);
+      dlgCheckBox("Cut off corners of pads. The resulting pads are octagons.", cut_corner);
+      dlgCheckBox("Ignore pads with no stop flag.", ignore_stop);
+      dlgCheckBox("Include board outline.", outline);
+      dlgHBoxLayout {
+        dlgLabel("Enter the width (float mm) to shrink pads by.");
+        dlgRealEdit(cut_width, 0.00, 0.10);
+      };
+    };
+    dlgHBoxLayout {
+      dlgStretch(1);
+      dlgPushButton("-&Cancel") dlgReject();
+      dlgPushButton("+&Run") dlgAccept();
+    };
+  };
+  
+  CUTTIMES = cut_two ? 2 : 1;
+  CORNERCUT = cut_corner;
+  EAGLE6 = e6_mode;
+  SHRINK_WIDTH = cut_width;
+  IGNORESTOP = ignore_stop;
+  OUTLINE = outline;
+/*  
+  output("debug.log"){
+    printf("%d, %d, %d, %f\n", run, CUTTIMES, CORNERCUT, SHRINK_WIDTH);
+  }
+*/
+  
+  if (run == 1) {
+    int t, b;
+    output(filesetext(B.name, "-tcream.dxf")) t = processLayer(B, LAYER_TOP);
+    output(filesetext(B.name, "-bcream.dxf")) b = processLayer(B, LAYER_BOTTOM);
+
+    string message;
+    sprintf(message, ";DXF files generated with %d+%d objects", t, b);	// ';' for information
+    dlgMessageBox(message);
+  }
+  
+}
