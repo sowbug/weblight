@@ -40,32 +40,16 @@ function ab2str(buf) {
 
   webusb.Device.prototype.connect = function() {
     return this.device_.open()
-      .then(() => this.device_.getConfiguration()
-            .then(config => {
-              if (config.configurationValue == 1) {
-                return Promise.resolve();
-              } else {
-                return Promise.reject("Need to setConfiguration(1).");
-              }
-            })
-            .catch(error => this.device_.setConfiguration(1)))
-      .then(() => this.device_.claimInterface(0))
-      .then(() => this.device_.controlTransferOut({
-        'requestType': 'class',
-        'recipient': 'interface',
-        'request': 0x22,
-        'value': 0x01,
-        'index': 0x00}));
+      .then(() => {
+        if (this.device_.configuration === undefined) {
+          return this.device_.selectConfiguration(1);
+        }
+      })
+      .then(() => this.device_.claimInterface(0));
   };
 
   webusb.Device.prototype.disconnect = function() {
-    return this.device_.controlTransferOut({
-      'requestType': 'class',
-      'recipient': 'interface',
-      'request': 0x22,
-      'value': 0x00,
-      'index': 0x00})
-      .then(() => this.device_.close());
+    return this.device_.close();
   };
 
   webusb.Device.prototype.controlTransferOut = function(setup, data) {
@@ -237,13 +221,13 @@ function disconnectDevice(guid) {
     console.log("removing!");
     lightsParent.removeChild(device.element);
     device.disconnect()
-	    .then(s => {
-	      console.log("disconnected", device);
-	      cleanUpDevice(device);
-	    }, e => {
-	      console.log("nothing to disconnect", device);
-	      cleanUpDevice(device);
-	    });
+      .then(s => {
+        console.log("disconnected", device);
+        cleanUpDevice(device);
+      }, e => {
+        console.log("nothing to disconnect", device);
+        cleanUpDevice(device);
+      });
   }
 }
 
