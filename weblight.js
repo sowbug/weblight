@@ -255,11 +255,12 @@ function startInitialConnections() {
   });
 }
 
-function requestConnection() {
+function requestConnection(event) {
   webusb.requestDevice().then(device => {
     console.log(device);
     connectDevice(device);
   });
+  event.preventDefault();
 }
 
 function start() {
