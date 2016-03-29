@@ -41,7 +41,7 @@ function ab2str(buf) {
   webusb.Device.prototype.connect = function() {
     return this.device_.open()
       .then(() => {
-        if (this.device_.configuration === undefined) {
+        if (this.device_.configuration === null) {
           return this.device_.selectConfiguration(1);
         }
       })
