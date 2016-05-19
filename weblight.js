@@ -10,9 +10,16 @@ function ab2str(buf) {
 
   webusb.devices = {};
 
+  function findOrCreateDevice(rawDevice) {
+    let device = webusb.getDevice(rawDevice);
+    if (device === undefined)
+      device = new webusb.Device(rawDevice);
+    return device;
+  }
+
   webusb.getDevices = function() {
     return navigator.usb.getDevices().then(devices => {
-      return devices.map(device => new webusb.Device(device));
+      return devices.map(device => findOrCreateDevice(device));
     });
   };
 
@@ -21,21 +28,30 @@ function ab2str(buf) {
       { vendorId: 0x1209, productId: 0xa800 }
     ];
     return navigator.usb.requestDevice({filters: filters}).then(device => {
-      return new webusb.Device(device);
+      return findOrCreateDevice(device);
     });
   };
 
   webusb.Device = function(device) {
     this.device_ = device;
-    webusb.devices[device.guid] = this;
+    if (device.guid === undefined)
+      webusb.devices[device] = this
+    else
+      webusb.devices[device.guid] = this;
   };
 
   webusb.deleteDevice = function(device) {
-    delete webusb.devices[device.device_.guid];
+    if (device.device_.guid === undefined)
+      delete webusb.devices[device.device_];
+    else
+      delete webusb.devices[device.device_.guid];
   };
 
-  webusb.getDeviceFromGuid = function(guid) {
-    return webusb.devices[guid];
+  webusb.getDevice = function(device) {
+    if (device.guid === undefined)
+      return webusb.devices[device];
+    else
+      return webusb.devices[device.guid];
   };
 
   webusb.Device.prototype.connect = function() {
@@ -135,7 +151,7 @@ function setDeviceColor(device, r, g, b) {
       device.element.getElementsByClassName(
         "lightPicker")[0].value = rgbToHex(r, g, b);
     }, e => {
-      console.log(e); disconnectDevice(device.guid);
+      console.log(e); disconnectDevice(device);
     });
 }
 
@@ -199,8 +215,7 @@ function connectDevice(device) {
 
 function handleConnectEvent(event) {
   var rawDevice = event.device;
-  var guid = rawDevice.guid;
-  console.log('connect event', rawDevice, guid);
+  console.log('connect event', rawDevice);
   var device = new webusb.Device(rawDevice);
   connectDevice(device);
 }
@@ -210,13 +225,8 @@ function cleanUpDevice(device) {
   webusb.deleteDevice(device);
 }
 
-function disconnectDevice(guid) {
-  if (!guid in webusb.devices) {
-    console.log(guid, "not known");
-    return;
-  }
-
-  var device = webusb.getDeviceFromGuid(guid);
+function disconnectDevice(rawDevice) {
+  var device = webusb.getDevice(rawDevice);
   if (device) {  // This can fail if the I/O code already threw an exception
     console.log("removing!");
     lightsParent.removeChild(device.element);
@@ -232,10 +242,8 @@ function disconnectDevice(guid) {
 }
 
 function handleDisconnectEvent(event) {
-  var rawDevice = event.device;
-  var guid = rawDevice.guid;
-  console.log('disconnect event', rawDevice, guid);
-  disconnectDevice(guid);
+  console.log('disconnect event', event.device);
+  disconnectDevice(event.device);
 
   //    color.innerText = 'no device';
 }
