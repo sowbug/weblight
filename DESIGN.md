@@ -154,7 +154,8 @@ WebUSB
 
 * TODO: describe challenge with WinUSB
 
-USB VID/PID ===
+USB VID/PID
+===
 
 * [pid.codes](http://pid.codes/) provides one-off maker/hobbyist
 VID/PID pairs, eliminating the need to use garbage pairs or submit to
