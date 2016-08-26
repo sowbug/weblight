@@ -34,7 +34,7 @@ parser.add_option("-m", "--msec", default=500,
                   help="milliseconds between sequence steps")
 parser.add_option("-e", "--effect", default=-1,
                   help="start an effect (0: candle)")
-parser.add_option("-w", "--watchdog", default=0,
+parser.add_option("-w", "--watchdog", default=-1,
                   help="reset the watchdog to the given number of seconds")
 parser.add_option("-l", "--list", action="store_true", default=False,
                   help="list attached devices")
