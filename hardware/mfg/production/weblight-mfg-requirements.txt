@@ -1,0 +1,11 @@
+Special requirements for WebLight-1.0
+
+- PCB color black
+- PCB thickness 2.0mm
+- PCB finish ENIG
+- 13 SMD parts
+- 9 BOM lines
+- 0 TH parts
+- ISP, J-TOP, J-BOT, FID1 are empty parts - no placements
+
+Project page is at https://github.com/sowbug/weblight
