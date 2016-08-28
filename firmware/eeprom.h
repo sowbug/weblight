@@ -36,7 +36,6 @@
                                  EEPROM_PROGRAM_START)
 
 void ReadEEPROM();
-void WriteLEDCount();
 
 uint8_t ReadLightProgram(uint8_t *opcode_buf, uint8_t opcode_buf_len);
 void WriteLightProgram(const uint8_t *opcode_buf, uint8_t opcode_buf_len);

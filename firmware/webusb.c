@@ -302,7 +302,8 @@ USB_PUBLIC uchar usbFunctionWrite(uchar *data, uchar len) {
 
   if (currentRequest == WL_REQUEST_SET_WEBUSB_URLS) {
     eeprom_update_block(data,
-                        EEPROM_WEBUSB_URLS_START + currentPosition, len);
+                        (void*)(EEPROM_WEBUSB_URLS_START + currentPosition),
+                        len);
     currentPosition += len;
     bytesRemaining -= len;
     return bytesRemaining == 0;
