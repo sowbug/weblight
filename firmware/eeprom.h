@@ -35,7 +35,14 @@
 #define EEPROM_PROGRAM_MAX_SIZE (EEPROM_WEBUSB_URLS_START - \
                                  EEPROM_PROGRAM_START)
 
+// Checks the signature. Useful to play demo for factory boards that
+// have flash but not EEPROM.
+uint8_t IsEEPROMValid();
 void ReadEEPROM();
+
+// If the EEPROM doesn't appear to have been written, then fill in
+// with synthetic data instead.
+void GenerateEEPROMData();
 
 uint8_t ReadLightProgram(uint8_t *opcode_buf, uint8_t opcode_buf_len);
 void WriteLightProgram(const uint8_t *opcode_buf, uint8_t opcode_buf_len);

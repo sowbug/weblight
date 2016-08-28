@@ -27,10 +27,14 @@ void AppInit(App *ctx) {
   TCCR1 = _BV(CS13) | _BV(CS12) | _BV(CS11);
   OCR1A = (F_CPU / CLOCK_DIVISOR) / TICKS_PER_SECOND;
 
-  ReadEEPROM();
+  if (IsEEPROMValid()) {
+    ReadEEPROM();
+    Load();  // Read sequencer
+  } else {
+    GenerateEEPROMData();
+  }
 
   // Start up the sequencer.
-  Load();
   Play();
 }
 

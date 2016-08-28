@@ -9,10 +9,20 @@
 #include "led_control.h"
 #include <stdbool.h>
 
+// Fill in sequencer with a default program. If it doesn't get
+// overwritten by the EEPROM, then we'll still have enough behavior to
+// tell whether the board was manufactured properly.
 #define PROGRAM_SIZE_MAX (128)
-uint8_t opcodes[PROGRAM_SIZE_MAX];
+uint8_t opcodes[PROGRAM_SIZE_MAX] = {
+  0x00, 0xff, 0x00, 0x00, // red
+  0x02, 0x03, 0xe8,       // pause 1000 msec
+  0x00, 0x00, 0xff, 0x00, // green
+  0x02, 0x03, 0xe8,       // pause
+  0x00, 0x00, 0x00, 0xff, // blue
+  0x02, 0x03, 0xe8,       // pause
+};
 uint8_t oi = 0;
-uint8_t opcode_count = 0;
+uint8_t opcode_count = 21;  // built-in program size
 uint8_t is_playing = false;
 uint8_t is_recording = false;
 uint16_t elapsed_since_last_cycle_msec = 0;

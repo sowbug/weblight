@@ -9,9 +9,18 @@
 #include "usbconfig.h"
 
 #include <avr/eeprom.h>
+#include <string.h>
 
 // in webusb.c
 extern int webUsbDescriptorStringSerialNumber[EEPROM_SERIAL_LENGTH + 1];
+
+uint8_t IsEEPROMValid() {
+  uchar sig_bytes[EEPROM_SIG_LENGTH];
+  uchar sig_comparison[EEPROM_SIG_LENGTH] = { 'W', 'e', 'b', 'L' };
+  eeprom_read_block((void*)sig_bytes, (void*)EEPROM_SIG_START,
+                    EEPROM_SIG_LENGTH);
+  return 0 == memcmp(sig_comparison, sig_bytes, EEPROM_SIG_LENGTH);
+}
 
 void ReadEEPROM() {
   uchar serial_bytes[EEPROM_SERIAL_LENGTH];
@@ -21,6 +30,13 @@ void ReadEEPROM() {
   size_t i;
   for (i = 0; i < EEPROM_SERIAL_LENGTH; ++i) {
     webUsbDescriptorStringSerialNumber[1 + i] = serial_bytes[i];
+  }
+}
+
+void GenerateEEPROMData() {
+  size_t i;
+  for (i = 0; i < EEPROM_SERIAL_LENGTH; ++i) {
+    webUsbDescriptorStringSerialNumber[1 + i] = 'a' + i;
   }
 }
 
