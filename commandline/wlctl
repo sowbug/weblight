@@ -30,6 +30,12 @@ import usb.core
 import usb.util
 import uuid
 
+def ResetDevice(dev):
+    try:
+        dev.ctrl_transfer(0x40, WL_REQUEST_RESET_DEVICE, 0, 0)
+    except:
+        pass
+
 def RegenerateSerial(dev):
     uuid_str = str(uuid.uuid4())
     b = bytearray()
@@ -43,6 +49,11 @@ def RegenerateSerial(dev):
     if result != len(b):
         print "Unexpected result while setting serial number", result
         sys.exit(1)
+
+    # Force an enumeration to grab the serial number again. This is
+    # suboptimal because it causes a delay waiting for micronucleus,
+    # but it's not a huge deal.
+    ResetDevice(dev)
 
 usage = "usage: %prog [options] rgbcolor [up to 15 more rgbcolor]"
 parser = OptionParser(usage)
@@ -127,10 +138,7 @@ if options.regenerate_serial:
     sys.exit(0)
 
 if options.reset:
-    try:
-        dev.ctrl_transfer(0x40, WL_REQUEST_RESET_DEVICE, 0, 0)
-    except:
-        pass
+    ResetDevice(dev)
     sys.exit(0)
 
 if options.test:
