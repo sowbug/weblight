@@ -214,6 +214,10 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
       bytesRemaining = sizeof(buffer);
     }
     return USB_NO_MSG;
+  case WL_REQUEST_SET_SERIAL_NUMBER:
+    currentPosition = 0;
+    bytesRemaining = rq->wLength.word;
+    return USB_NO_MSG;
   case WL_REQUEST_SET_WEBUSB_URLS:
     currentPosition = 0;
     bytesRemaining = rq->wLength.word;
@@ -303,6 +307,15 @@ USB_PUBLIC uchar usbFunctionWrite(uchar *data, uchar len) {
   if (currentRequest == WL_REQUEST_SET_WEBUSB_URLS) {
     eeprom_update_block(data,
                         (void*)(EEPROM_WEBUSB_URLS_START + currentPosition),
+                        len);
+    currentPosition += len;
+    bytesRemaining -= len;
+    return bytesRemaining == 0;
+  }
+
+  if (currentRequest == WL_REQUEST_SET_SERIAL_NUMBER) {
+    eeprom_update_block(data,
+                        (void*)(EEPROM_SERIAL_START + currentPosition),
                         len);
     currentPosition += len;
     bytesRemaining -= len;

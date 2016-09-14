@@ -16,6 +16,7 @@ WL_REQUEST_SAVE = 8
 WL_REQUEST_LOAD = 9
 WL_REQUEST_EFFECT = 10
 WL_REQUEST_RESET_WATCHDOG = 11
+WL_REQUEST_SET_SERIAL = 64
 WL_REQUEST_SET_WEBUSB_URLS = 251
 WL_REQUEST_RESET_DEVICE = 253
 WL_REQUEST_WEBUSB = 254
@@ -27,6 +28,21 @@ import os.path
 import sys
 import usb.core
 import usb.util
+import uuid
+
+def RegenerateSerial(dev):
+    uuid_str = str(uuid.uuid4())
+    b = bytearray()
+    b.extend(uuid_str[-16:])
+
+    try:
+        result = dev.ctrl_transfer(0x40, WL_REQUEST_SET_SERIAL, 0, 0, b)
+    except usb.core.USBError, e:
+        print "Failed to set serial number", e
+        sys.exit(1)
+    if result != len(b):
+        print "Unexpected result while setting serial number", result
+        sys.exit(1)
 
 usage = "usage: %prog [options] rgbcolor [up to 15 more rgbcolor]"
 parser = OptionParser(usage)
@@ -49,6 +65,8 @@ parser.add_option("-u", "--urls", action="store_true", default=False,
                   "one or more allowed origins)")
 parser.add_option("-s", "--serial",
                   help="specify the serial number of the device to address")
+parser.add_option("--regenerate-serial", action="store_true", default=False,
+                  help="write a new serial number to the device")
 parser.add_option("--save", action="store_true", default=False,
                   help="save the current sequence to EEPROM")
 parser.add_option("--load", action="store_true", default=False,
@@ -103,6 +121,10 @@ if dev is None:
 # wValue
 # wIndex
 # (optional) data
+
+if options.regenerate_serial:
+    RegenerateSerial(dev)
+    sys.exit(0)
 
 if options.reset:
     try:

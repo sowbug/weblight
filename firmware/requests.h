@@ -72,6 +72,10 @@
 // visual alert.
 #define WL_REQUEST_RESET_WATCHDOG (11)
 
+// Sets the device's serial number. Control-OUT.
+//
+#define WL_REQUEST_SET_SERIAL_NUMBER (64)
+
 // Sets the WebUSB landing page and allowed origins, all as a set of
 // concatenated descriptors. Control-OUT.
 //
