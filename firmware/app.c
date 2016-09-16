@@ -32,6 +32,8 @@ void AppInit(App *ctx) {
     Load();  // Read sequencer
   } else {
     GenerateEEPROMData();
+    SetUpNewEEPROM();
+    Save();
   }
 
   // Start up the sequencer.

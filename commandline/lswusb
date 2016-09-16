@@ -34,7 +34,7 @@ if dev is None:
     raise ValueError("Did not find device with VID/PID 0x%x/0x%04x" % (
         VENDOR, PRODUCT))
 
-print dev
+print unicode(dev)
 
 # bmRequestType
 # USBRQ_DIR_HOST_TO_DEVICE | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE = 0x40

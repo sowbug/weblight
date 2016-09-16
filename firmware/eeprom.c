@@ -14,12 +14,13 @@
 // in webusb.c
 extern int webUsbDescriptorStringSerialNumber[EEPROM_SERIAL_LENGTH + 1];
 
+const uchar sig[EEPROM_SIG_LENGTH] = { 'W', 'e', 'b', 'L' };
+
 uint8_t IsEEPROMValid() {
   uchar sig_bytes[EEPROM_SIG_LENGTH];
-  uchar sig_comparison[EEPROM_SIG_LENGTH] = { 'W', 'e', 'b', 'L' };
   eeprom_read_block((void*)sig_bytes, (void*)EEPROM_SIG_START,
                     EEPROM_SIG_LENGTH);
-  return 0 == memcmp(sig_comparison, sig_bytes, EEPROM_SIG_LENGTH);
+  return 0 == memcmp(sig, sig_bytes, EEPROM_SIG_LENGTH);
 }
 
 void ReadEEPROM() {
@@ -31,6 +32,15 @@ void ReadEEPROM() {
   for (i = 0; i < EEPROM_SERIAL_LENGTH; ++i) {
     webUsbDescriptorStringSerialNumber[1 + i] = serial_bytes[i];
   }
+}
+
+void SetUpNewEEPROM() {
+  eeprom_update_block(sig, (void*)(EEPROM_SIG_START), EEPROM_SIG_LENGTH);
+  eeprom_update_byte((uint8_t*)EEPROM_VERSION_START, DEVICE_VERSION_MAJOR);
+  eeprom_update_byte((uint8_t*)EEPROM_VERSION_START + 1,
+                     DEVICE_VERSION_MINOR);
+  eeprom_update_block((const void*)&webUsbDescriptorStringSerialNumber[1],
+                      (void*)EEPROM_SERIAL_START, EEPROM_SERIAL_LENGTH);
 }
 
 void GenerateEEPROMData() {

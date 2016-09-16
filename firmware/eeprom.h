@@ -39,6 +39,7 @@
 // have flash but not EEPROM.
 uint8_t IsEEPROMValid();
 void ReadEEPROM();
+void SetUpNewEEPROM();
 
 // If the EEPROM doesn't appear to have been written, then fill in
 // with synthetic data instead.
