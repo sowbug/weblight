@@ -23,7 +23,7 @@ MICRONUCLEUS = micronucleus
 
 APP = main
 BOOTLOADER = hex/t85_watchdog_or_ext_reset
-FULL = hex/full-$(DEVICE_VERSION_MAJOR).$(DEVICE_VERSION_MINOR)
+FULL = hex/weblight-full-$(DEVICE_VERSION_MAJOR).$(DEVICE_VERSION_MINOR)
 EEPROM = eeprom
 
 # http://eleccelerator.com/fusecalc/fusecalc.php?chip=attiny85&LOW=E1&HIGH=DD&EXTENDED=FE&LOCKBIT=FF
