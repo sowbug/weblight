@@ -1,4 +1,6 @@
 Atmel AVR ATTiny85
+https://github.com/sowbug/weblight
+https://github.com/sowbug/weblight/blob/master/firmware/hex/weblight-full-1.0.hex
 
 FUSE
 ====
@@ -8,10 +10,10 @@ avrdude -p attiny85 -U lfuse:w:0xe1:m -U hfuse:w:0xdd:m -U efuse:w:0xfe:m
 PROGRAMMING
 ===========
 
-$ shasum hex/weblight-full-1.0.hex 
-b8342c13ef73ea37cf15128e2ef9a78e56985bfe  hex/weblight-full-1.0.hex
+$ shasum firmware/hex/weblight-full-1.0.hex
+b8342c13ef73ea37cf15128e2ef9a78e56985bfe  firmware/hex/weblight-full-1.0.hex
 
-avrdude -p attiny85 -B 1 -U flash:w:hex/weblight-full-1.0.hex:i
+avrdude -p attiny85 -B 1 -U flash:w:firmware/hex/weblight-full-1.0.hex:i
 
 TEST
 ====
@@ -20,3 +22,5 @@ TEST
 2. Insert board in USB power source.
 3. See red, green, blue cycle on both LED.
 4. Success!
+
+See video of smoke test at https://youtu.be/knSyfHsJjvY
