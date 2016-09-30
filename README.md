@@ -82,6 +82,8 @@ BOM for production (not developer) circuit
 
 The best results are with an ENIG finish 2.0mm thickness PCB. If you're just prototyping, 1.6mm will work, but you'll want to put some thick solder on the USB leads to bulk them up a bit. Even then, the fit in the USB socket will be loose. ENIG takes longer to wear out than regular HASL.
 
+The board measures 12mm x 41.1734mm x 2.0mm.
+
 * C1: 1uF 0805 capacitor (DigiKey 311-1365-1-ND)
 * C2: 0.1uF 0805 capacitor (DigiKey 311-1142-1-ND)
 * D1, D2: 3.6V SOD-323 Zener diode. I successfully used BZT52C3V6S-7-F and MM3Z3V6T1G (DigiKey MM3Z3V6T1GOSCT-ND). According to [V-USB Hardware Considerations](http://vusb.wikidot.com/hardware), they should be "those that look like 1N4148 (usually 500 mW or less)"
