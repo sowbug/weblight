@@ -19,6 +19,9 @@ void UpdateLEDs() {
   if (leds_need_update) {
     leds_need_update = 0;
     apa102_setleds(led, LED_COUNT);
+#if STUPID_COUNTERFEIT_APA102C
+    apa102_setleds(led, LED_COUNT);
+#endif
   }
 }
 

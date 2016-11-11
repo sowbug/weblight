@@ -17,6 +17,8 @@ DEVICE_VERSION_MINOR = 0
 
 USE_CANDLE = 0
 
+STUPID_COUNTERFEIT_APA102C = 1
+
 AVRDUDE = avrdude -c usbtiny -p $(DEVICE) -B 1
 WLCTL = ../commandline/wlctl
 MICRONUCLEUS = micronucleus
@@ -49,7 +51,8 @@ COMPILE = avr-gcc \
 									-ffunction-sections -Wl,-gc-sections \
 									-DLED_COUNT=$(LED_COUNT) \
 									-DDEVICE_VERSION_MAJOR=$(DEVICE_VERSION_MAJOR) \
-									-DDEVICE_VERSION_MINOR=$(DEVICE_VERSION_MINOR)
+									-DDEVICE_VERSION_MINOR=$(DEVICE_VERSION_MINOR) \
+									-DSTUPID_COUNTERFEIT_APA102C=$(STUPID_COUNTERFEIT_APA102C)
 
 # symbolic targets:
 help:
