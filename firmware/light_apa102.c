@@ -1,13 +1,13 @@
 /*
-* light weight APA102 lib - v0.1
-*
-* Controls APA102 RGB-LEDs
-* Author: Tim (cpldcpu@gmail.com)
-*
-* Nov 30th, 2014 Initial Version
-*
-* License: GNU GPL v2 (see License.txt)
-*/
+ * light weight APA102 lib - v0.1
+ *
+ * Controls APA102 RGB-LEDs
+ * Author: Tim (cpldcpu@gmail.com)
+ *
+ * Nov 30th, 2014 Initial Version
+ *
+ * License: GNU GPL v2 (see License.txt)
+ */
 
 #include "light_apa102.h"
 #include <avr/interrupt.h>
@@ -38,31 +38,31 @@ void SPI_write(uint8_t c) {
       apa102_PORTREG &= ~_BV(apa102_data); // set data low
     } else {
       apa102_PORTREG |=  _BV(apa102_data); // set data high
-    }     
-  
-  apa102_PORTREG |= (1<< apa102_clk); // SCK hi , data sampled here
+    }
 
-  c<<=1;
-  
-  nop();  // Stretch clock
-  nop();
-  
-  apa102_PORTREG &= ~_BV(apa102_clk); // clk low
+    apa102_PORTREG |= (1<< apa102_clk); // SCK hi , data sampled here
+
+    c<<=1;
+
+    nop();  // Stretch clock
+    nop();
+
+    apa102_PORTREG &= ~_BV(apa102_clk); // clk low
   }
-// State after call: SCK Low, Dat high
+  // State after call: SCK Low, Dat high
 }
- 
+
 void inline apa102_setleds(struct cRGB *ledarray, uint16_t leds)
 {
   uint16_t i;
   uint8_t *rawarray=(uint8_t*)ledarray;
   SPI_init();
-  
+
   SPI_write(0x00);  // Start Frame
   SPI_write(0x00);
   SPI_write(0x00);
   SPI_write(0x00);
- 
+
   for (i=0; i<(leds+leds+leds); i+=3)
   {
     SPI_write(0xff);  // Maximum global brightness
@@ -70,8 +70,8 @@ void inline apa102_setleds(struct cRGB *ledarray, uint16_t leds)
     SPI_write(rawarray[i+1]);
     SPI_write(rawarray[i+2]);
   }
-  
-  // End frame: 8+8*(leds >> 4) clock cycles    
+
+  // End frame: 8+8*(leds >> 4) clock cycles
   for (i=0; i<leds; i+=16)
   {
     SPI_write(0xff);  // 8 more clock cycles
