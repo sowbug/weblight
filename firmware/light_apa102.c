@@ -53,18 +53,24 @@ void SPI_write(uint8_t c) {
 }
 
 void inline start_frame() {
-  SPI_write(0x00);  // Start Frame
+  SPI_write(0x00);
   SPI_write(0x00);
   SPI_write(0x00);
   SPI_write(0x00);
 }
 
 void inline end_frame(uint16_t leds) {
-  uint16_t i;
-  // End frame: 8+8*(leds >> 4) clock cycles
-  for (i = 0; i < leds; i += 16) {
-    SPI_write(0xff);  // 8 more clock cycles
-  }
+  leds >>= 4;
+  do {
+    SPI_write(0xff);
+    SPI_write(0x00);
+    SPI_write(0x00);
+    SPI_write(0x00);
+  } while (leds--);
+
+#if STUPID_COUNTERFEIT_APA102C
+    start_frame();
+#endif
 }
 
 void inline apa102_setleds(struct cRGB *ledarray, uint16_t leds)
@@ -81,12 +87,4 @@ void inline apa102_setleds(struct cRGB *ledarray, uint16_t leds)
     SPI_write(rawarray[i+2]);
   }
   end_frame(leds);
-
-#if STUPID_COUNTERFEIT_APA102C
-  // For some unknown reason, a batch of APA102C that I have won't display the
-  // data that has been latched into them until another empty start/end set. So
-  // we do that.
-  start_frame();
-  end_frame(leds);
-#endif
 }

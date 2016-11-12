@@ -17,6 +17,8 @@ DEVICE_VERSION_MINOR = 0
 
 USE_CANDLE = 0
 
+# Keyword SK9822. I'm not sure the batch I have is SK9822, or yet
+# another kind of poor APA102C copy.
 STUPID_COUNTERFEIT_APA102C = 1
 
 AVRDUDE = avrdude -c usbtiny -p $(DEVICE) -B 1
