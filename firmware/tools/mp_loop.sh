@@ -11,7 +11,7 @@ while true; do
   echo "done"
   
   echo -n "Setting origins..."
-  wlctl --urls https://sowbug.github.io/weblight https://sowbug.github.io http://localhost:8000
+  wlctl --urls https://sowbug.github.io/weblight http://localhost:8000
   echo "done"
 
   echo -n "Updating sequence..."
