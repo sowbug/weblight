@@ -62,8 +62,7 @@ f.seek(128)
 
 # Horrible copy/paste from wlctl
 num_urls = len(URLS)
-b = bytearray()
-b.extend(bytearray([num_urls + 5, 0, num_urls + 5, 0, 0]))
+b = bytearray([num_urls + 5, 0, num_urls + 5, 0, 0])
 n = 1
 for u in URLS:
   b.extend(bytearray([n]))
@@ -79,9 +78,8 @@ for u in URLS:
   else:
     print "Unrecognized scheme", u
     sys.exit(1)
-
-b.extend(bytearray([len(u) + 3, 3, scheme]))
-b.extend(u)
+  b.extend(bytearray([len(u) + 3, 3, scheme]))
+  b.extend(u)
 
 if len(b) > 128:
   print "Allowed origin lengths too big"
