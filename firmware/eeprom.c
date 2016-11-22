@@ -10,6 +10,7 @@
 
 #include <avr/eeprom.h>
 #include <string.h>
+#include <stdbool.h>
 
 // in webusb.c
 extern int webUsbDescriptorStringSerialNumber[EEPROM_SERIAL_LENGTH + 1];
@@ -73,4 +74,27 @@ void WriteLightProgram(const uint8_t *opcode_buf, uint8_t opcode_buf_len) {
   eeprom_update_block((const void*)opcode_buf,
                       (void*)EEPROM_PROGRAM_START,
                       opcode_buf_len);
+}
+
+uint8_t GetDescriptorStart(uint8_t index,
+                           const uint8_t **pmResponsePtr,
+                           uint8_t *pmResponseBytesRemaining) {
+  *pmResponsePtr = (const uint8_t *)EEPROM_WEBUSB_URLS_START;
+  do {
+    *pmResponseBytesRemaining = eeprom_read_byte(*pmResponsePtr);
+
+    // Found item. Return it.
+    if (index-- == 0) {
+      return true;
+    }
+
+    // Exceeded number of items in sequence. Return last one but indicate
+    // failure.
+    if (*pmResponseBytesRemaining == 0) {
+      return false;
+    }
+
+    *pmResponsePtr += *pmResponseBytesRemaining;
+
+  } while (true);
 }

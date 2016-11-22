@@ -17,7 +17,7 @@ WL_REQUEST_LOAD = 9
 WL_REQUEST_EFFECT = 10
 WL_REQUEST_RESET_WATCHDOG = 11
 WL_REQUEST_SET_SERIAL = 64
-WL_REQUEST_SET_WEBUSB_URLS = 251
+WL_REQUEST_SET_WEBUSB_DESCRIPTOR_SET = 251
 WL_REQUEST_RESET_DEVICE = 253
 WL_REQUEST_WEBUSB = 254
 
@@ -199,38 +199,41 @@ if watchdog >= 0:
   sys.exit(0)
 
 def set_urls(urls):
+  num_urls = len(urls)
   b = bytearray()
-  b.extend(bytearray([len(urls[0]) + 2, 3]))
-  b.extend(urls[0])
+  b.extend(bytearray([num_urls + 5, 0, num_urls + 5, 0, 0]))
+  n = 1
+  for u in urls:
+    b.extend(bytearray([n]))
+    n += 1
 
-  # start with size of descriptor set header itself
-  total_origin_string_length = 4
-  origins = []
+  for u in urls:
+    if u.startswith("http://"):
+      scheme = 0
+      u = u[7:]
+    elif u.startswith("https://"):
+      scheme = 1
+      u = u[8:]
+    else:
+      print "Unrecognized scheme", u
+      sys.exit(1)
 
-  for o in urls[1:]:
-    descriptor_length = len(o) + 2
-    descriptor = bytearray([descriptor_length, 3]) + o
-    origins.append(descriptor)
-    total_origin_string_length += descriptor_length
+    b.extend(bytearray([len(u) + 3, 3, scheme]))
+    b.extend(u)
 
-  if total_origin_string_length > 128:
+  if len(b) > 128:
     print "Allowed origin lengths too big"
     sys.exit(1)
 
-  # https://reillyeon.github.io/webusb/#dfn-descriptor-set-header
-  # 4 = length of descriptor set header
-  # 0 = WEBUSB_DESCRIPTOR_SET_HEADER
-  # xxyy = total size of this and all following descriptors (big-endian)
-  b.extend(bytearray([4, 0, total_origin_string_length, 0]))
-  for o in origins:
-    b.extend(o)
   try:
-    result = dev.ctrl_transfer(0x40, WL_REQUEST_SET_WEBUSB_URLS, 0, 0, b)
+    result = dev.ctrl_transfer(0x40, WL_REQUEST_SET_WEBUSB_DESCRIPTOR_SET,
+                               0, 0, b)
+    print "Updated WEBUSB_DESCRIPTOR_SET", result
   except usb.core.USBError, e:
-    print "Failed to set URLs", e
+    print "Failed to set WEBUSB_DESCRIPTOR_SET", e
     sys.exit(1)
   if result != len(b):
-    print "Unexpected result while setting URLs", result
+    print "Unexpected result while setting WEBUSB_DESCRIPTOR_SET", result
     sys.exit(1)
 
 if options.urls:

@@ -48,4 +48,13 @@ void GenerateEEPROMData();
 uint8_t ReadLightProgram(uint8_t *opcode_buf, uint8_t opcode_buf_len);
 void WriteLightProgram(const uint8_t *opcode_buf, uint8_t opcode_buf_len);
 
+// index 0 is 3.3.1 Allowed Origins Header
+// index 1 is URL descriptor #1
+// index 2 is URL descriptor #2, etc.
+//
+// returns true if we found the requested index
+uint8_t GetDescriptorStart(uint8_t index,
+                           const uint8_t **pmResponsePtr,
+                           uint8_t *pmResponseBytesRemaining);
+
 #endif  // #if !defined(__EEPROM_H__)

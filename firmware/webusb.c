@@ -90,35 +90,7 @@ const uchar MS_OS_20_DESCRIPTOR_SET[MS_OS_20_DESCRIPTOR_LENGTH] PROGMEM = {
 };
 
 #define WEBUSB_REQUEST_GET_ALLOWED_ORIGINS (0x01)
-const uchar WEBUSB_ALLOWED_ORIGINS[] PROGMEM = {
-  // WebUSB allowed origins header
-  0x07,  // Descriptor size (7 bytes)
-  0x00,  // WebUSB allowed origins header
-  0x07, 0x00,  // Size, WebUSB allowed origins
-  0x00,  // Number of configuration subsets
-  0x01,  // Origin: https://sowbug.github.io
-  0x02,  // Origin: http://localhost:8000
-};
-
 #define WEBUSB_REQUEST_GET_URL (0x02)
-// URL descriptor 0x01 doubles as the first allowed origin and the
-// landing page.
-const uchar WEBUSB_ORIGIN_1[] PROGMEM = {
-  // WebUSB URL descriptor
-  0x1c,  // Descriptor size (? bytes)
-  0x03,  // WebUSB URL descriptor
-  0x01,  // URL prefix: https://
-  's', 'o', 'w', 'b', 'u', 'g', '.', 'g', 'i', 't', 'h', 'u', 'b', '.',
-  'i', 'o', '/', 'w', 'e', 'b', 'l', 'i', 'g', 'h', 't'
-};
-// URL descriptor 0x02 is for debugging purposes.
-const uchar WEBUSB_ORIGIN_2[] PROGMEM = {
-  // WebUSB URL descriptor
-  0x11,  // Descriptor size (? bytes)
-  0x03,  // WebUSB URL descriptor
-  0x00,  // URL prefix: http://
-  'l', 'o', 'c', 'a', 'l', 'h', 'o', 's', 't', ':', '8', '0', '0', '0'
-};
 
 const char usbDescriptorDevice[] PROGMEM = {  // USB device descriptor
   0x12,  // sizeof(usbDescriptorDevice): length of descriptor in bytes
@@ -247,21 +219,19 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
     ResetAppWatchdog(rq->wValue.word * 1000);
     break;
   case WL_REQUEST_WEBUSB: {
+    pmResponseIsEEPROM = true;
     switch (rq->wIndex.word) {
     case WEBUSB_REQUEST_GET_ALLOWED_ORIGINS:
-      pmResponsePtr = WEBUSB_ALLOWED_ORIGINS;
-      pmResponseBytesRemaining = sizeof(WEBUSB_ALLOWED_ORIGINS);
+      GetDescriptorStart(0, &pmResponsePtr, &pmResponseBytesRemaining);
       return USB_NO_MSG;
     case WEBUSB_REQUEST_GET_URL:
-      switch (rq->wValue.word) {
-        case 1:
-          pmResponsePtr = WEBUSB_ORIGIN_1;
-          pmResponseBytesRemaining = sizeof(WEBUSB_ORIGIN_1);
-          return USB_NO_MSG;
-        case 2:
-          pmResponsePtr = WEBUSB_ORIGIN_2;
-          pmResponseBytesRemaining = sizeof(WEBUSB_ORIGIN_2);
-          return USB_NO_MSG;
+      if (GetDescriptorStart(rq->wValue.word,
+                             &pmResponsePtr,
+                             &pmResponseBytesRemaining)) {
+        return USB_NO_MSG;
+      } else {
+        // Host is messing with us.
+        forceReset();
       }
     }
     break;
