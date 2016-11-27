@@ -17,10 +17,6 @@ DEVICE_VERSION_MINOR = 0
 
 USE_CANDLE = 0
 
-# Keyword SK9822. I'm not sure the batch I have is SK9822, or yet
-# another kind of poor APA102C copy.
-STUPID_COUNTERFEIT_APA102C = 1
-
 AVRDUDE = avrdude -c usbtiny -p $(DEVICE) -B 1
 WLCTL = ../commandline/wlctl
 MICRONUCLEUS = micronucleus
@@ -53,8 +49,7 @@ COMPILE = avr-gcc \
 									-ffunction-sections -Wl,-gc-sections \
 									-DLED_COUNT=$(LED_COUNT) \
 									-DDEVICE_VERSION_MAJOR=$(DEVICE_VERSION_MAJOR) \
-									-DDEVICE_VERSION_MINOR=$(DEVICE_VERSION_MINOR) \
-									-DSTUPID_COUNTERFEIT_APA102C=$(STUPID_COUNTERFEIT_APA102C)
+									-DDEVICE_VERSION_MINOR=$(DEVICE_VERSION_MINOR)
 
 # symbolic targets:
 help:

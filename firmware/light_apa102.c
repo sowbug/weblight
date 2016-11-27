@@ -62,15 +62,14 @@ void inline start_frame() {
 void inline end_frame(uint16_t leds) {
   leds >>= 4;
   do {
-    SPI_write(0xff);
+    SPI_write(0x00);
     SPI_write(0x00);
     SPI_write(0x00);
     SPI_write(0x00);
   } while (leds--);
 
-#if STUPID_COUNTERFEIT_APA102C
-    start_frame();
-#endif
+  // For SK9822. Thanks github.com/cpldcpu!
+  start_frame();
 }
 
 void inline apa102_setleds(struct cRGB *ledarray, uint16_t leds)
