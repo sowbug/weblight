@@ -5,6 +5,7 @@
 # Slow on OS X? See https://github.com/libusb/libusb/issues/108
 
 from sys import argv
+import array
 import binascii
 import struct
 import sys
@@ -16,6 +17,11 @@ VIDPIDPAIRS = {
     "Reilly's Hacked Arduino": (0x2341, 0x8036),
     "WebLight": (0x1209, 0xa800),
 }
+
+BOS_DESCRIPTOR_WEBUSB = array.array('B', [56, 182, 8, 52, 169, 9, 160, 71,
+                                          139, 253, 160, 118])
+BOS_DESCRIPTOR_WINUSB = array.array('B', [223, 96, 221, 216, 137, 69, 199,
+                                          76, 156, 210, 101, 157])
 
 if len(argv) < 3:
     print 'usage: %s <vid in hex> <pid in hex>' % argv[0]
@@ -67,82 +73,60 @@ def PrintDivider():
     print "\n=====\n"
 
 # BOS
-result = dev.ctrl_transfer(0x80, 6, 0x0f00, 0, 64)
+bos = dev.ctrl_transfer(0x80, 6, 0x0f00, 0, 64)
 PrintDivider()
-print "BOS", len(result), binascii.hexlify(result)
+print "BOS", len(bos), binascii.hexlify(bos)
 
-bosParts = \
-  struct.unpack('BBHB', result[0:5])
-bosLabels = ["Descriptor length", "Descriptor type",
-             "Total length", "Device caps count"]
-tIndex = 0
-for i in bosLabels:
-    print "%40s: %d" % (i, bosParts[tIndex])
-    tIndex += 1
+(bos_descriptor_length,
+ bos_descriptor_type,
+ bos_length,
+ device_capabilities_count) = struct.unpack('BBHB', bos[0:5])
 
-# https://reillyeon.github.io/webusb/#webusb-platform-capability-descriptor
-# Must be set to 23
-desc_len = result[5]
-if desc_len != 23:
-    print "Whoops, no WebUSB descriptor in BOS"
-    sys.exit(1)
+print "%40s: %d" % ("Descriptor length", bos_descriptor_length)
+print "%40s: %d" % ("Descriptor type", bos_descriptor_type)
+print "%40s: %d" % ("Total length", bos_length)
+print "%40s: %d" % ("Device caps count", device_capabilities_count)
 
-next_desc = result[5:5+desc_len]
-bosParts = struct.unpack('BBBB16BHB', next_desc)
+if bos_length != len(bos):
+  print "BOS declared length isn't sane"
+  sys.exit(1)
 
-# last byte is bVendorCode
-bVendorCode = bosParts[-1]
-print "%40s: %d" % ("WebUSB bVendorCode", bVendorCode)
-
-# MS_OS
-next_desc = result[5+desc_len:5+desc_len+28]
-bosParts = struct.unpack('BBBB16BBBBBHBB', next_desc)
-
-# second-to-last byte is bVendorCode
-bMSVendorCode = bosParts[-2]
-print "%40s: %d" % ("WinUSB bVendorCode", bMSVendorCode)
+bos_pointer = 5
 
 WEBUSB_REQUEST_GET_ALLOWED_ORIGINS = 1
-WEBUSB_REQUEST_GET_LANDING_PAGE = 2
+WEBUSB_REQUEST_GET_URL = 2
 
-PrintDivider()
+while bos_pointer < bos_length:
+  bLength = int(bos[bos_pointer])
+  descriptor = bos[bos_pointer:bos_pointer + bLength]
+  print 'descriptor', binascii.hexlify(descriptor)
 
-result = dev.ctrl_transfer(0xC0, bVendorCode, 0,
-    WEBUSB_REQUEST_GET_LANDING_PAGE, 253)
-print "GET_LANDING_PAGE", len(result), binascii.hexlify(result)
-landing_array = result[2:]
+  bDescriptorType = int(descriptor[1])
+  bDevCapabilityType = int(descriptor[2])
+  bReserved = int(descriptor[3])
+  PlatformCapabilityUUID = descriptor[4:16]
 
-print "WebUSB landing page: %s" % (landing_array.tostring())
+  print "Descriptor length", bLength, len(descriptor[20:24])
 
-PrintDivider()
+  if PlatformCapabilityUUID == BOS_DESCRIPTOR_WEBUSB:
+    print "WebUSB Descriptor"
+    bcdVersion, bVendorCode, iLandingPage = struct.unpack('HBB',
+                                                          descriptor[20:44])
 
-result = dev.ctrl_transfer(0xC0, bVendorCode, 0,
-    WEBUSB_REQUEST_GET_ALLOWED_ORIGINS, 253)
-print "GET_ALLOWED_ORIGINS", len(result), binascii.hexlify(result)
-origin_descriptor = result
-if origin_descriptor[0] != 4:
-    print "GET_ALLOWED_ORIGINS bLength must be 4."
-    sys.exit(1)
+    print "%40s: %x" % ("Protocol version (BCD)", bcdVersion)
+    print "%40s: %d" % ("Vendor-specific request", bVendorCode)
+    print "%40s: %d" % ("Landing page index", iLandingPage)
 
-def ParseOriginsDescriptorSet(s):
-    while len(s) > 0:
-        if s[1] != 3:
-            print "bDescriptorType must be WEBUSB_URL (3)."
-            sys.exit(1)
-        url = s[2:s[0]]
-        print "WebUSB URL:", url.tostring()
-        s = s[s[0]:]
+    result = dev.ctrl_transfer(0xC0, bVendorCode,
+                               WEBUSB_REQUEST_GET_URL, 2, 253)
+    print "landing page:", binascii.hexlify(result)
 
-origin_descriptor_set_length = (origin_descriptor[2] +
-                                (origin_descriptor[3] << 8))
-ParseOriginsDescriptorSet(
-    origin_descriptor[4:4+origin_descriptor_set_length])
+  if PlatformCapabilityUUID == BOS_DESCRIPTOR_WINUSB:
+    print "WinUSB Descriptor"
+
+#  parse_bos_descriptor(descriptor)
+  bos_pointer += bLength
 
 PrintDivider()
 
 WINUSB_REQUEST_MS_OS_20_DESCRIPTOR = 7
-result = dev.ctrl_transfer(0xC0, bMSVendorCode, 0,
-    WINUSB_REQUEST_MS_OS_20_DESCRIPTOR, 253)
-print "MS_OS_20_DESCRIPTOR", len(result), binascii.hexlify(result)
-
-PrintDivider()
