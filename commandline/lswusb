@@ -23,6 +23,48 @@ BOS_DESCRIPTOR_WEBUSB = array.array('B', [56, 182, 8, 52, 169, 9, 160, 71,
 BOS_DESCRIPTOR_WINUSB = array.array('B', [223, 96, 221, 216, 137, 69, 199,
                                           76, 156, 210, 101, 157])
 
+WEBUSB_DESCRIPTOR_SET_HEADER = 0
+WEBUSB_URL = 3
+
+def ParseURLDescriptor(r):
+  WEBUSB_SCHEME_HTTP = 0
+  WEBUSB_SCHEME_HTTPS = 1
+  if int(r[0]) != len(r):
+    print "URL Descriptor bLength incorrect"
+    sys.exit(1)
+
+  bDescriptorType = int(r[1])
+  if bDescriptorType != WEBUSB_URL:
+    print "URL Descriptor bDescriptorType unexpected:", bDescriptorType
+    sys.exit(1)
+
+  bScheme = int(r[2])
+  scheme = None
+  if bScheme == WEBUSB_SCHEME_HTTP:
+    scheme = "http://"
+  elif bScheme == WEBUSB_SCHEME_HTTPS:
+    scheme = "https://"
+  else:
+    print "URL Descriptor bScheme unexpected:", bScheme
+    sys.exit(1)
+
+  return "%s%s" % (scheme, r[3:].tostring())
+
+def ParseGetAllowedOrigins(dev, r):
+  bLength = int(r[0])
+
+  bDescriptorType = int(r[1])
+  if bDescriptorType != WEBUSB_DESCRIPTOR_SET_HEADER:
+    print "URL Descriptor bDescriptorType unexpected:", bDescriptorType
+    sys.exit(1)
+  ss = ["Count: %d" % int(bLength - 5)]
+  for i in range(0, bLength - 5):
+    iOrigin = int(r[5] + i)
+    result = dev.ctrl_transfer(0xC0, bVendorCode,
+                               iOrigin, WEBUSB_REQUEST_GET_URL, 253)
+    ss.append("%d: %s" % (iOrigin, ParseURLDescriptor(result)))
+  return "\n".join(ss)
+
 if len(argv) < 3:
     print 'usage: %s <vid in hex> <pid in hex>' % argv[0]
     print '\nCommon VID/PID pairs:\n'
@@ -99,14 +141,11 @@ WEBUSB_REQUEST_GET_URL = 2
 while bos_pointer < bos_length:
   bLength = int(bos[bos_pointer])
   descriptor = bos[bos_pointer:bos_pointer + bLength]
-  print 'descriptor', binascii.hexlify(descriptor)
 
   bDescriptorType = int(descriptor[1])
   bDevCapabilityType = int(descriptor[2])
   bReserved = int(descriptor[3])
   PlatformCapabilityUUID = descriptor[4:16]
-
-  print "Descriptor length", bLength, len(descriptor[20:24])
 
   if PlatformCapabilityUUID == BOS_DESCRIPTOR_WEBUSB:
     print "WebUSB Descriptor"
@@ -118,11 +157,12 @@ while bos_pointer < bos_length:
     print "%40s: %d" % ("Landing page index", iLandingPage)
 
     result = dev.ctrl_transfer(0xC0, bVendorCode,
-                               WEBUSB_REQUEST_GET_URL, 2, 253)
-    print "landing page:", binascii.hexlify(result)
+                               0, WEBUSB_REQUEST_GET_ALLOWED_ORIGINS, 253)
+    print "GET_ALLOWED_ORIGINS:", ParseGetAllowedOrigins(dev, result)
 
   if PlatformCapabilityUUID == BOS_DESCRIPTOR_WINUSB:
-    print "WinUSB Descriptor"
+    print "WinUSB Descriptor %d %s" % (bLength, binascii.hexlify(descriptor))
+
 
 #  parse_bos_descriptor(descriptor)
   bos_pointer += bLength
