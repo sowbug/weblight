@@ -117,7 +117,7 @@ def PrintDivider():
 # BOS
 bos = dev.ctrl_transfer(0x80, 6, 0x0f00, 0, 64)
 PrintDivider()
-print "BOS", len(bos), binascii.hexlify(bos)
+print "BOS", len(bos)
 
 (bos_descriptor_length,
  bos_descriptor_type,
@@ -163,10 +163,4 @@ while bos_pointer < bos_length:
   if PlatformCapabilityUUID == BOS_DESCRIPTOR_WINUSB:
     print "WinUSB Descriptor %d %s" % (bLength, binascii.hexlify(descriptor))
 
-
-#  parse_bos_descriptor(descriptor)
   bos_pointer += bLength
-
-PrintDivider()
-
-WINUSB_REQUEST_MS_OS_20_DESCRIPTOR = 7
