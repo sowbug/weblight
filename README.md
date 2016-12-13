@@ -136,7 +136,7 @@ FAQ
 Acknowledgments
 ===
 
-* Jenna Fox ([bluebie](https://github.com/bluebie)) and Tim ([cpldcpu](https://github.com/cpldcpu/)) for micronucleus advice.
+* Jenna Fox ([bluebie](https://github.com/bluebie)) and Tim ([cpldcpu](https://github.com/cpldcpu/)) for micronucleus advice. (Update December 2016: [Tim's article about SK9822](https://cpldcpu.com/2016/12/13/sk9822-a-clone-of-the-apa102/).)
 * bobhackmelb on freenode for advice on PCB manufacturing, specifically thickness.
 * [Passerby](http://electronics.stackexchange.com/users/17178/passerby) for help [reverse-engineering](http://electronics.stackexchange.com/questions/209941/two-sided-connectorless-usb-on-a-pcb) the double-sided USB connector.
 * [gerblook.org](http://gerblook.org/) for an awesome Gerber visualizer.
