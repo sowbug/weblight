@@ -18,7 +18,7 @@ static unsigned char leds_need_update = 0;
 void UpdateLEDs() {
   if (leds_need_update) {
     leds_need_update = 0;
-    apa102_setleds(led, LED_COUNT);
+    apa102_setleds_brightness(led, LED_COUNT, 31);
   }
 }
 
