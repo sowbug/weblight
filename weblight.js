@@ -34,24 +34,15 @@ function ab2str(buf) {
 
   webusb.Device = function(device) {
     this.device_ = device;
-    if (device.guid === undefined)
-      webusb.devices[device] = this
-    else
-      webusb.devices[device.guid] = this;
+    webusb.devices[device.serialNumber] = this;
   };
 
   webusb.deleteDevice = function(device) {
-    if (device.device_.guid === undefined)
-      delete webusb.devices[device.device_];
-    else
-      delete webusb.devices[device.device_.guid];
+    delete webusb.devices[device.device_.serialNumber];
   };
 
   webusb.getDevice = function(device) {
-    if (device.guid === undefined)
-      return webusb.devices[device];
-    else
-      return webusb.devices[device.guid];
+    return webusb.devices[device.serialNumber];
   };
 
   webusb.Device.prototype.connect = function() {
