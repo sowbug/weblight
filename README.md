@@ -133,6 +133,8 @@ FAQ
 
 * **I don't want to build a board, but I'd like one. Will you sell me one?** I don't have plans to mass-produce boards for sale. But if you're interested in getting one, [subscribe to notifications for this issue](https://github.com/sowbug/weblight/issues/31).
 
+* **What's this Origin Trial thing that's needed for deployment of a WebUSB-based project?** Since WebUSB isn't yet standardized, but the Chrome team wants to get real developer feedback on the API, they've developed a mechanism to selectively enable experimental versions of APIs on specific origins. Go to https://bit.ly/OriginTrialSignup to get your own, and visit https://jpchase.github.io/OriginTrials/check-token.html if you want to see the internals of a token.
+
 Acknowledgments
 ===
 
