@@ -180,6 +180,7 @@ usbMsgLen_t usbFunctionSetup(uchar data[8]) {
   case WL_REQUEST_COLOR:
   case WL_REQUEST_TRANSITION:
   case WL_REQUEST_PAUSE:
+  case WL_REQUEST_SELECT_LEDS:
     currentPosition = 0;
     bytesRemaining = rq->wLength.word;
     if (bytesRemaining > sizeof(buffer)) {
@@ -321,6 +322,12 @@ USB_PUBLIC uchar usbFunctionWrite(uchar *data, uchar len) {
         Stop();
       }
       HandleTRANSITION(buffer[0], (buffer[1] << 8) | buffer[2]);
+      break;
+    case WL_REQUEST_SELECT_LEDS:
+      if (!IsRecording()) {
+        Stop();
+      }
+      HandleSELECT((buffer[2] << 8) | (buffer[3]));
       break;
     }
   }

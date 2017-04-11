@@ -17,12 +17,14 @@ typedef enum {
   COLOR = 0,
   TRANSITION = 1,
   PAUSE = 2,
-  HALT = 3
+  HALT = 3,
+  SELECT = 4
 } Command;
 
 void HandleCOLOR(uint8_t r, uint8_t g, uint8_t b);
 void HandleTRANSITION(Transition t, uint16_t duration_msec);
 void HandlePAUSE(uint16_t duration_msec);
+void HandleSELECT(uint16_t led_mask);
 void HandleHALT();
 
 uint8_t IsRecording();
