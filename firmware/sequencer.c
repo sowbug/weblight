@@ -73,7 +73,8 @@ static uint8_t ProcessTransition() {
     current_r += delta_r * elapsed_since_last_cycle_msec;
     current_g += delta_g * elapsed_since_last_cycle_msec;
     current_b += delta_b * elapsed_since_last_cycle_msec;
-    SetLEDs(current_selected_leds, current_r >> 8, current_g >> 8, current_b >> 8);
+    SetLEDs(current_selected_leds, current_r >> 8, current_g >> 8,
+            current_b >> 8);
     break;
   }
   return true;
@@ -82,10 +83,11 @@ static uint8_t ProcessTransition() {
 void HandleCOLOR(uint8_t r, uint8_t g, uint8_t b) {
   if (is_recording) {
     VerifySequenceCapacity(4);
-    opcodes[opcode_count++] = COLOR;
-    opcodes[opcode_count++] = r;
-    opcodes[opcode_count++] = g;
-    opcodes[opcode_count++] = b;
+    opcodes[opcode_count] = COLOR;
+    opcodes[opcode_count + 1] = r;
+    opcodes[opcode_count + 2] = g;
+    opcodes[opcode_count + 3] = b;
+    opcode_count += 4;
   } else {
     is_transition_in_progress = true;
     remaining_transition_duration_msec = current_transition_duration_msec;
@@ -100,9 +102,7 @@ void HandleCOLOR(uint8_t r, uint8_t g, uint8_t b) {
       delta_g = (end_g - current_g) / current_transition_duration_msec;
       delta_b = (end_b - current_b) / current_transition_duration_msec;
     } else {
-      delta_r = 0;
-      delta_g = 0;
-      delta_b = 0;
+      delta_r = delta_g = delta_b = 0;
     }
     ProcessTransition();
   }
@@ -111,10 +111,11 @@ void HandleCOLOR(uint8_t r, uint8_t g, uint8_t b) {
 void HandleTRANSITION(Transition t, uint16_t duration_msec) {
   if (is_recording) {
     VerifySequenceCapacity(4);
-    opcodes[opcode_count++] = TRANSITION;
-    opcodes[opcode_count++] = t;
-    opcodes[opcode_count++] = duration_msec >> 8;
-    opcodes[opcode_count++] = duration_msec & 0xff;
+    opcodes[opcode_count] = TRANSITION;
+    opcodes[opcode_count + 1] = t;
+    opcodes[opcode_count + 2] = duration_msec >> 8;
+    opcodes[opcode_count + 3] = duration_msec & 0xff;
+    opcode_count += 4;
   } else {
     current_transition = t;
     current_transition_duration_msec = duration_msec;
@@ -124,9 +125,10 @@ void HandleTRANSITION(Transition t, uint16_t duration_msec) {
 void HandlePAUSE(uint16_t duration_msec) {
   if (is_recording) {
     VerifySequenceCapacity(3);
-    opcodes[opcode_count++] = PAUSE;
-    opcodes[opcode_count++] = duration_msec >> 8;
-    opcodes[opcode_count++] = duration_msec & 0xff;
+    opcodes[opcode_count] = PAUSE;
+    opcodes[opcode_count + 1] = duration_msec >> 8;
+    opcodes[opcode_count + 2] = duration_msec & 0xff;
+    opcode_count += 3;
   } else {
     pause_duration_msec = duration_msec;
   }
@@ -135,9 +137,10 @@ void HandlePAUSE(uint16_t duration_msec) {
 void HandleSELECT(uint16_t led_mask) {
   if (is_recording) {
     VerifySequenceCapacity(3);
-    opcodes[opcode_count++] = SELECT;
-    opcodes[opcode_count++] = (led_mask >> 8) & 0xff;
-    opcodes[opcode_count++] = led_mask & 0xff;
+    opcodes[opcode_count] = SELECT;
+    opcodes[opcode_count + 1] = (led_mask >> 8) & 0xff;
+    opcodes[opcode_count + 2] = led_mask & 0xff;
+    opcode_count += 3;
   } else {
     current_selected_leds = led_mask;
   }
@@ -220,27 +223,27 @@ void Run(uint16_t msec_since_last) {
     return;
   }
 
+  uint8_t amount_to_advance = 4;
   switch (opcodes[oi]) {
   case COLOR:
     HandleCOLOR(opcodes[oi + 1], opcodes[oi + 2], opcodes[oi + 3]);
-    AdvanceSequencePointer(4);
     break;
   case TRANSITION:
     HandleTRANSITION(opcodes[oi + 1], (opcodes[oi + 2] << 8) | opcodes[oi + 3]);
-    AdvanceSequencePointer(4);
     break;
   case PAUSE:
     HandlePAUSE((opcodes[oi + 1] << 8) | opcodes[oi + 2]);
-    AdvanceSequencePointer(3);
+    amount_to_advance = 3;
     break;
   case SELECT:
     HandleSELECT((opcodes[oi + 1] << 8) | opcodes[oi + 2]);
-    AdvanceSequencePointer(3);
+    amount_to_advance = 3;
   case HALT:
     HandleHALT();
-    // Don't advance. Just spin.
-    break;
+    // Return early to skip AdvanceSequencePointerDon't advance. Just spin.
+    return;
   }
+  AdvanceSequencePointer(amount_to_advance);
 }
 
 void Save() {

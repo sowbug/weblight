@@ -327,7 +327,7 @@ USB_PUBLIC uchar usbFunctionWrite(uchar *data, uchar len) {
       if (!IsRecording()) {
         Stop();
       }
-      HandleSELECT((buffer[2] << 8) | (buffer[3]));
+      HandleSELECT((buffer[0] << 8) | (buffer[1]));
       break;
     }
   }

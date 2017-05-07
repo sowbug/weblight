@@ -268,12 +268,17 @@ if options.stress:
 
 if options.select_leds:
   if options.select_leds == 'all':
-    options.select_leds = 0xFFFFFFFF;
+    options.select_leds = 0xFFFF;  # SELECT_ALL_LEDS
   else:
     options.select_leds = int(options.select_leds[2:], 16) \
       if options.select_leds.startswith('0x') \
       else reduce(int.__or__,
               [1<<int(x) for x in options.select_leds.split(',')])
+  select_leds_as_hex_mask = "%0.4X" % options.select_leds
+  bytes = binascii.unhexlify(select_leds_as_hex_mask[-4:])
+  result = dev.ctrl_transfer(0x40, WL_REQUEST_SELECT_LEDS, 0, 0, bytes)
+  if result != len(bytes):
+    raise IOError('Error', result)
 
 if len(args) == 0:
   parser.print_usage()
