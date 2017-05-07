@@ -16,6 +16,7 @@ WL_REQUEST_SAVE = 8
 WL_REQUEST_LOAD = 9
 WL_REQUEST_EFFECT = 10
 WL_REQUEST_RESET_WATCHDOG = 11
+WL_REQUEST_SELECT_LEDS = 12
 WL_REQUEST_SET_SERIAL = 64
 WL_REQUEST_SET_WEBUSB_DESCRIPTOR_SET = 251
 WL_REQUEST_RESET_DEVICE = 253
@@ -76,6 +77,8 @@ parser.add_option("-u", "--urls", action="store_true", default=False,
                   "one or more allowed origins)")
 parser.add_option("-s", "--serial",
                   help="specify the serial number of the device to address")
+parser.add_option("-i", "--select-leds", default="all",
+                  help="specify a bitmask of which LEDs to control, or 'all'")
 parser.add_option("--regenerate-serial", action="store_true", default=False,
                   help="write a new serial number to the device")
 parser.add_option("--save", action="store_true", default=False,
@@ -262,6 +265,15 @@ if options.stress:
     sys.stdout.write("\rIterations: %10d  Time: %10.1f" % (count, elapsed))
     sys.stdout.flush()
   sys.exit(0)
+
+if options.select_leds:
+  if options.select_leds == 'all':
+    options.select_leds = 0xFFFFFFFF;
+  else:
+    options.select_leds = int(options.select_leds[2:], 16) \
+      if options.select_leds.startswith('0x') \
+      else reduce(int.__or__,
+              [1<<int(x) for x in options.select_leds.split(',')])
 
 if len(args) == 0:
   parser.print_usage()

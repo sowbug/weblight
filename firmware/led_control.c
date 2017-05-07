@@ -35,10 +35,12 @@ void SetLED(uint8_t i, uint8_t r, uint8_t g, uint8_t b) {
   leds_need_update = 1;
 }
 
-void SetLEDs(uint8_t r, uint8_t g, uint8_t b) {
+void SetLEDs(uint16_t led_mask, uint8_t r, uint8_t g, uint8_t b) {
   uint8_t i;
   for (i = 0; i < LED_COUNT; ++i) {
-    SetLED(i, r, g, b);
+    if (led_mask == SELECT_ALL_LEDS || (led_mask >> i) & 0x1) {
+      SetLED(i, r, g, b);
+    }
   }
 }
 

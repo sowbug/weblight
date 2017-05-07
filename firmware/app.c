@@ -66,7 +66,7 @@ void AppRun(App *ctx) {
       break;
 #endif
     case WATCHDOG_EXPIRATION:
-      SetLEDs(app_watchdog_led_intensity, 0, 0);
+      SetLEDs(SELECT_ALL_LEDS, app_watchdog_led_intensity, 0, 0);
       app_watchdog_led_intensity += app_watchdog_led_intensity_delta;
       if (app_watchdog_led_intensity > 96 ||
           app_watchdog_led_intensity < 8) {

@@ -31,6 +31,7 @@ uint16_t current_transition_duration_msec = 0;
 uint8_t is_transition_in_progress = false;
 uint16_t remaining_transition_duration_msec = 0;
 uint16_t pause_duration_msec = 0;
+uint16_t current_selected_leds = SELECT_ALL_LEDS;
 
 // See http://goo.gl/dj7Glt for more than you ever wanted to know
 // about division on the AVR.
@@ -58,7 +59,7 @@ static uint8_t ProcessTransition() {
   }
   if (remaining_transition_duration_msec == 0) {
     is_transition_in_progress = false;
-    SetLEDs(end_r >> 8, end_g >> 8, end_b >> 8);
+    SetLEDs(current_selected_leds, end_r >> 8, end_g >> 8, end_b >> 8);
     return false;
   }
 
@@ -72,7 +73,7 @@ static uint8_t ProcessTransition() {
     current_r += delta_r * elapsed_since_last_cycle_msec;
     current_g += delta_g * elapsed_since_last_cycle_msec;
     current_b += delta_b * elapsed_since_last_cycle_msec;
-    SetLEDs(current_r >> 8, current_g >> 8, current_b >> 8);
+    SetLEDs(current_selected_leds, current_r >> 8, current_g >> 8, current_b >> 8);
     break;
   }
   return true;
@@ -128,6 +129,17 @@ void HandlePAUSE(uint16_t duration_msec) {
     opcodes[opcode_count++] = duration_msec & 0xff;
   } else {
     pause_duration_msec = duration_msec;
+  }
+}
+
+void HandleSELECT(uint16_t led_mask) {
+  if (is_recording) {
+    VerifySequenceCapacity(3);
+    opcodes[opcode_count++] = SELECT;
+    opcodes[opcode_count++] = (led_mask >> 8) & 0xff;
+    opcodes[opcode_count++] = led_mask & 0xff;
+  } else {
+    current_selected_leds = led_mask;
   }
 }
 
@@ -221,6 +233,9 @@ void Run(uint16_t msec_since_last) {
     HandlePAUSE((opcodes[oi + 1] << 8) | opcodes[oi + 2]);
     AdvanceSequencePointer(3);
     break;
+  case SELECT:
+    HandleSELECT((opcodes[oi + 1] << 8) | opcodes[oi + 2]);
+    AdvanceSequencePointer(3);
   case HALT:
     HandleHALT();
     // Don't advance. Just spin.

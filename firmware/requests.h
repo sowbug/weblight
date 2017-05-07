@@ -14,7 +14,7 @@
 // with random data to test the reliability of the communication.
 #define WL_REQUEST_ECHO (0)
 
-// Sets the RGB color of all LEDs. Control-OUT.
+// Sets the RGB color of all selected LEDs. Control-OUT.
 //
 // uint8 red
 // uint8 green
@@ -71,6 +71,13 @@
 // again within that number of seconds, the device switches to a
 // visual alert.
 #define WL_REQUEST_RESET_WATCHDOG (11)
+
+// Select a subset of LEDs to which subsequent WL_REQUEST_COLOR commands 
+// will be applied. Argument is a big-endian 16-bit mask of LED IDs. 
+// 0xFFFF (the default) will apply to all LEDs.
+//
+// uint16 led_bitmask
+#define WL_REQUEST_SELECT_LEDS (12)
 
 // Sets the device's serial number. Control-OUT.
 //
