@@ -1,0 +1,92 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+
+<dom-module id="weblight-card">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+
+    <paper-card heading="{{device.serialNumber}}">
+      <div class="card-content">
+        Pick a color: <input id="lightPicker" type="color" on-change="lightCustom">
+      </div>
+      <div class="card-actions">
+        <paper-button on-tap="lightRed">Red</paper-button>
+        <paper-button on-tap="lightGreen">Green</paper-button>
+        <paper-button on-tap="lightBlue">Blue</paper-button>
+        <paper-button on-tap="lightWhite">White</paper-button>
+        <paper-button on-tap="lightOff">Off</paper-button>
+      </div>
+    </paper-card>
+  </template>
+
+  <script>
+    function componentToHex(c) {
+      let hex = c.toString(16);
+      return hex.length == 1 ? '0' + hex : hex;
+    }
+
+    function rgbToHex(r, g, b) {
+      return '#' + componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
+
+    function hexToRgb(hex) {
+      let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16),
+      } : null;
+    }
+
+    class WebLightCard extends Polymer.Element {
+      static get is() { return 'weblight-card'; }
+
+      async setDeviceColor(r, g, b) {
+        if (this.device.opened) {
+          await this.device.controlTransferOut({
+            requestType: 'vendor',
+            recipient: 'device',
+            request: 1,
+            value: 0,
+            index: 0,
+          }, new Uint8Array([r, g, b]));
+          this.$.lightPicker.value = rgbToHex(r, g, b);
+        }
+      }
+
+      lightRed() {
+        this.setDeviceColor(64, 0, 0);
+      }
+
+      lightGreen() {
+        this.setDeviceColor(0, 64, 0);
+      }
+
+      lightBlue() {
+        this.setDeviceColor(0, 0, 64);
+      }
+
+      lightWhite() {
+        this.setDeviceColor(255, 255, 255);
+      }
+
+      lightOff() {
+        this.setDeviceColor(0, 0, 0);
+      }
+
+      lightCustom() {
+        let color = hexToRgb(this.$.lightPicker.value);
+        this.setDeviceColor(color.r, color.g, color.b);
+      }
+    }
+
+    window.customElements.define(WebLightCard.is, WebLightCard);
+  </script>
+</dom-module>

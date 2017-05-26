@@ -1,0 +1,104 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="weblight-card.html">
+
+<dom-module id="weblight-app">
+  <template>
+    <style>
+      app-header {
+        color: #fff;
+        background-color: #4285f4;
+      }
+
+      paper-card {
+        margin: 10px;
+      }
+    </style>
+
+    <!-- Main content -->
+    <app-header condenses reveals>
+      <app-toolbar>
+        <div main-title>WebLight</div>
+        <paper-icon-button icon="add" on-tap="addLight"></paper-icon-button>
+      </app-toolbar>
+    </app-header>
+
+    <div class="layout vertical">
+      <paper-card>
+        <div class="card-content">
+          <h2>WebUSB</h2>
+          <p>
+            <a href="https://wicg.github.io/webusb/">WebUSB specification</a>
+          </p>
+          <h2>WebLight</h2>
+          <p>
+            <a href="https://github.com/sowbug/weblight/">WebLight</a>
+          </p>
+          <p>
+            Don't see your device below? Grant this site permission to access
+            it by clicking the "+" button in the toolbar.
+          </p>
+        </div>
+      </paper-card>
+
+      <template is="dom-repeat" items="{{devices}}">
+        <weblight-card device=[[item]]></weblight-card>
+      </template>
+    </div>
+  </template>
+
+  <script>
+    async function connectDevice(device) {
+      await device.open();
+      if (device.configuration === null)
+        await device.selectConfiguration(1);
+      await device.claimInterface(0);
+    }
+
+    class MyApp extends Polymer.Element {
+      static get is() { return 'weblight-app'; }
+
+      async connectedCallback() {
+        super.connectedCallback();
+
+        navigator.usb.addEventListener('connect', (event) => {
+          this.push('devices', event.device);
+          connectDevice(event.device);
+        });
+
+        navigator.usb.addEventListener('disconnect', (event) => {
+          let index = this.devices.indexOf(event.device);
+          this.splice('devices', index, 1);
+        });
+
+        navigator.usb.getDevices().then((devices) => {
+          this.devices = devices;
+          devices.forEach(connectDevice);
+        });
+      }
+
+      async addLight() {
+        const filters = [
+          {vendorId: 0x1209, productId: 0xa800},
+        ];
+        try {
+          let device = await navigator.usb.requestDevice({filters: filters});
+          let index = this.devices.indexOf(device);
+          if (index === -1) {
+            this.push('devices', device);
+            connectDevice(device);
+          }
+        } catch (error) {
+          // Ignore "no device selected" error.
+        }
+      }
+    }
+
+    window.customElements.define(MyApp.is, MyApp);
+  </script>
+</dom-module>

@@ -42,3 +42,8 @@
 *.elf
 *.tmp
 .DS_Store
+
+# Polymer app
+software/bower_components/
+software/build/
+software/node_modules/
