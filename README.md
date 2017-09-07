@@ -106,7 +106,7 @@ FAQ
 ===
 
 * **What is WebUSB?** It's a [new web
-  standard](https://reillyeon.github.io/webusb/) that will make it
+  standard](https://reillyeon.github.io/webusb/) that makes it
   easy to write a USB driver once (in JavaScript) and have it work
   everywhere that WebUSB is supported.
 
@@ -133,7 +133,7 @@ FAQ
 
 * **I don't want to build a board, but I'd like one. Will you sell me one?** I don't have plans to mass-produce boards for sale. But if you're interested in getting one, [subscribe to notifications for this issue](https://github.com/sowbug/weblight/issues/31).
 
-* **What's this Origin Trial thing that's needed for deployment of a WebUSB-based project?** Since WebUSB isn't yet standardized, but the Chrome team wants to get real developer feedback on the API, they've developed a mechanism to selectively enable experimental versions of APIs on specific origins. Go to https://bit.ly/OriginTrials to learn more, https://bit.ly/OriginTrialSignup to get your own, and https://jpchase.github.io/OriginTrials/check-token.html if you want to see the internals of a token.
+* **I remember reading something about Origin Trials. What does that have to do with WebUSB?** Chrome 61 and beyond ship with WebUSB, so if your users are running up-to-date Chrome, you're all set! But in case you're curious, the Chrome team has a system called Origin Trials for gathering real developer feedback on provisional APIs. Go to https://bit.ly/OriginTrials to learn more.
 
 Acknowledgments
 ===
@@ -142,3 +142,4 @@ Acknowledgments
 * bobhackmelb on freenode for advice on PCB manufacturing, specifically thickness.
 * [Passerby](http://electronics.stackexchange.com/users/17178/passerby) for help [reverse-engineering](http://electronics.stackexchange.com/questions/209941/two-sided-connectorless-usb-on-a-pcb) the double-sided USB connector.
 * [gerblook.org](http://gerblook.org/) for an awesome Gerber visualizer.
+* [Lars Knudsen](https://github.com/larsgk) for keeping docs up to date.
