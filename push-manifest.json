@@ -1,0 +1,9 @@
+{
+  "src/weblight-app.html": {
+    "src/weblight-card.html": {
+      "type": "document",
+      "weight": 1
+    }
+  },
+  "src/weblight-card.html": {}
+}

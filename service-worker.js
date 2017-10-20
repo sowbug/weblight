@@ -1,126 +1,268 @@
-// https://googlechrome.github.io/samples/service-worker/read-through-caching/service-worker.js
-
-/*
- Copyright 2014 Google Inc. All Rights Reserved. Licensed under the Apache
- License, Version 2.0 (the "License"); you may not use this file except in
- compliance with the License. You may obtain a copy of the License at
- http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law
- or agreed to in writing, software distributed under the License is distributed
- on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- express or implied. See the License for the specific language governing
- permissions and limitations under the License.
+/**
+ * Copyright 2016 Google Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
 */
 
-// While overkill for this specific sample in which there is only one cache,
-// this is one best practice that can be followed in general to keep track of
-// multiple caches used by a given service worker, and keep them all versioned.
-// It maps a shorthand identifier for a cache to a specific, versioned cache
-// name.
+// DO NOT EDIT THIS GENERATED OUTPUT DIRECTLY!
+// This file should be overwritten as part of your build process.
+// If you need to extend the behavior of the generated service worker, the best approach is to write
+// additional code and include it using the importScripts option:
+//   https://github.com/GoogleChrome/sw-precache#importscripts-arraystring
+//
+// Alternatively, it's possible to make changes to the underlying template file and then use that as the
+// new base for generating output, via the templateFilePath option:
+//   https://github.com/GoogleChrome/sw-precache#templatefilepath-string
+//
+// If you go that route, make sure that whenever you update your sw-precache dependency, you reconcile any
+// changes made to this original template file with your modified copy.
 
-// Note that since global state is discarded in between service worker
-// restarts, these variables will be reinitialized each time the service worker
-// handles an event, and you should not attempt to change their values inside
-// an event handler. (Treat them as constants.)
+// This generated service worker JavaScript will precache your site's resources.
+// The code needs to be saved in a .js file at the top-level of your site, and registered
+// from your pages in order to be used. See
+// https://github.com/googlechrome/sw-precache/blob/master/demo/app/js/service-worker-registration.js
+// for an example of how you can register this script and handle various service worker events.
 
-// If at any point you want to force pages that use this service worker to
-// start using a fresh cache, then increment the CACHE_VERSION value. It will
-// kick off the service worker update flow and the old cache(s) will be purged
-// as part of the activate event handler when the updated service worker is
-// activated.
-var CACHE_VERSION = 9;
-var CURRENT_CACHES = {
-  'read-through': 'read-through-cache-v' + CACHE_VERSION
-};
+/* eslint-env worker, serviceworker */
+/* eslint-disable indent, no-unused-vars, no-multiple-empty-lines, max-nested-callbacks, space-before-function-paren, quotes, comma-spacing */
+'use strict';
+
+var precacheConfig = [["bower_components/webcomponentsjs/custom-elements-es5-adapter.js","a5043c1d0dd16d84558ee6cc2276212e"],["bower_components/webcomponentsjs/gulpfile.js","0366da1f0f7858c9af2daa3ef7d950ea"],["bower_components/webcomponentsjs/webcomponents-hi-ce.js","fbaa6751e3b07a33a459ebbbd24a4ede"],["bower_components/webcomponentsjs/webcomponents-hi-sd-ce.js","f06beb1fba0a9020e116162370e3ef16"],["bower_components/webcomponentsjs/webcomponents-hi.js","487ac7582563f4797e9e3659a096a642"],["bower_components/webcomponentsjs/webcomponents-lite.js","b591b76678e2f5d584eff169fd0ff2f8"],["bower_components/webcomponentsjs/webcomponents-loader.js","f13bbbbf647b7922575a7894367ddaaf"],["bower_components/webcomponentsjs/webcomponents-sd-ce.js","e229eae539aba7a4d2400316e6603b0d"],["index.html","d0bac2affcb56dabe583cbe44553ad0b"],["manifest.json","6addd4eeff5b4062962cfe66900826f2"],["src/weblight-app.html","5933c2e8538b27d3636fc8355c71027f"],["src/weblight-card.html","10c9717eda1078e1370495cf04a29f98"]];
+var cacheName = 'sw-precache-v3--' + (self.registration ? self.registration.scope : '');
+
+
+var ignoreUrlParametersMatching = [/^utm_/];
+
+
+
+var addDirectoryIndex = function (originalUrl, index) {
+    var url = new URL(originalUrl);
+    if (url.pathname.slice(-1) === '/') {
+      url.pathname += index;
+    }
+    return url.toString();
+  };
+
+var cleanResponse = function (originalResponse) {
+    // If this is not a redirected response, then we don't have to do anything.
+    if (!originalResponse.redirected) {
+      return Promise.resolve(originalResponse);
+    }
+
+    // Firefox 50 and below doesn't support the Response.body stream, so we may
+    // need to read the entire body to memory as a Blob.
+    var bodyPromise = 'body' in originalResponse ?
+      Promise.resolve(originalResponse.body) :
+      originalResponse.blob();
+
+    return bodyPromise.then(function(body) {
+      // new Response() is happy when passed either a stream or a Blob.
+      return new Response(body, {
+        headers: originalResponse.headers,
+        status: originalResponse.status,
+        statusText: originalResponse.statusText
+      });
+    });
+  };
+
+var createCacheKey = function (originalUrl, paramName, paramValue,
+                           dontCacheBustUrlsMatching) {
+    // Create a new URL object to avoid modifying originalUrl.
+    var url = new URL(originalUrl);
+
+    // If dontCacheBustUrlsMatching is not set, or if we don't have a match,
+    // then add in the extra cache-busting URL parameter.
+    if (!dontCacheBustUrlsMatching ||
+        !(url.pathname.match(dontCacheBustUrlsMatching))) {
+      url.search += (url.search ? '&' : '') +
+        encodeURIComponent(paramName) + '=' + encodeURIComponent(paramValue);
+    }
+
+    return url.toString();
+  };
+
+var isPathWhitelisted = function (whitelist, absoluteUrlString) {
+    // If the whitelist is empty, then consider all URLs to be whitelisted.
+    if (whitelist.length === 0) {
+      return true;
+    }
+
+    // Otherwise compare each path regex to the path of the URL passed in.
+    var path = (new URL(absoluteUrlString)).pathname;
+    return whitelist.some(function(whitelistedPathRegex) {
+      return path.match(whitelistedPathRegex);
+    });
+  };
+
+var stripIgnoredUrlParameters = function (originalUrl,
+    ignoreUrlParametersMatching) {
+    var url = new URL(originalUrl);
+    // Remove the hash; see https://github.com/GoogleChrome/sw-precache/issues/290
+    url.hash = '';
+
+    url.search = url.search.slice(1) // Exclude initial '?'
+      .split('&') // Split into an array of 'key=value' strings
+      .map(function(kv) {
+        return kv.split('='); // Split each 'key=value' string into a [key, value] array
+      })
+      .filter(function(kv) {
+        return ignoreUrlParametersMatching.every(function(ignoredRegex) {
+          return !ignoredRegex.test(kv[0]); // Return true iff the key doesn't match any of the regexes.
+        });
+      })
+      .map(function(kv) {
+        return kv.join('='); // Join each [key, value] array into a 'key=value' string
+      })
+      .join('&'); // Join the array of 'key=value' strings into a string with '&' in between each
+
+    return url.toString();
+  };
+
+
+var hashParamName = '_sw-precache';
+var urlsToCacheKeys = new Map(
+  precacheConfig.map(function(item) {
+    var relativeUrl = item[0];
+    var hash = item[1];
+    var absoluteUrl = new URL(relativeUrl, self.location);
+    var cacheKey = createCacheKey(absoluteUrl, hashParamName, hash, false);
+    return [absoluteUrl.toString(), cacheKey];
+  })
+);
+
+function setOfCachedUrls(cache) {
+  return cache.keys().then(function(requests) {
+    return requests.map(function(request) {
+      return request.url;
+    });
+  }).then(function(urls) {
+    return new Set(urls);
+  });
+}
+
+self.addEventListener('install', function(event) {
+  event.waitUntil(
+    caches.open(cacheName).then(function(cache) {
+      return setOfCachedUrls(cache).then(function(cachedUrls) {
+        return Promise.all(
+          Array.from(urlsToCacheKeys.values()).map(function(cacheKey) {
+            // If we don't have a key matching url in the cache already, add it.
+            if (!cachedUrls.has(cacheKey)) {
+              var request = new Request(cacheKey, {credentials: 'same-origin'});
+              return fetch(request).then(function(response) {
+                // Bail out of installation unless we get back a 200 OK for
+                // every request.
+                if (!response.ok) {
+                  throw new Error('Request for ' + cacheKey + ' returned a ' +
+                    'response with status ' + response.status);
+                }
+
+                return cleanResponse(response).then(function(responseToCache) {
+                  return cache.put(cacheKey, responseToCache);
+                });
+              });
+            }
+          })
+        );
+      });
+    }).then(function() {
+      
+      // Force the SW to transition from installing -> active state
+      return self.skipWaiting();
+      
+    })
+  );
+});
 
 self.addEventListener('activate', function(event) {
-  // Delete all caches that aren't named in CURRENT_CACHES. While there is only
-  // one cache in this example, the same logic will handle the case where there
-  // are multiple versioned caches.
-  var expectedCacheNames = Object.keys(CURRENT_CACHES).map(function(key) {
-    return CURRENT_CACHES[key];
-  });
+  var setOfExpectedUrls = new Set(urlsToCacheKeys.values());
 
   event.waitUntil(
-    caches.keys().then(function(cacheNames) {
-      return Promise.all(
-        cacheNames.map(function(cacheName) {
-          if (expectedCacheNames.indexOf(cacheName) == -1) {
-            // If this cache name isn't present in the array of "expected"
-            // cache names, then delete it.
-            console.log('Deleting out of date cache:', cacheName);
-            return caches.delete(cacheName);
-          }
+    caches.open(cacheName).then(function(cache) {
+      return cache.keys().then(function(existingRequests) {
+        return Promise.all(
+          existingRequests.map(function(existingRequest) {
+            if (!setOfExpectedUrls.has(existingRequest.url)) {
+              return cache.delete(existingRequest);
+            }
+          })
+        );
+      });
+    }).then(function() {
+      
+      return self.clients.claim();
+      
+    })
+  );
+});
+
+
+self.addEventListener('fetch', function(event) {
+  if (event.request.method === 'GET') {
+    // Should we call event.respondWith() inside this fetch event handler?
+    // This needs to be determined synchronously, which will give other fetch
+    // handlers a chance to handle the request if need be.
+    var shouldRespond;
+
+    // First, remove all the ignored parameters and hash fragment, and see if we
+    // have that URL in our cache. If so, great! shouldRespond will be true.
+    var url = stripIgnoredUrlParameters(event.request.url, ignoreUrlParametersMatching);
+    shouldRespond = urlsToCacheKeys.has(url);
+
+    // If shouldRespond is false, check again, this time with 'index.html'
+    // (or whatever the directoryIndex option is set to) at the end.
+    var directoryIndex = '';
+    if (!shouldRespond && directoryIndex) {
+      url = addDirectoryIndex(url, directoryIndex);
+      shouldRespond = urlsToCacheKeys.has(url);
+    }
+
+    // If shouldRespond is still false, check to see if this is a navigation
+    // request, and if so, whether the URL matches navigateFallbackWhitelist.
+    var navigateFallback = 'index.html';
+    if (!shouldRespond &&
+        navigateFallback &&
+        (event.request.mode === 'navigate') &&
+        isPathWhitelisted(["\\/[^\\/\\.]*(\\?|$)"], event.request.url)) {
+      url = new URL(navigateFallback, self.location).toString();
+      shouldRespond = urlsToCacheKeys.has(url);
+    }
+
+    // If shouldRespond was set to true at any point, then call
+    // event.respondWith(), using the appropriate cache key.
+    if (shouldRespond) {
+      event.respondWith(
+        caches.open(cacheName).then(function(cache) {
+          return cache.match(urlsToCacheKeys.get(url)).then(function(response) {
+            if (response) {
+              return response;
+            }
+            throw Error('The cached response that was expected is missing.');
+          });
+        }).catch(function(e) {
+          // Fall back to just fetch()ing the request if some unexpected error
+          // prevented the cached response from being valid.
+          console.warn('Couldn\'t serve response for "%s" from cache: %O', event.request.url, e);
+          return fetch(event.request);
         })
       );
-    })
-  );
+    }
+  }
 });
 
-// This sample illustrates an aggressive approach to caching, in which every
-// valid response is cached and every request is first checked against the
-// cache. This may not be an appropriate approach if your web application makes
-// requests for arbitrary URLs as part of its normal operation (e.g. a RSS
-// client or a news aggregator), as the cache could end up containing large
-// responses that might not end up ever being accessed. Other approaches, like
-// selectively caching based on response headers or only caching responses
-// served from a specific domain, might be more appropriate for those use
-// cases.
-self.addEventListener('fetch', function(event) {
-  console.log('Handling fetch event for', event.request.url);
 
-  event.respondWith(
-    caches.open(CURRENT_CACHES['read-through']).then(function(cache) {
-      return cache.match(event.request).then(function(response) {
-        if (response) {
-          // If there is an entry in the cache for event.request, then response
-          // will be defined and we can just return it.
-          console.log(' Found response in cache:', response);
 
-          return response;
-        } else {
-          // Otherwise, if there is no entry in the cache for event.request,
-          // response will be undefined, and we need to fetch() the resource.
-          console.log(' No response for %s found in cache. About to fetch from network...', event.request.url);
 
-          // We call .clone() on the request since we might use it in the call
-          // to cache.put() later on. Both fetch() and cache.put() "consume"
-          // the request, so we need to make a copy. (see
-          // https://fetch.spec.whatwg.org/#dom-request-clone)
-          return fetch(event.request.clone()).then(function(response) {
-            console.log('  Response for %s from network is: %O', event.request.url, response);
 
-            // Optional: add in extra conditions here, e.g. response.type ==
-            // 'basic' to only cache responses from the same domain. See
-            // https://fetch.spec.whatwg.org/#concept-response-type
-            if (response.status < 400) {
-              // This avoids caching responses that we know are errors (i.e.
-              // HTTP status code of 4xx or 5xx). One limitation is that, for
-              // non-CORS requests, we get back a filtered opaque response
-              // (https://fetch.spec.whatwg.org/#concept-filtered-response-opaque)
-              // which will always have a .status of 0, regardless of whether
-              // the underlying HTTP call was successful. Since we're blindly
-              // caching those opaque responses, we run the risk of caching a
-              // transient error response.
-              //
-              // We need to call .clone() on the response object to save a copy of it to the cache.
-              // (https://fetch.spec.whatwg.org/#dom-request-clone)
-              cache.put(event.request, response.clone());
-            }
 
-            // Return the original response object, which will be used to
-            // fulfill the resource request.
-            return response;
-          });
-        }
-      }).catch(function(error) {
-        // This catch() will handle exceptions that arise from the match() or
-        // fetch() operations. Note that a HTTP error response (e.g. 404) will
-        // NOT trigger an exception. It will return a normal response object
-        // that has the appropriate error code set.
-        console.error('  Read-through caching failed:', error);
 
-        throw error;
-      });
-    })
-  );
-});
