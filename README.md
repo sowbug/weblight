@@ -5,8 +5,20 @@
 A USB-controlled LED designed for the
 [WebUSB API](https://wicg.github.io/webusb/).
 
-Toolchain/environment setup
+Try the web app
 ===
+Have a WebLight device already?  
+Launch the web app here:  
+https://sowbug.github.io/weblight/
+
+What does the javascript look like to write color values?  
+Check out [software/src/weblight-card.html](https://github.com/sowbug/weblight/blob/master/software/src/weblight-card.html)
+
+Developing WebLight Devices
+===
+
+Toolchain/environment setup
+---
 
 * Install avr-gcc. On Windows, download avr-gcc from
 http://andybrown.me.uk/2015/03/08/avr-gcc-492/. Make sure you've
@@ -23,7 +35,7 @@ gcc-avr binutils-avr gdb-avr avr-libc avrdude`. On OS X,
   udevadm control --reload-rules`.
 
 Programming a newly built board
-===
+---
 
 * Connect a 6-pin AVR programmer. Note that if you've built the
   production version of the board, you'll need either an SOIC-8 clip
@@ -41,7 +53,7 @@ usbtiny).
 * `make clean upload`
 
 Mass-producing boards
-===
+---
 
 This clones the complete firmware from an existing device. For
 convenience, a relatively stable version of that complete firmware
@@ -58,7 +70,7 @@ built.
 1. Repeat last two steps for all remaining boards.
 
 Development
-===
+---
 
 1. In the `firmware` directory, `make clean upload`.
 1. Plug in the board. After a few moments you should see `Micronucleus
@@ -68,7 +80,7 @@ Development
    1209:a800 InterBiometrics`.
 
 Usage
-===
+---
 
 1. Install [PyUSB](http://walac.github.io/pyusb/). `sudo pip install
 pyusb==1.0.0.b2`
@@ -78,7 +90,7 @@ light (it uses CSS-style RGB color format).
 1. `--help` for more options.
 
 BOM for production (not developer) circuit
-===
+---
 
 The best results are with an ENIG finish 2.0mm thickness PCB. If you're just prototyping, 1.6mm will work, but you'll want to put some thick solder on the USB leads to bulk them up a bit. Even then, the fit in the USB socket will be loose. ENIG takes longer to wear out than regular HASL.
 
@@ -95,7 +107,7 @@ The board measures 12mm x 41.1734mm x 2.0mm.
 * U1: ATtiny85 ATTINY85-20SU (DigiKey ATTINY85-20SURCT-ND)
 
 Tips
-===
+---
 
 * In addition to `wlctl` in the `commandline` directory, there is
 `lswusb`, which attempts to parse WebUSB descriptors. This utility
