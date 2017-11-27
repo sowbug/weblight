@@ -1,12 +1,24 @@
 # WebLight
 
-![WebLight](https://sowbug.github.io/weblight/img/DSC00108.jpg)
+![WebLight](img/DSC00108.jpg)
 
 A USB-controlled LED designed for the
-[WebUSB API](https://reillyeon.github.io/webusb/).
+[WebUSB API](https://wicg.github.io/webusb/).
+
+Try the web app
+===
+Have a WebLight device already?  
+Launch the web app here:  
+https://sowbug.github.io/weblight/
+
+What does the javascript look like to write color values?  
+Check out [software/src/weblight-card.html](https://github.com/sowbug/weblight/blob/master/software/src/weblight-card.html)
+
+Developing WebLight Devices
+===
 
 Toolchain/environment setup
-===
+---
 
 * Install avr-gcc. On Windows, download avr-gcc from
 http://andybrown.me.uk/2015/03/08/avr-gcc-492/. Make sure you've
@@ -23,7 +35,7 @@ gcc-avr binutils-avr gdb-avr avr-libc avrdude`. On OS X,
   udevadm control --reload-rules`.
 
 Programming a newly built board
-===
+---
 
 * Connect a 6-pin AVR programmer. Note that if you've built the
   production version of the board, you'll need either an SOIC-8 clip
@@ -41,7 +53,7 @@ usbtiny).
 * `make clean upload`
 
 Mass-producing boards
-===
+---
 
 This clones the complete firmware from an existing device. For
 convenience, a relatively stable version of that complete firmware
@@ -58,7 +70,7 @@ built.
 1. Repeat last two steps for all remaining boards.
 
 Development
-===
+---
 
 1. In the `firmware` directory, `make clean upload`.
 1. Plug in the board. After a few moments you should see `Micronucleus
@@ -68,7 +80,7 @@ Development
    1209:a800 InterBiometrics`.
 
 Usage
-===
+---
 
 1. Install [PyUSB](http://walac.github.io/pyusb/). `sudo pip install
 pyusb==1.0.0.b2`
@@ -78,7 +90,7 @@ light (it uses CSS-style RGB color format).
 1. `--help` for more options.
 
 BOM for production (not developer) circuit
-===
+---
 
 The best results are with an ENIG finish 2.0mm thickness PCB. If you're just prototyping, 1.6mm will work, but you'll want to put some thick solder on the USB leads to bulk them up a bit. Even then, the fit in the USB socket will be loose. ENIG takes longer to wear out than regular HASL.
 
@@ -95,7 +107,7 @@ The board measures 12mm x 41.1734mm x 2.0mm.
 * U1: ATtiny85 ATTINY85-20SU (DigiKey ATTINY85-20SURCT-ND)
 
 Tips
-===
+---
 
 * In addition to `wlctl` in the `commandline` directory, there is
 `lswusb`, which attempts to parse WebUSB descriptors. This utility
@@ -106,7 +118,7 @@ FAQ
 ===
 
 * **What is WebUSB?** It's a [new web
-  standard](https://reillyeon.github.io/webusb/) that will make it
+  standard](https://reillyeon.github.io/webusb/) that makes it
   easy to write a USB driver once (in JavaScript) and have it work
   everywhere that WebUSB is supported.
 
@@ -133,7 +145,7 @@ FAQ
 
 * **I don't want to build a board, but I'd like one. Will you sell me one?** I don't have plans to mass-produce boards for sale. But if you're interested in getting one, [subscribe to notifications for this issue](https://github.com/sowbug/weblight/issues/31).
 
-* **What's this Origin Trial thing that's needed for deployment of a WebUSB-based project?** Since WebUSB isn't yet standardized, but the Chrome team wants to get real developer feedback on the API, they've developed a mechanism to selectively enable experimental versions of APIs on specific origins. Go to https://bit.ly/OriginTrials to learn more, https://bit.ly/OriginTrialSignup to get your own, and https://jpchase.github.io/OriginTrials/check-token.html if you want to see the internals of a token.
+* **I remember reading something about Origin Trials. What does that have to do with WebUSB?** Chrome 61 and beyond ship with WebUSB, so if your users are running up-to-date Chrome, you're all set! But in case you're curious, the Chrome team has a system called Origin Trials for gathering real developer feedback on provisional APIs. Go to https://bit.ly/OriginTrials to learn more.
 
 Acknowledgments
 ===
@@ -142,3 +154,4 @@ Acknowledgments
 * bobhackmelb on freenode for advice on PCB manufacturing, specifically thickness.
 * [Passerby](http://electronics.stackexchange.com/users/17178/passerby) for help [reverse-engineering](http://electronics.stackexchange.com/questions/209941/two-sided-connectorless-usb-on-a-pcb) the double-sided USB connector.
 * [gerblook.org](http://gerblook.org/) for an awesome Gerber visualizer.
+* [Lars Knudsen](https://github.com/larsgk) for keeping docs up to date.
