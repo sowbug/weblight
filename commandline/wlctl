@@ -286,8 +286,13 @@ if len(args) == 0:
 
 if len(args) == 1:
   command = WL_REQUEST_COLOR
-  bytes = binascii.unhexlify(('000000' + args[0])[-6:])
+  bytes = binascii.unhexlify(args[0])
+  
+  if len(bytes) < 4:
+    raise ValueError(('4 bytes required only got ', len(bytes), bytes))
+
   result = dev.ctrl_transfer(0x40, command, 0, 0, bytes)
+
   if result != len(bytes):
     raise IOError('Error', result)
 else:

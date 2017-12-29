@@ -89,8 +89,10 @@ static uint8_t ProcessTransition()
   return true;
 }
 
-void HandleCOLOR(uint8_t r, uint8_t g, uint8_t b)
+void HandleCOLOR(uint8_t r, uint8_t g, uint8_t b, uint16_t selection)
 {
+  current_selected_leds = selection;
+
   if (is_recording)
   {
     VerifySequenceCapacity(4);
@@ -276,7 +278,7 @@ void Run(uint16_t msec_since_last)
   switch (opcodes[oi])
   {
   case COLOR:
-    HandleCOLOR(opcodes[oi + 1], opcodes[oi + 2], opcodes[oi + 3]);
+    HandleCOLOR(opcodes[oi + 1], opcodes[oi + 2], opcodes[oi + 3], SELECT_ALL_LEDS);
     break;
   case TRANSITION:
     HandleTRANSITION(opcodes[oi + 1], (opcodes[oi + 2] << 8) | opcodes[oi + 3]);
