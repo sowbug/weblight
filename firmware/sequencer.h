@@ -21,7 +21,7 @@ typedef enum {
   SELECT = 4
 } Command;
 
-void HandleCOLOR(uint8_t r, uint8_t g, uint8_t b);
+void HandleCOLOR(uint8_t r, uint8_t g, uint8_t b, uint16_t selection);
 void HandleTRANSITION(Transition t, uint16_t duration_msec);
 void HandlePAUSE(uint16_t duration_msec);
 void HandleSELECT(uint16_t led_mask);
@@ -36,4 +36,4 @@ void Load();
 
 void Run(uint16_t msec_since_last);
 
-#endif  // #if !defined(__SEQUENCER_H__)
+#endif // #if !defined(__SEQUENCER_H__)
