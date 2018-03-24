@@ -286,8 +286,13 @@ if len(args) == 0:
 
 if len(args) == 1:
   command = WL_REQUEST_COLOR
-  bytes = binascii.unhexlify(('000000' + args[0])[-6:])
+  bytes = binascii.unhexlify(args[0])
+  
+  if len(bytes) < 4:
+    raise ValueError(('4 bytes required only got ', len(bytes), bytes))
+
   result = dev.ctrl_transfer(0x40, command, 0, 0, bytes)
+
   if result != len(bytes):
     raise IOError('Error', result)
 else:
@@ -297,15 +302,20 @@ else:
 
   msec = int(options.msec)
   for arg in args:
-    bytes = binascii.unhexlify(('000000' + arg)[-6:])
+    bytes = binascii.unhexlify(arg)
+    
+    if len(bytes) < 4:
+      raise ValueError("4 bytes required only got %s", len(bytes))
+
     result = dev.ctrl_transfer(0x40, WL_REQUEST_COLOR, 0, 0, bytes)
     if result != len(bytes):
       raise IOError('Error: expected %d but got %d' % (len(bytes), result))
+
     bytes = bytearray([(msec >> 8) & 0xff, msec & 0xff])
     result = dev.ctrl_transfer(0x40, WL_REQUEST_PAUSE, 0, 0, bytes)
     if result != len(bytes):
       raise IOError('Error', result)
 
-  result = dev.ctrl_transfer(0x40, WL_REQUEST_PLAY, 0, 0, None)
-  if result != 0:
-    raise IOError('Error', result)
+    result = dev.ctrl_transfer(0x40, WL_REQUEST_PLAY, 0, 0, None)
+    if result != 0:
+      raise IOError('Error', result)

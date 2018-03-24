@@ -50,13 +50,25 @@
 
       async setDeviceColor(r, g, b) {
         if (this.device.opened) {
+          let payload;
+
+          if (this.device.usbVersionMajor === 2) {
+            payload = new Uint8Array([0xFF, r, g, b])
+          } else if (this.device.usbVersionMajor === 1) {
+            payload = new Uint8Array([r, g, b]);
+          }
+
+          if (payload == null) {
+            throw new Error(`Unknown device firmware version ${this.device.usbVersionMajor}`);
+          }
+
           await this.device.controlTransferOut({
             requestType: 'vendor',
             recipient: 'device',
             request: 1,
             value: 0,
             index: 0,
-          }, new Uint8Array([r, g, b]));
+          }, payload);
           this.$.lightPicker.value = rgbToHex(r, g, b);
         }
       }
