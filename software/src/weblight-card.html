@@ -59,7 +59,7 @@
           }
 
           if (payload == null) {
-            throw new Error(`Unknown USB version ${this.device.usbVersionMajor}`);
+            throw new Error(`Unknown device firmware version ${this.device.usbVersionMajor}`);
           }
 
           await this.device.controlTransferOut({
