@@ -11,16 +11,16 @@ while true; do
   echo "done"
   
   echo -n "Setting origins..."
-  wlctl --urls https://sowbug.github.io/weblight http://localhost:8000
+  ../commandline/wlctl --urls https://sowbug.github.io/weblight http://localhost:8000
   echo "done"
 
   echo -n "Updating sequence..."
-  wlctl 000100 000000
-  wlctl --save
+  ../commandline/wlctl 000100 000000
+  ../commandline/wlctl --save
   echo "done"
 
   echo -n "Regenerating serial number..."
-  wlctl --regenerate-serial
+  ../commandline/wlctl --regenerate-serial
   echo "done"
   
   echo "OK to unplug!"

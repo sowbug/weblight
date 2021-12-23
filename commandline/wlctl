@@ -39,15 +39,15 @@ def ResetDevice(dev):
 def RegenerateSerial(dev):
     uuid_str = str(uuid.uuid4())
     b = bytearray()
-    b.extend(uuid_str[-16:])
+    b.extend(uuid_str[-16:].encode())
 
     try:
         result = dev.ctrl_transfer(0x40, WL_REQUEST_SET_SERIAL, 0, 0, b)
-    except usb.core.USBError, e:
-        print "Failed to set serial number", e
+    except usb.core.USBError as e:
+        print("Failed to set serial number", e)
         sys.exit(1)
     if result != len(b):
-        print "Unexpected result while setting serial number", result
+        print("Unexpected result while setting serial number", result)
         sys.exit(1)
 
     # Force an enumeration to grab the serial number again. This is
@@ -98,10 +98,10 @@ PRODUCT=int(options.pid, 16)
 if options.list:
     devices = usb.core.find(idVendor=VENDOR, idProduct=PRODUCT, find_all=True)
     for dev in devices:
-        print "%30s %16s" % (
+        print("%30s %16s" % (
             usb.util.get_string(dev, dev.iManufacturer) + " " +
             usb.util.get_string(dev, dev.iProduct),
-            usb.util.get_string(dev, dev.iSerialNumber))
+            usb.util.get_string(dev, dev.iSerialNumber)))
     sys.exit(0)
 
 dev = None
@@ -112,7 +112,7 @@ if options.serial:
             dev = d
             break
     if dev is None:
-        print "Couldn't find that device"
+        print("Couldn't find that device")
         sys.exit(1)
 else:
     dev = usb.core.find(idVendor=VENDOR, idProduct=PRODUCT)
@@ -120,7 +120,7 @@ if options.reset:
     if dev is None:
         sys.exit(0)
 if dev is None:
-    print 'No device is connected (%04x/%04x)' % (VENDOR, PRODUCT)
+    print('No device is connected (%04x/%04x)' % (VENDOR, PRODUCT))
     sys.exit(1)
 
 # bmRequestType
@@ -147,10 +147,10 @@ if options.test:
         result[1] == 0x55 and
         result[2] == 0x44 and
         result[3] == 0x99):
-        print "Test succeeded"
+        print("Test succeeded")
         sys.exit(0)
     else:
-        print "Test failed:", result
+        print("Test failed:", result)
         sys.exit(1)
 
 if options.save:
@@ -215,25 +215,25 @@ def set_urls(urls):
       scheme = 1
       u = u[8:]
     else:
-      print "Unrecognized scheme", u
+      print("Unrecognized scheme", u)
       sys.exit(1)
 
     b.extend(bytearray([len(u) + 3, 3, scheme]))
-    b.extend(u)
+    b.extend(u.encode())
 
   if len(b) > 128:
-    print "Allowed origin lengths too big"
+    print("Allowed origin lengths too big")
     sys.exit(1)
 
   try:
     result = dev.ctrl_transfer(0x40, WL_REQUEST_SET_WEBUSB_DESCRIPTOR_SET,
                                0, 0, b)
-    print "Updated WEBUSB_DESCRIPTOR_SET", result
-  except usb.core.USBError, e:
-    print "Failed to set WEBUSB_DESCRIPTOR_SET", e
+    print("Updated WEBUSB_DESCRIPTOR_SET", result)
+  except usb.core.USBError as e:
+    print("Failed to set WEBUSB_DESCRIPTOR_SET", e)
     sys.exit(1)
   if result != len(b):
-    print "Unexpected result while setting WEBUSB_DESCRIPTOR_SET", result
+    print("Unexpected result while setting WEBUSB_DESCRIPTOR_SET", result)
     sys.exit(1)
 
 if options.urls:
@@ -247,7 +247,7 @@ if options.stress:
   import os
   import time
 
-  print "Press control-c to stop."
+  print("Press control-c to stop.")
   count = 0
   start_time = time.clock()
   while True:
@@ -256,8 +256,8 @@ if options.stress:
     elapsed = 10 * (time.clock() - start_time)
     try:
       result = dev.ctrl_transfer(0x40, WL_REQUEST_COLOR, 0, 0, bytes)
-    except usb.core.USBError, e:
-      print "\n\nFailed @ %d, %0.1f with %s" % (count, elapsed, e)
+    except usb.core.USBError as e:
+      print("\n\nFailed @ %d, %0.1f with %s" % (count, elapsed, e))
       break
     sys.stdout.write("\rIterations: %10d  Time: %10.1f" % (count, elapsed))
     sys.stdout.flush()

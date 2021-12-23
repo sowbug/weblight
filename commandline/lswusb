@@ -30,12 +30,12 @@ def ParseURLDescriptor(r):
   WEBUSB_SCHEME_HTTP = 0
   WEBUSB_SCHEME_HTTPS = 1
   if int(r[0]) != len(r):
-    print "URL Descriptor bLength incorrect"
+    print("URL Descriptor bLength incorrect")
     sys.exit(1)
 
   bDescriptorType = int(r[1])
   if bDescriptorType != WEBUSB_URL:
-    print "URL Descriptor bDescriptorType unexpected:", bDescriptorType
+    print("URL Descriptor bDescriptorType unexpected:", bDescriptorType)
     sys.exit(1)
 
   bScheme = int(r[2])
@@ -45,7 +45,7 @@ def ParseURLDescriptor(r):
   elif bScheme == WEBUSB_SCHEME_HTTPS:
     scheme = "https://"
   else:
-    print "URL Descriptor bScheme unexpected:", bScheme
+    print("URL Descriptor bScheme unexpected:", bScheme)
     sys.exit(1)
 
   return "%s%s" % (scheme, r[3:].tostring())
@@ -55,7 +55,7 @@ def ParseGetAllowedOrigins(dev, r):
 
   bDescriptorType = int(r[1])
   if bDescriptorType != WEBUSB_DESCRIPTOR_SET_HEADER:
-    print "URL Descriptor bDescriptorType unexpected:", bDescriptorType
+    print("URL Descriptor bDescriptorType unexpected:", bDescriptorType)
     sys.exit(1)
   ss = ["Count: %d" % int(bLength - 5)]
   for i in range(0, bLength - 5):
@@ -66,11 +66,11 @@ def ParseGetAllowedOrigins(dev, r):
   return "\n".join(ss)
 
 if len(argv) < 3:
-    print 'usage: %s <vid in hex> <pid in hex>' % argv[0]
-    print '\nCommon VID/PID pairs:\n'
+    print('usage: %s <vid in hex> <pid in hex>' % argv[0])
+    print('\nCommon VID/PID pairs:\n')
 
-    for k, v in VIDPIDPAIRS.iteritems():
-        print "%40s: %x %04x" % (k, v[0], v[1])
+    for k, v in VIDPIDPAIRS.items():
+        print("%40s: %x %04x" % (k, v[0], v[1]))
 
     sys.exit(1)
 
@@ -82,7 +82,7 @@ if dev is None:
     raise ValueError("Did not find device with VID/PID 0x%x/0x%04x" % (
         VENDOR, PRODUCT))
 
-print unicode(dev)
+print(str(dev))
 
 # bmRequestType
 # USBRQ_DIR_HOST_TO_DEVICE | USBRQ_TYPE_VENDOR | USBRQ_RCPT_DEVICE = 0x40
@@ -97,40 +97,40 @@ print unicode(dev)
 if False:
     # Device descriptor
     result = dev.ctrl_transfer(0x80, 6, 0x0100, 0, 64)
-    print "Device", len(result), binascii.hexlify(result)
+    print("Device", len(result), binascii.hexlify(result))
 
     # Manufacturer String Descriptor
     result = dev.ctrl_transfer(0x80, 6, 0x0301, 0, 64)
-    print "Manufacturer", len(result), binascii.hexlify(result)
+    print("Manufacturer", len(result), binascii.hexlify(result))
 
     # Product String Descriptor
     result = dev.ctrl_transfer(0x80, 6, 0x0302, 0, 64)
-    print "Product", len(result), binascii.hexlify(result)
+    print("Product", len(result), binascii.hexlify(result))
 
     # Serial String Descriptor
     result = dev.ctrl_transfer(0x80, 6, 0x0303, 0, 64)
-    print "Serial", len(result), binascii.hexlify(result)
+    print("Serial", len(result), binascii.hexlify(result))
 
 def PrintDivider():
-    print "\n=====\n"
+    print("\n=====\n")
 
 # BOS
 bos = dev.ctrl_transfer(0x80, 6, 0x0f00, 0, 64)
 PrintDivider()
-print "BOS", len(bos)
+print("BOS", len(bos))
 
 (bos_descriptor_length,
  bos_descriptor_type,
  bos_length,
  device_capabilities_count) = struct.unpack('BBHB', bos[0:5])
 
-print "%40s: %d" % ("Descriptor length", bos_descriptor_length)
-print "%40s: %d" % ("Descriptor type", bos_descriptor_type)
-print "%40s: %d" % ("Total length", bos_length)
-print "%40s: %d" % ("Device caps count", device_capabilities_count)
+print("%40s: %d" % ("Descriptor length", bos_descriptor_length))
+print("%40s: %d" % ("Descriptor type", bos_descriptor_type))
+print("%40s: %d" % ("Total length", bos_length))
+print("%40s: %d" % ("Device caps count", device_capabilities_count))
 
 if bos_length != len(bos):
-  print "BOS declared length isn't sane"
+  print("BOS declared length isn't sane")
   sys.exit(1)
 
 bos_pointer = 5
@@ -148,19 +148,19 @@ while bos_pointer < bos_length:
   PlatformCapabilityUUID = descriptor[4:16]
 
   if PlatformCapabilityUUID == BOS_DESCRIPTOR_WEBUSB:
-    print "WebUSB Descriptor"
+    print("WebUSB Descriptor")
     bcdVersion, bVendorCode, iLandingPage = struct.unpack('HBB',
                                                           descriptor[20:44])
 
-    print "%40s: %x" % ("Protocol version (BCD)", bcdVersion)
-    print "%40s: %d" % ("Vendor-specific request", bVendorCode)
-    print "%40s: %d" % ("Landing page index", iLandingPage)
+    print("%40s: %x" % ("Protocol version (BCD)", bcdVersion))
+    print("%40s: %d" % ("Vendor-specific request", bVendorCode))
+    print("%40s: %d" % ("Landing page index", iLandingPage))
 
     result = dev.ctrl_transfer(0xC0, bVendorCode,
                                0, WEBUSB_REQUEST_GET_ALLOWED_ORIGINS, 253)
-    print "GET_ALLOWED_ORIGINS:", ParseGetAllowedOrigins(dev, result)
+    print("GET_ALLOWED_ORIGINS:", ParseGetAllowedOrigins(dev, result))
 
   if PlatformCapabilityUUID == BOS_DESCRIPTOR_WINUSB:
-    print "WinUSB Descriptor %d %s" % (bLength, binascii.hexlify(descriptor))
+    print("WinUSB Descriptor %d %s" % (bLength, binascii.hexlify(descriptor)))
 
   bos_pointer += bLength

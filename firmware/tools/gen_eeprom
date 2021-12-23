@@ -76,13 +76,13 @@ for u in URLS:
     scheme = 1
     u = u[8:]
   else:
-    print "Unrecognized scheme", u
+    print("Unrecognized scheme", u)
     sys.exit(1)
   b.extend(bytearray([len(u) + 3, 3, scheme]))
   b.extend(u)
 
 if len(b) > 128:
-  print "Allowed origin lengths too big"
+  print("Allowed origin lengths too big")
   sys.exit(1)
 
 f.write(b)
